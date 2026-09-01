@@ -1,33 +1,26 @@
 {
-  "timestamp": "2026-09-01T16:12:04.583649+00:00",
+  "timestamp": "2026-09-01T18:46:00.612448+00:00",
   "products": {
     "1d064806-1498-4ff8-a1ba-dfac059932ae": {
       "name": "Icewing",
       "category": "knife",
       "rare": "ancient",
       "chroma": false,
-      "price": 54.0
-    },
-    "df574f47-4859-439f-be3c-fff56287b37b": {
-      "name": "Luger",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 75.0
+      "price": 69.99
     },
     "645b981b-6dd7-40c0-83aa-0e0d9145be5d": {
       "name": "Bubbles",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 25.0
+      "price": 4.9
     },
-    "a2b9267e-2a97-4a0e-bdaf-9f19ec31ce9f": {
-      "name": "Candy",
-      "category": "knife",
+    "df574f47-4859-439f-be3c-fff56287b37b": {
+      "name": "Luger",
+      "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 350.0
+      "price": 159.0
     },
     "3e53f9f6-f368-4bf4-96db-1c13980baaec": {
       "name": "Candies",
@@ -36,12 +29,19 @@
       "chroma": false,
       "price": 2.0
     },
+    "a2b9267e-2a97-4a0e-bdaf-9f19ec31ce9f": {
+      "name": "Candy",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 349.0
+    },
     "6565b541-2167-47ed-8784-23447eee8ff2": {
       "name": "Icecream",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 464.99
+      "price": 460.0
     },
     "02a6f97c-42a8-4121-b049-dfa8c789979e": {
       "name": "Batwing",
@@ -55,56 +55,14 @@
       "category": "knife",
       "rare": "ancient",
       "chroma": false,
-      "price": 180.0
+      "price": 300.0
     },
     "96a02b88-33f4-46c3-8f1d-8b604162bac3": {
       "name": "Copper",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
-    },
-    "21328eab-11c8-4377-891f-5f772633c086": {
-      "name": "Harvester",
-      "category": "gun",
-      "rare": "ancient",
-      "chroma": false,
-      "price": 599.0
-    },
-    "41e27e4b-6bca-410e-bdbd-6dc444a3435e": {
-      "name": "Slasher",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 83.99
-    },
-    "746f41c9-b295-47bf-a28e-5b631b906c21": {
-      "name": "Darkbringer",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 100.0
-    },
-    "99071789-e7b7-4bef-b8ab-9c422a0052d6": {
-      "name": "Green Luger",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 60.0
-    },
-    "e42fa884-d1dc-4fed-a5ff-73ffca3e9672": {
-      "name": "Ornament",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 490.0
-    },
-    "b489e8d7-f1cc-4668-9192-d43042b41453": {
-      "name": "Icepiercer",
-      "category": "gun",
-      "rare": "ancient",
-      "chroma": false,
-      "price": 499.0
+      "price": 2.0
     },
     "2d37fd33-31d1-426f-8f42-56866b796951": {
       "name": "Tourist",
@@ -113,135 +71,170 @@
       "chroma": false,
       "price": 2.0
     },
-    "44fcf31f-d47e-4cb4-9231-e59344f9aa4d": {
-      "name": "Red Luger",
+    "41e27e4b-6bca-410e-bdbd-6dc444a3435e": {
+      "name": "Slasher",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": true,
+      "price": 83.99
+    },
+    "21328eab-11c8-4377-891f-5f772633c086": {
+      "name": "Harvester",
+      "category": "gun",
+      "rare": "ancient",
+      "chroma": false,
+      "price": 750.0
+    },
+    "b489e8d7-f1cc-4668-9192-d43042b41453": {
+      "name": "Icepiercer",
+      "category": "gun",
+      "rare": "ancient",
+      "chroma": false,
+      "price": 600.0
+    },
+    "746f41c9-b295-47bf-a28e-5b631b906c21": {
+      "name": "Darkbringer",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 99.0
+      "price": 149.0
+    },
+    "99071789-e7b7-4bef-b8ab-9c422a0052d6": {
+      "name": "Green Luger",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
     },
     "06f4e6ba-55e2-4d0d-8ccc-c4a4fd490c7f": {
       "name": "Amerilaser",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 79.0
+      "price": 148.99
+    },
+    "e42fa884-d1dc-4fed-a5ff-73ffca3e9672": {
+      "name": "Ornament",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 399.0
+    },
+    "44fcf31f-d47e-4cb4-9231-e59344f9aa4d": {
+      "name": "Red Luger",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 118.0
     },
     "b286bbb9-ffc9-4c40-be02-a7c1b72d8ceb": {
       "name": "Bat",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 410.0
-    },
-    "8cdde5f5-18e6-4165-8c87-5183ffcd989f": {
-      "name": "Laser",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 90.0
+      "price": 870.0
     },
     "b2b33780-e5f0-43e2-9ab9-a1e081dd2240": {
       "name": "Hallowgun",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 69.0
+      "price": 65.0
     },
-    "1e7c7d37-ddd7-4884-a5fc-27dac25269b9": {
-      "name": "BattleAxe",
-      "category": "knife",
+    "8cdde5f5-18e6-4165-8c87-5183ffcd989f": {
+      "name": "Laser",
+      "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 145.0
+      "price": 109.0
     },
     "e29e9d0e-2eb3-494a-8bc4-b58f43dd4034": {
       "name": "Sugar",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 109.0
+      "price": 130.0
+    },
+    "1e7c7d37-ddd7-4884-a5fc-27dac25269b9": {
+      "name": "BattleAxe",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 70.0
     },
     "32d571a5-062e-496c-baea-db47625ce98b": {
       "name": "Beachy",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 309.0
-    },
-    "330c2d52-800d-47f9-9dec-8b3c9a5412c4": {
-      "name": "Chromatic",
-      "category": "gun",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 19.99
-    },
-    "4e4ca11a-966a-4c28-a40f-eeb61d7c9187": {
-      "name": "Lugercane",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 41.0
+      "price": 500.0
     },
     "4204b7bf-ab66-4081-b68d-f0911bc1b0ad": {
       "name": "Hallowscythe",
       "category": "knife",
       "rare": "ancient",
       "chroma": false,
-      "price": 99.0
+      "price": 98.0
+    },
+    "330c2d52-800d-47f9-9dec-8b3c9a5412c4": {
+      "name": "Chromatic",
+      "category": "gun",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 67.0
+    },
+    "4e4ca11a-966a-4c28-a40f-eeb61d7c9187": {
+      "name": "Lugercane",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 98.0
     },
     "7cbe553e-fbe3-4c21-a75c-647ca6320d16": {
       "name": "Splash",
       "category": "gun",
       "rare": "legendary",
       "chroma": false,
-      "price": 24.0
-    },
-    "4b4e2396-dc33-4f09-bea5-6492b4a14ba0": {
-      "name": "Gemstone",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 60.0
+      "price": 4.5
     },
     "1a845c53-a391-42a0-bcef-8830b56641b9": {
       "name": "Elderwood Revolver",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 96.0
+      "price": null
     },
     "96eafac3-b5f2-4174-810d-33f76a4584cb": {
       "name": "Palms",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 14.0
+      "price": 3.5
     },
     "982cc4d2-b786-41a5-bc5a-03f24282449f": {
       "name": "Cookieblade",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 35.0
+      "price": null
     },
-    "264fe8fc-7d2a-4277-98a4-08ea9bbebfb7": {
-      "name": "Sweet",
+    "4b4e2396-dc33-4f09-bea5-6492b4a14ba0": {
+      "name": "Gemstone",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 480.0
+      "price": 55.0
+    },
+    "0c523264-72ff-47a8-bf69-735ccb332f33": {
+      "name": "Sands",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 349.88
     },
     "bc0d160f-9378-4bbc-99f1-6d073cca4748": {
       "name": "Lightbringer",
       "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 110.0
-    },
-    "00a30ea0-d2bd-4cde-9396-790ed71ea6c9": {
-      "name": "Seer",
-      "category": "knife",
       "rare": "godly",
       "chroma": false,
       "price": null
@@ -251,173 +244,159 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 88.99
+      "price": 103.99
     },
-    "0c523264-72ff-47a8-bf69-735ccb332f33": {
-      "name": "Sands",
-      "category": "gun",
+    "264fe8fc-7d2a-4277-98a4-08ea9bbebfb7": {
+      "name": "Sweet",
+      "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 335.0
+      "price": 590.0
     },
     "92c2063f-3c28-4a74-9a6a-8d6d83cd4f42": {
       "name": "Nightblade",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 65.0
+      "price": 149.0
     },
     "e02ca2e2-85fc-4fb1-a46b-8b6382fcf595": {
       "name": "Blue Seer",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 33.0
-    },
-    "22876f78-cee4-41f4-85f0-8e9db81008f4": {
-      "name": "Deathshard",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 69.0
-    },
-    "627996ec-8e27-4ec8-8b09-79c3b9567d7d": {
-      "name": "Black",
-      "category": "knife",
-      "rare": "rare",
-      "chroma": false,
-      "price": 65.0
+      "price": null
     },
     "a992cc97-4307-4ab8-9075-d5967e067979": {
       "name": "Vampire's Edge",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 64.0
+      "price": null
     },
-    "70db199b-0248-4deb-ab53-0d7f3132e2cf": {
-      "name": "Peppermint",
+    "00a30ea0-d2bd-4cde-9396-790ed71ea6c9": {
+      "name": "Seer",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 80.0
+      "price": null
     },
     "2c0844c3-e97b-4a81-a241-6e243ed5a54e": {
       "name": "Iceblaster",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 99.0
+      "price": 111.0
     },
     "2e53604c-70c2-4979-954c-1c560fa4700d": {
       "name": "Heartblade",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 200.0
+      "price": 498.99
+    },
+    "627996ec-8e27-4ec8-8b09-79c3b9567d7d": {
+      "name": "Black",
+      "category": "knife",
+      "rare": "rare",
+      "chroma": false,
+      "price": 10.98
+    },
+    "22876f78-cee4-41f4-85f0-8e9db81008f4": {
+      "name": "Deathshard",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 45.0
     },
     "39b7b218-bb41-43d6-b6a5-bf0da73c5cfa": {
       "name": "Red Seer",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 33.0
+      "price": 39.0
+    },
+    "70db199b-0248-4deb-ab53-0d7f3132e2cf": {
+      "name": "Peppermint",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 82.0
     },
     "939fe891-5aff-498c-bb6a-6cf71f2d237c": {
       "name": "8bit",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "d3b25717-4a29-483f-aff5-8bf6109d7fb2": {
       "name": "Eternalcane",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 44.0
+      "price": null
     },
     "ef255a7f-f11e-4379-9847-6d991f9e7386": {
       "name": "Purple Seer",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 33.0
-    },
-    "c6a61d63-0b95-4d13-9765-91d3461dccb1": {
-      "name": "Nebula",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 52.0
-    },
-    "1f62e049-2170-43d1-a1d3-71da550851ce": {
-      "name": "Plasmabeam",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 80.0
-    },
-    "e5cc2e81-8624-4bf0-905e-fe7d295868e6": {
-      "name": "Boneblade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 40.0
-    },
-    "553f8470-a143-4a8f-9e9a-cacc078f3450": {
-      "name": "Treat",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 434.0
-    },
-    "58c68105-e1b1-4088-83df-666d0cda8cd7": {
-      "name": "Predator",
-      "category": "gun",
-      "rare": "legendary",
-      "chroma": false,
       "price": 30.0
-    },
-    "bd225a31-fb25-4cc7-8891-80fa0789d11a": {
-      "name": "Eggblade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 26.0
     },
     "22c474fc-1738-4e46-a536-27b31fe251c0": {
       "name": "Elderwood Scythe",
       "category": "knife",
       "rare": "ancient",
       "chroma": false,
-      "price": 129.0
+      "price": 134.0
     },
-    "cf7aa26f-1fc6-4fe2-9558-992cfeb9be28": {
-      "name": "Slasher",
+    "58c68105-e1b1-4088-83df-666d0cda8cd7": {
+      "name": "Predator",
+      "category": "gun",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 300.0
+    },
+    "c6a61d63-0b95-4d13-9765-91d3461dccb1": {
+      "name": "Nebula",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 49.0
+      "price": 80.0
+    },
+    "bd225a31-fb25-4cc7-8891-80fa0789d11a": {
+      "name": "Eggblade",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
+    },
+    "553f8470-a143-4a8f-9e9a-cacc078f3450": {
+      "name": "Treat",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 555.0
+    },
+    "e5cc2e81-8624-4bf0-905e-fe7d295868e6": {
+      "name": "Boneblade",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
+    },
+    "1f62e049-2170-43d1-a1d3-71da550851ce": {
+      "name": "Plasmabeam",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 85.87
     },
     "69012bf5-30ea-47c7-be2d-d5b213a66ef6": {
       "name": "Jinglegun",
       "category": "gun",
       "rare": "godly",
-      "chroma": false,
-      "price": 49.0
-    },
-    "6e5d6081-2b6c-4f11-8c5c-661b2b862682": {
-      "name": "Yellow Seer",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 25.0
-    },
-    "720eeb70-9ffa-499b-824e-abe438d4186b": {
-      "name": "Strawberries",
-      "category": "knife",
-      "rare": "common",
       "chroma": false,
       "price": null
     },
@@ -426,21 +405,7 @@
       "category": "knife",
       "rare": "ancient",
       "chroma": false,
-      "price": 41.0
-    },
-    "adf26b4c-9f08-4e4e-88d9-f135f9248bb1": {
-      "name": "Ginger Luger",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 53.0
-    },
-    "43963c64-753c-42d5-9d2a-4703262586d7": {
-      "name": "Pixel",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 75.0
+      "price": 124.75
     },
     "61f7bfc5-082c-4f75-80b8-6c5bb6fe9aee": {
       "name": "Paws",
@@ -449,19 +414,19 @@
       "chroma": false,
       "price": 2.0
     },
-    "920c97ad-4953-4c0e-a117-928e7dabdc9e": {
-      "name": "Xmas",
-      "category": "knife",
+    "adf26b4c-9f08-4e4e-88d9-f135f9248bb1": {
+      "name": "Ginger Luger",
+      "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 39.0
+      "price": 64.99
     },
-    "a52b6cdb-9bdf-40f2-a89d-216f267da4d6": {
-      "name": "Ice Shard",
+    "cf7aa26f-1fc6-4fe2-9558-992cfeb9be28": {
+      "name": "Slasher",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 38.0
+      "price": 78.0
     },
     "eb1a5f94-3ef8-4dc3-b734-669e8cee06f6": {
       "name": "Shark",
@@ -470,152 +435,54 @@
       "chroma": false,
       "price": 88.0
     },
-    "fd52a663-fd2d-4a52-ad62-e6562d8b72d3": {
-      "name": "Bunnies",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 95.0
-    },
-    "57b90f47-1fd3-488e-8eee-2ee2e0c51d20": {
-      "name": "Snowcannon",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 1760.0
-    },
-    "bfa87180-cd0e-4235-9bf7-b910b95d0032": {
-      "name": "Icebeam",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 70.0
-    },
-    "c8a43c13-e1bf-4e74-ba53-bc6120b043ad": {
-      "name": "Lightbringer",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": true,
-      "price": 180.0
-    },
-    "ce2d2031-547f-4c49-8a81-a95aa90d189f": {
-      "name": "Frostbite",
+    "43963c64-753c-42d5-9d2a-4703262586d7": {
+      "name": "Pixel",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 50.0
+      "price": null
     },
-    "52ddb190-3280-4128-a68a-f2ef04902cd6": {
-      "name": "Orange Seer",
+    "6e5d6081-2b6c-4f11-8c5c-661b2b862682": {
+      "name": "Yellow Seer",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 21.0
+      "price": 39.0
     },
-    "633b2826-b861-4b50-ba74-f73d944e8b71": {
-      "name": "Nightfire",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 15.0
-    },
-    "0de30769-783d-4861-bfee-f13e7bda8365": {
-      "name": "Palms",
-      "category": "gun",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 50.0
-    },
-    "2f06d585-8f60-48ae-8758-1c0c13a5ec19": {
-      "name": "Elite",
+    "720eeb70-9ffa-499b-824e-abe438d4186b": {
+      "name": "Strawberries",
       "category": "knife",
-      "rare": "legendary",
+      "rare": "common",
       "chroma": false,
-      "price": 30.0
-    },
-    "682fb5c0-212d-4fa7-b02d-a2693144581e": {
-      "name": "Rose",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "884cc97b-493c-4a4d-b418-13a62767a770": {
       "name": "Boneblade",
       "category": "knife",
       "rare": "godly",
       "chroma": true,
-      "price": 63.0
+      "price": 68.49
     },
-    "f48efeba-9af7-4411-ae6d-f75f729ba0c5": {
-      "name": "Prince",
+    "920c97ad-4953-4c0e-a117-928e7dabdc9e": {
+      "name": "Xmas",
       "category": "knife",
-      "rare": "classic",
+      "rare": "godly",
       "chroma": false,
-      "price": 30.0
+      "price": 99.99
     },
-    "f66220b9-46a6-4590-9f4f-ecbb21b2f602": {
-      "name": "Shiny",
+    "bfa87180-cd0e-4235-9bf7-b910b95d0032": {
+      "name": "Icebeam",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
+    },
+    "fd52a663-fd2d-4a52-ad62-e6562d8b72d3": {
+      "name": "Bunnies",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 15.0
-    },
-    "5212caf4-537c-40ec-a76f-47638ad99ea0": {
-      "name": "Swirly Axe",
-      "category": "knife",
-      "rare": "ancient",
-      "chroma": false,
-      "price": 190.0
-    },
-    "5ab70d27-c8c6-4c67-bda5-295a7d79a848": {
-      "name": "Winter's Edge",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 29.0
-    },
-    "a5663575-faa0-49d0-974f-9cf06204f23c": {
-      "name": "Rune",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 23.0
-    },
-    "a8d483f9-e5f9-4c52-aa3a-86054b05f462": {
-      "name": "Bioblade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 44.0
-    },
-    "1ef49b79-b939-42b1-900d-20b2f12a91f9": {
-      "name": "Biogun",
-      "category": "gun",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 59.0
-    },
-    "3da164bd-4a51-47f3-8cd5-f9856dd0d0d8": {
-      "name": "Luger",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": true,
-      "price": 150.0
-    },
-    "610b0318-b565-4323-9bac-d2b94d941bb7": {
-      "name": "Hallow's Blade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 44.0
-    },
-    "d01f0672-e3bb-4687-b2ec-1e521ff33742": {
-      "name": "Iceflake",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 40.0
+      "price": 100.0
     },
     "4fdf9508-e92a-418a-abe2-1be486260fd6": {
       "name": "Clown",
@@ -624,12 +491,103 @@
       "chroma": false,
       "price": 2.0
     },
-    "c6f6516b-3f2c-4943-9b96-0494d7d69ff1": {
-      "name": "Virtual",
+    "57b90f47-1fd3-488e-8eee-2ee2e0c51d20": {
+      "name": "Snowcannon",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 2000.0
+    },
+    "a52b6cdb-9bdf-40f2-a89d-216f267da4d6": {
+      "name": "Ice Shard",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 35.0
+      "price": null
+    },
+    "ce2d2031-547f-4c49-8a81-a95aa90d189f": {
+      "name": "Frostbite",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
+    },
+    "52ddb190-3280-4128-a68a-f2ef04902cd6": {
+      "name": "Orange Seer",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 39.99
+    },
+    "a8d483f9-e5f9-4c52-aa3a-86054b05f462": {
+      "name": "Bioblade",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 49.0
+    },
+    "c8a43c13-e1bf-4e74-ba53-bc6120b043ad": {
+      "name": "Lightbringer",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": true,
+      "price": 299.0
+    },
+    "2f06d585-8f60-48ae-8758-1c0c13a5ec19": {
+      "name": "Elite",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 9.99
+    },
+    "633b2826-b861-4b50-ba74-f73d944e8b71": {
+      "name": "Nightfire",
+      "category": "gun",
+      "rare": "rare",
+      "chroma": false,
+      "price": 2.0
+    },
+    "682fb5c0-212d-4fa7-b02d-a2693144581e": {
+      "name": "Rose",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 10.0
+    },
+    "0de30769-783d-4861-bfee-f13e7bda8365": {
+      "name": "Palms",
+      "category": "gun",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 40.0
+    },
+    "5ab70d27-c8c6-4c67-bda5-295a7d79a848": {
+      "name": "Winter's Edge",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
+    },
+    "610b0318-b565-4323-9bac-d2b94d941bb7": {
+      "name": "Hallow's Blade",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 100.0
+    },
+    "d01f0672-e3bb-4687-b2ec-1e521ff33742": {
+      "name": "Iceflake",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 95.0
+    },
+    "f66220b9-46a6-4590-9f4f-ecbb21b2f602": {
+      "name": "Shiny",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 25.0
     },
     "f8657f69-5c36-4e2f-add0-a19ce69e15ca": {
       "name": "Sunset",
@@ -638,12 +596,68 @@
       "chroma": false,
       "price": 2.0
     },
-    "fa3d2427-3169-4819-a5c5-284d77804b74": {
-      "name": "Butterflies",
+    "1ef49b79-b939-42b1-900d-20b2f12a91f9": {
+      "name": "Biogun",
       "category": "gun",
-      "rare": "rare",
+      "rare": "uncommon",
       "chroma": false,
-      "price": 20.0
+      "price": 2.0
+    },
+    "5212caf4-537c-40ec-a76f-47638ad99ea0": {
+      "name": "Swirly Axe",
+      "category": "knife",
+      "rare": "ancient",
+      "chroma": false,
+      "price": null
+    },
+    "a0a0ab88-b5b4-4dff-bf7c-ab8df4362c62": {
+      "name": "Blaster",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 68.0
+    },
+    "a5663575-faa0-49d0-974f-9cf06204f23c": {
+      "name": "Rune",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 4.0
+    },
+    "c6f6516b-3f2c-4943-9b96-0494d7d69ff1": {
+      "name": "Virtual",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 35.0
+    },
+    "f48efeba-9af7-4411-ae6d-f75f729ba0c5": {
+      "name": "Prince",
+      "category": "knife",
+      "rare": "classic",
+      "chroma": false,
+      "price": 30.0
+    },
+    "fea8447b-48fb-4f33-ba3c-33bd5395a118": {
+      "name": "Waves",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 597.93
+    },
+    "3da164bd-4a51-47f3-8cd5-f9856dd0d0d8": {
+      "name": "Luger",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": true,
+      "price": null
+    },
+    "b5326602-3668-46b3-9a49-741eec1bd684": {
+      "name": "Heart Wand",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
     },
     "10b4c849-38b5-40ad-9a00-c1d6809e3a65": {
       "name": "Plasmablade",
@@ -652,145 +666,47 @@
       "chroma": false,
       "price": 71.0
     },
-    "22c7be02-5082-40ac-a8e6-d44912361d62": {
-      "name": "Gingercookie",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 14.0
-    },
-    "385a1178-c14d-4d39-8bff-0505774aa715": {
-      "name": "Swirly Gun",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 70.0
-    },
-    "4e45e5e6-25c4-4871-96dc-c7262ac832fb": {
-      "name": "Phantom",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 130.0
-    },
-    "6349a201-e6ea-4229-9254-ae062fc7ffda": {
-      "name": "Xbox",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 265.0
-    },
-    "68babccf-bb67-4e47-9b76-3da270ad67d8": {
-      "name": "Floral",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 13.0
-    },
-    "b5326602-3668-46b3-9a49-741eec1bd684": {
-      "name": "Heart Wand",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 1200.0
-    },
-    "ca1b3188-bbad-4b74-8db9-5a8d5813f0dc": {
-      "name": "Gingerblade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 45.0
-    },
-    "f22762b6-f174-4e8a-8c08-bfd25c25ab3b": {
-      "name": "Clown",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 50.0
-    },
-    "573a31aa-6631-4aa5-9ef6-3c31e8596e0d": {
-      "name": "Watergun",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 555.0
-    },
-    "5d35ce3d-f853-49d9-bb7a-0430c15b8153": {
-      "name": "Candleflame",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 150.0
-    },
-    "a059ad9c-8563-47d4-b74b-f917ccea33ed": {
-      "name": "Australis",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 420.0
-    },
-    "a0a0ab88-b5b4-4dff-bf7c-ab8df4362c62": {
-      "name": "Blaster",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 65.0
-    },
-    "fea8447b-48fb-4f33-ba3c-33bd5395a118": {
-      "name": "Waves",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 590.0
-    },
-    "192d0d87-2570-410a-929f-06b0f4e66fa5": {
-      "name": "Laser",
-      "category": "gun",
-      "rare": "classic",
-      "chroma": false,
-      "price": 40.0
-    },
-    "5934e76c-3bea-452e-8a14-b74b82e38679": {
-      "name": "Toy",
-      "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
-    "8abf82b0-d1c8-4972-b4d5-ccaa906c0aab": {
-      "name": "Eternal II",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 33.0
-    },
     "c8ad4fad-3fb2-4586-87cd-549086b617f5": {
       "name": "Clockwork",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 27.0
+      "price": 59.99
     },
-    "0f8b0aa3-b2bf-40ba-bfde-c943233aa61a": {
-      "name": "Spectre",
+    "fa3d2427-3169-4819-a5c5-284d77804b74": {
+      "name": "Butterflies",
       "category": "gun",
-      "rare": "godly",
+      "rare": "rare",
       "chroma": false,
-      "price": 200.0
+      "price": 20.0
     },
-    "3e0149f6-cb9f-4690-8484-a1e1f086f45f": {
-      "name": "Checker",
-      "category": "knife",
-      "rare": "uncommon",
+    "22c7be02-5082-40ac-a8e6-d44912361d62": {
+      "name": "Gingercookie",
+      "category": "gun",
+      "rare": "rare",
       "chroma": false,
-      "price": 34.0
+      "price": 60.0
     },
     "48038ac2-7bf4-4759-bac0-46c7def12b01": {
       "name": "Cupid",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 22.0
+      "price": 5.0
+    },
+    "4e45e5e6-25c4-4871-96dc-c7262ac832fb": {
+      "name": "Phantom",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 230.0
+    },
+    "5d35ce3d-f853-49d9-bb7a-0430c15b8153": {
+      "name": "Candleflame",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": true,
+      "price": null
     },
     "89cf9a44-2297-44ab-b455-9f4bce86dcda": {
       "name": "Universe",
@@ -799,108 +715,157 @@
       "chroma": false,
       "price": 6.0
     },
-    "8b795b76-44b0-4718-8453-0ae10fd232cb": {
-      "name": "Adurite",
+    "385a1178-c14d-4d39-8bff-0505774aa715": {
+      "name": "Swirly Gun",
       "category": "gun",
-      "rare": "uncommon",
+      "rare": "godly",
       "chroma": false,
-      "price": 10.0
+      "price": 80.0
     },
-    "94bd8fa3-4dd5-47cf-887a-e20605896d99": {
-      "name": "BattleAxe II",
+    "6349a201-e6ea-4229-9254-ae062fc7ffda": {
+      "name": "Xbox",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
+    "68babccf-bb67-4e47-9b76-3da270ad67d8": {
+      "name": "Floral",
+      "category": "gun",
+      "rare": "rare",
+      "chroma": false,
+      "price": 2.0
+    },
+    "a059ad9c-8563-47d4-b74b-f917ccea33ed": {
+      "name": "Australis",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 74.56
+      "price": 499.99
     },
     "c5292ec5-dcd9-4ce5-b3e1-9996f95e94a5": {
       "name": "Whiteout",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 48.0
+      "price": 3.0
+    },
+    "ca1b3188-bbad-4b74-8db9-5a8d5813f0dc": {
+      "name": "Gingerblade",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 39.0
+    },
+    "f22762b6-f174-4e8a-8c08-bfd25c25ab3b": {
+      "name": "Clown",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
+    "192d0d87-2570-410a-929f-06b0f4e66fa5": {
+      "name": "Laser",
+      "category": "gun",
+      "rare": "classic",
+      "chroma": false,
+      "price": null
+    },
+    "573a31aa-6631-4aa5-9ef6-3c31e8596e0d": {
+      "name": "Watergun",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 799.0
+    },
+    "8abf82b0-d1c8-4972-b4d5-ccaa906c0aab": {
+      "name": "Eternal II",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 32.0
     },
     "d46eea4b-2210-4d39-93c9-f2534a426e18": {
       "name": "Candleflame",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 95.0
+      "price": 217.0
     },
-    "18184a70-61f8-46aa-b34c-8892c2fd6351": {
-      "name": "UFOs",
+    "3e0149f6-cb9f-4690-8484-a1e1f086f45f": {
+      "name": "Checker",
       "category": "knife",
-      "rare": "common",
+      "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 35.0
     },
-    "6fc4153f-b43e-4efa-b450-1877518ab3f2": {
-      "name": "Strawberries",
+    "5934e76c-3bea-452e-8a14-b74b82e38679": {
+      "name": "Toy",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 4.0
+      "price": 2.0
     },
-    "b3b45d93-df92-4fe9-8cc8-33f475d74cf3": {
-      "name": "Phaser",
-      "category": "gun",
-      "rare": "classic",
-      "chroma": false,
-      "price": 22.0
-    },
-    "d5b93e06-8984-476f-b365-3fa814bbb9a6": {
-      "name": "Bloom",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 1125.0
-    },
-    "dc46c1ac-9e9d-4c4f-b4a5-08faf5069e94": {
-      "name": "Floatie",
+    "8b795b76-44b0-4718-8453-0ae10fd232cb": {
+      "name": "Adurite",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
       "price": 2.0
+    },
+    "94bd8fa3-4dd5-47cf-887a-e20605896d99": {
+      "name": "BattleAxe II",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 74.55
     },
     "e9a75d02-4186-4657-af2e-efb36e0202a2": {
       "name": "Golden",
       "category": "gun",
       "rare": "classic",
       "chroma": false,
-      "price": 35.0
+      "price": 40.0
+    },
+    "0f8b0aa3-b2bf-40ba-bfde-c943233aa61a": {
+      "name": "Spectre",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 239.0
+    },
+    "18184a70-61f8-46aa-b34c-8892c2fd6351": {
+      "name": "UFOs",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
     },
     "573c3adb-c8fb-4f65-96e1-fb5851c0f90c": {
       "name": "Swirly Gun",
       "category": "gun",
       "rare": "godly",
       "chroma": true,
-      "price": 119.0
+      "price": 194.0
     },
-    "b07aa61b-73a5-4367-8b2d-663401604cc6": {
-      "name": "America",
+    "6fc4153f-b43e-4efa-b450-1877518ab3f2": {
+      "name": "Strawberries",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
+    "b3b45d93-df92-4fe9-8cc8-33f475d74cf3": {
+      "name": "Phaser",
       "category": "gun",
       "rare": "classic",
       "chroma": false,
-      "price": 40.0
+      "price": null
     },
-    "c17f7cb1-9047-4084-b249-727562886cdb": {
-      "name": "Chill",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 40.0
-    },
-    "f63ed06d-06e9-46da-9ab1-6c2a7f0c42c9": {
-      "name": "Heart",
-      "category": "knife",
-      "rare": "rare",
-      "chroma": false,
-      "price": 17.0
-    },
-    "037920d3-197d-42fc-ad90-41495f74f30b": {
-      "name": "Pirate",
+    "de89a00a-fe0b-4e01-9b7b-1ab7cb6241f0": {
+      "name": "Rainbow",
       "category": "gun",
-      "rare": "uncommon",
+      "rare": "rare",
       "chroma": false,
       "price": 2.0
     },
@@ -911,13 +876,6 @@
       "chroma": false,
       "price": 15.0
     },
-    "0afb8ef0-254b-45e6-876c-4f9d4ac6686f": {
-      "name": "Bones",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": null
-    },
     "0d903f81-495c-4f0e-b802-cadf5bc6d22d": {
       "name": "Elderwood Blade",
       "category": "knife",
@@ -925,31 +883,80 @@
       "chroma": true,
       "price": 299.0
     },
+    "c17f7cb1-9047-4084-b249-727562886cdb": {
+      "name": "Chill",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 42.0
+    },
+    "d5b93e06-8984-476f-b365-3fa814bbb9a6": {
+      "name": "Bloom",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 1200.0
+    },
+    "dc46c1ac-9e9d-4c4f-b4a5-08faf5069e94": {
+      "name": "Floatie",
+      "category": "gun",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
+    },
+    "f63ed06d-06e9-46da-9ab1-6c2a7f0c42c9": {
+      "name": "Heart",
+      "category": "knife",
+      "rare": "rare",
+      "chroma": false,
+      "price": 100.0
+    },
     "4cdb9e06-d361-4c86-955c-d80f2bc2efaf": {
       "name": "Yummy",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
-    "986f0a0f-f132-449a-beb4-f55441d9abf3": {
-      "name": "Ghost",
+    "77bcc7a9-68a5-479f-99c2-1afb482cb446": {
+      "name": "Eternal III",
       "category": "knife",
-      "rare": "classic",
+      "rare": "godly",
       "chroma": false,
-      "price": 35.0
+      "price": 32.0
     },
     "ac1536d5-94fd-47bd-897b-fadcd80c1577": {
       "name": "Darkbringer",
       "category": "gun",
       "rare": "godly",
       "chroma": true,
-      "price": 212.99
+      "price": 189.0
     },
-    "03bf8455-e4fb-4c9f-9eeb-8293c843e27a": {
-      "name": "Candied",
+    "b07aa61b-73a5-4367-8b2d-663401604cc6": {
+      "name": "America",
       "category": "gun",
-      "rare": "common",
+      "rare": "classic",
+      "chroma": false,
+      "price": 60.0
+    },
+    "d82952ab-e030-4112-af1f-b9231832088e": {
+      "name": "Makeshift",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 138.0
+    },
+    "037920d3-197d-42fc-ad90-41495f74f30b": {
+      "name": "Pirate",
+      "category": "gun",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
+    },
+    "0afb8ef0-254b-45e6-876c-4f9d4ac6686f": {
+      "name": "Bones",
+      "category": "knife",
+      "rare": "uncommon",
       "chroma": false,
       "price": null
     },
@@ -958,35 +965,21 @@
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 179.0
+      "price": 297.0
     },
-    "34236991-e544-40f8-9926-c6a16b04cad0": {
-      "name": "Handsaw",
-      "category": "knife",
-      "rare": "godly",
+    "5042b339-4d5b-42cc-8bdb-a1d1b9c565c7": {
+      "name": "Coal",
+      "category": "gun",
+      "rare": "common",
       "chroma": false,
-      "price": 37.0
+      "price": null
     },
-    "440cb684-8a86-427e-a813-beaf4dc33093": {
-      "name": "Eternal",
+    "986f0a0f-f132-449a-beb4-f55441d9abf3": {
+      "name": "Ghost",
       "category": "knife",
-      "rare": "godly",
+      "rare": "classic",
       "chroma": false,
-      "price": 30.0
-    },
-    "545e9cb6-3b97-401c-8fd3-0eb96a22d6d1": {
-      "name": "Cookiecane",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 104.0
-    },
-    "b93e2e66-8e38-4e73-b21e-85fefef5fa34": {
-      "name": "Elderwood Blade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 124.0
+      "price": 550.0
     },
     "c444dce2-cb3e-4c19-8115-cb05023c40fe": {
       "name": "Mystery Key",
@@ -995,33 +988,110 @@
       "chroma": false,
       "price": 36.5
     },
+    "e34b3559-3ad0-487c-b630-40448b46d506": {
+      "name": "Rainbow",
+      "category": "knife",
+      "rare": "rare",
+      "chroma": false,
+      "price": 3.75
+    },
+    "03bf8455-e4fb-4c9f-9eeb-8293c843e27a": {
+      "name": "Candied",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": null
+    },
+    "1205e3b3-de50-47cc-b232-9f86ab05c7cb": {
+      "name": "Deathshard",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": true,
+      "price": null
+    },
+    "1b266885-1370-43cd-bb36-64575f58c834": {
+      "name": "Laser",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": true,
+      "price": 179.0
+    },
+    "34236991-e544-40f8-9926-c6a16b04cad0": {
+      "name": "Handsaw",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 40.0
+    },
+    "440cb684-8a86-427e-a813-beaf4dc33093": {
+      "name": "Eternal",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 32.0
+    },
+    "545e9cb6-3b97-401c-8fd3-0eb96a22d6d1": {
+      "name": "Cookiecane",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 100.0
+    },
+    "5b1bf6a1-81b4-45d9-8278-8f8984ea7c77": {
+      "name": "Prismatic",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 40.0
+    },
+    "b93e2e66-8e38-4e73-b21e-85fefef5fa34": {
+      "name": "Elderwood Blade",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 149.99
+    },
     "c8962a13-17c1-42e4-ba01-a1dd9c255e39": {
       "name": "Ice Dragon",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 47.0
+      "price": 39.0
     },
-    "d82952ab-e030-4112-af1f-b9231832088e": {
-      "name": "Makeshift",
-      "category": "gun",
+    "d5ab94c3-3877-42d4-b4e6-cb18c8c4c963": {
+      "name": "Ghostblade",
+      "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 120.0
+      "price": 29.0
     },
-    "de89a00a-fe0b-4e01-9b7b-1ab7cb6241f0": {
-      "name": "Rainbow",
-      "category": "gun",
+    "f26a59b2-82fd-463e-a5c6-174f5e493248": {
+      "name": "Sharky",
+      "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
     "012fa48d-4af9-45f0-b08b-31021d68b8c0": {
       "name": "Plasmite",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 10.0
+      "price": 6.0
+    },
+    "07e566c9-2225-4d08-b2aa-e68b2097f9ec": {
+      "name": "Snowstorm",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": null
+    },
+    "1a2660e3-1308-4aa8-ad02-3ee53a06277d": {
+      "name": "Spider",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 40.0
     },
     "1f3067a0-306a-489e-a11d-6372584dd606": {
       "name": "Aquarium",
@@ -1030,12 +1100,33 @@
       "chroma": false,
       "price": null
     },
-    "5b1bf6a1-81b4-45d9-8278-8f8984ea7c77": {
-      "name": "Prismatic",
+    "2daeeeaa-01b7-4c23-8b27-91f48bd1399e": {
+      "name": "Turtles",
       "category": "knife",
-      "rare": "godly",
+      "rare": "uncommon",
       "chroma": false,
-      "price": 40.0
+      "price": 2.0
+    },
+    "3fe1f17d-19cf-4c16-8ac6-9c43a67521ca": {
+      "name": "Ice",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
+    "431f5962-c1d2-46f8-926e-56ea6979c381": {
+      "name": "Neon",
+      "category": "gun",
+      "rare": "rare",
+      "chroma": false,
+      "price": 2.0
+    },
+    "5de9a205-2c26-49d0-9874-592de541db00": {
+      "name": "Starry",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 3.0
     },
     "5f5f8ecd-c321-4bc3-94c7-4e6afc7e0879": {
       "name": "Clownfish",
@@ -1049,14 +1140,14 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "682e4155-2b52-410a-aac2-73ec0403a7e1": {
       "name": "Snow Dagger",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 799.0
+      "price": 1149.99
     },
     "73cb758d-7c70-4178-a4af-3d6871488f11": {
       "name": "Saw",
@@ -1070,14 +1161,14 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 199.0
     },
     "9fcaa5c0-2b82-469f-ad4e-35a3c09d7136": {
       "name": "Aquarium",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 110.0
+      "price": 5.99
     },
     "b004689d-0d04-454f-828c-5f4a2e06167f": {
       "name": "Haunted",
@@ -1091,56 +1182,42 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 28.0
+      "price": 27.99
+    },
+    "d4b9ceb4-7ee1-4ffb-9757-0bf84ee6d4a9": {
+      "name": "Heat",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 65.0
     },
     "f93a6ed5-653c-45d7-a57e-9c511f7f8d40": {
       "name": "Flowerwood",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 798.0
+      "price": null
     },
-    "1205e3b3-de50-47cc-b232-9f86ab05c7cb": {
-      "name": "Deathshard",
+    "20688dde-a82f-4776-b5bb-626c39383902": {
+      "name": "Gemstone",
       "category": "knife",
       "rare": "godly",
       "chroma": true,
-      "price": 78.0
-    },
-    "1a2660e3-1308-4aa8-ad02-3ee53a06277d": {
-      "name": "Spider",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 40.0
-    },
-    "1b266885-1370-43cd-bb36-64575f58c834": {
-      "name": "Laser",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": true,
-      "price": 175.99
+      "price": 132.0
     },
     "3895ef85-9db5-4c1c-a402-cc344568c99b": {
       "name": "Love",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 350.0
-    },
-    "431f5962-c1d2-46f8-926e-56ea6979c381": {
-      "name": "Neon",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
     "45338694-5e5f-4cb7-bf40-668567171e7c": {
       "name": "Soda",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "4a0f1597-5f3c-4a99-b44f-5cc41b8d4043": {
       "name": "Minty",
@@ -1154,112 +1231,133 @@
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 890.0
+      "price": 850.0
     },
     "6c80e915-39f2-4793-8d5d-c0a22f592b07": {
       "name": "Flora",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 1090.0
+      "price": null
     },
-    "77bcc7a9-68a5-479f-99c2-1afb482cb446": {
-      "name": "Eternal III",
-      "category": "knife",
-      "rare": "godly",
+    "730cb8ae-3503-4538-b4b0-fd52afa4e020": {
+      "name": "Sunny",
+      "category": "gun",
+      "rare": "rare",
       "chroma": false,
-      "price": 29.0
+      "price": 2.0
+    },
+    "8005dc2f-a0cc-45bc-84d8-78ac17167a9c": {
+      "name": "Heartbreak",
+      "category": "gun",
+      "rare": "rare",
+      "chroma": false,
+      "price": 2.0
     },
     "a44a6d31-f4c2-474f-a9a6-6b569c357c49": {
       "name": "Gingerbread",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "b34bbc05-9751-4d05-b21a-5d7987bc797a": {
       "name": "Space",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
-    "d4b9ceb4-7ee1-4ffb-9757-0bf84ee6d4a9": {
+    "b691437a-62c2-426a-ad25-fd5290be4a95": {
       "name": "Heat",
       "category": "knife",
       "rare": "godly",
-      "chroma": false,
-      "price": 55.0
+      "chroma": true,
+      "price": 149.99
     },
-    "e34b3559-3ad0-487c-b630-40448b46d506": {
-      "name": "Rainbow",
-      "category": "knife",
-      "rare": "rare",
+    "cb8b27f0-b471-4bf2-8452-0a1dde34305e": {
+      "name": "Cursed",
+      "category": "gun",
+      "rare": "legendary",
       "chroma": false,
-      "price": 15.0
+      "price": 12.0
+    },
+    "d3537bed-0ca9-4c17-bd8d-7e41fd970ecd": {
+      "name": "Shadow",
+      "category": "knife",
+      "rare": "classic",
+      "chroma": false,
+      "price": 60.0
+    },
+    "e566e12a-1c67-4c49-9d62-722f7e393c22": {
+      "name": "Frostsaber",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 29.99
     },
     "ee278f14-eba4-42bc-8a7a-85ae77de6356": {
       "name": "Pearl",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 285.0
+      "price": 290.0
     },
-    "07e566c9-2225-4d08-b2aa-e68b2097f9ec": {
-      "name": "Snowstorm",
+    "f19dc68d-2872-46fd-ab06-6c8c55d1f011": {
+      "name": "Seer",
       "category": "knife",
       "rare": "godly",
-      "chroma": false,
-      "price": 598.0
+      "chroma": true,
+      "price": 229.0
     },
     "0ab6f526-b1d0-485d-859c-183cc3b495f1": {
       "name": "Camo",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "1ede851f-82d0-49b9-a892-8902b3dc179b": {
       "name": "Frozen",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
-    },
-    "20688dde-a82f-4776-b5bb-626c39383902": {
-      "name": "Gemstone",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 133.0
+      "price": 2.0
     },
     "28ade092-7cab-40a5-91fc-7913941ebb9f": {
       "name": "Red",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "2b0729fb-fb9c-4f21-9f26-5b1a012f5a41": {
       "name": "Soul",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 1432.0
+      "price": null
+    },
+    "320d7f75-02a7-48f9-a59d-325696567aae": {
+      "name": "Shark",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": true,
+      "price": 178.0
     },
     "33d220cb-0828-437f-b29a-abfa1116888b": {
       "name": "Snowfall",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
-    "3fe1f17d-19cf-4c16-8ac6-9c43a67521ca": {
-      "name": "Ice",
-      "category": "knife",
+    "3927ed09-fa0a-41d1-bbe9-d603186e2805": {
+      "name": "Fall",
+      "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 19.0
+      "price": 2.0
     },
     "51baef7c-1f48-4fa7-8b80-abfc9e79ce1c": {
       "name": "Nightstar",
@@ -1282,103 +1380,89 @@
       "chroma": false,
       "price": 22.0
     },
-    "730cb8ae-3503-4538-b4b0-fd52afa4e020": {
-      "name": "Sunny",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 3.0
-    },
     "760cbb9f-653c-4419-870c-df82305cb610": {
       "name": "Sparkle4",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 110.0
+      "price": null
     },
     "9f566e18-0b2e-4fd3-a958-827f5f6aaedc": {
       "name": "Hacker",
       "category": "gun",
       "rare": "rare",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
-    "b691437a-62c2-426a-ad25-fd5290be4a95": {
-      "name": "Heat",
+    "9ff26e48-4df7-48aa-8178-7af95e86a61f": {
+      "name": "Eternal IV",
       "category": "knife",
       "rare": "godly",
-      "chroma": true,
-      "price": 150.0
+      "chroma": false,
+      "price": 38.0
+    },
+    "a68cf6dd-e9d8-44bc-8952-6d782fba6924": {
+      "name": "Blossom",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
+    },
+    "bb77e4de-d62f-48f1-829a-f470590b4bb5": {
+      "name": "Viper",
+      "category": "gun",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 4.99
     },
     "c74bda45-fbb1-401d-93bc-2e7ac5c69573": {
       "name": "Splitter",
       "category": "knife",
       "rare": "classic",
       "chroma": false,
-      "price": 55.0
-    },
-    "cb8b27f0-b471-4bf2-8452-0a1dde34305e": {
-      "name": "Cursed",
-      "category": "gun",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 13.0
-    },
-    "d3537bed-0ca9-4c17-bd8d-7e41fd970ecd": {
-      "name": "Shadow",
-      "category": "knife",
-      "rare": "classic",
-      "chroma": false,
-      "price": 55.0
-    },
-    "d5ab94c3-3877-42d4-b4e6-cb18c8c4c963": {
-      "name": "Ghostblade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 29.0
+      "price": 60.0
     },
     "db89697e-5aa1-46c2-9205-f72698b7fbf0": {
       "name": "Marble",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 13.0
+      "price": 2.0
     },
     "deee8914-5663-4d0f-9ab8-59d4e4461791": {
       "name": "Soda",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 7.0
+      "price": 2.0
     },
     "e0ce64fb-9a57-4267-b504-8d8162d6aa4e": {
       "name": "Blood",
       "category": "knife",
       "rare": "classic",
       "chroma": false,
-      "price": 50.0
-    },
-    "f19dc68d-2872-46fd-ab06-6c8c55d1f011": {
-      "name": "Seer",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 99.0
-    },
-    "f26a59b2-82fd-463e-a5c6-174f5e493248": {
-      "name": "Sharky",
-      "category": "knife",
-      "rare": "rare",
-      "chroma": false,
-      "price": 2.0
+      "price": null
     },
     "00c0be19-9475-4a4e-83ee-2d593951fb5a": {
       "name": "Wavy",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
+    },
+    "0c6f884d-f0eb-4250-a10d-2e2ad490151d": {
+      "name": "Sketch",
+      "category": "gun",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 6.0
+    },
+    "0e55ae68-771f-45e4-b415-cc55d3137d05": {
+      "name": "Sand",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
     },
     "264ba2f5-c2cb-43f5-a508-194ebb34f7bc": {
       "name": "Snowflake",
@@ -1386,13 +1470,6 @@
       "rare": "godly",
       "chroma": false,
       "price": 45.0
-    },
-    "320d7f75-02a7-48f9-a59d-325696567aae": {
-      "name": "Shark",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": true,
-      "price": 179.0
     },
     "39627b35-a364-47c7-b6ab-3ec60d46e26a": {
       "name": "Xenoknife",
@@ -1406,14 +1483,21 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 30.0
+      "price": 2.0
     },
-    "5de9a205-2c26-49d0-9874-592de541db00": {
-      "name": "Starry",
+    "60cfcc18-c943-4341-bd49-23aae50bd2db": {
+      "name": "Skyline",
       "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
+    "7580402f-2f08-479b-9655-649160eaec97": {
+      "name": "Sweater",
+      "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 7.0
+      "price": 60.0
     },
     "7b392c96-1127-48f0-b1cb-2df906f642a4": {
       "name": "Flowerwood Gun",
@@ -1422,26 +1506,33 @@
       "chroma": false,
       "price": 773.99
     },
+    "82bcd88d-4a51-42b4-b623-8dfd78a0160c": {
+      "name": "Cold",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
     "846e6df1-93f6-4984-b00f-76426d13dce0": {
       "name": "Adurite",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 40.0
+      "price": 2.0
+    },
+    "8ee3d18b-eeab-489a-857d-9511688952c3": {
+      "name": "Tides",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 35.0
     },
     "967be1d6-dced-4013-ac01-bda51fbc28cb": {
       "name": "Hallow's Edge",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 39.99
-    },
-    "9ff26e48-4df7-48aa-8178-7af95e86a61f": {
-      "name": "Eternal IV",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 40.0
+      "price": 38.98
     },
     "a41cb23b-caff-4b0c-ba3c-112a93d2c173": {
       "name": "Aurora",
@@ -1450,6 +1541,13 @@
       "chroma": false,
       "price": 75.0
     },
+    "a577bcd1-9d4e-4162-a586-6fdac9031cb9": {
+      "name": "Fang",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 35.0
+    },
     "acfa0720-72ea-408d-9bec-85ebf596533a": {
       "name": "Pop Art",
       "category": "knife",
@@ -1457,54 +1555,68 @@
       "chroma": false,
       "price": 30.0
     },
-    "bb77e4de-d62f-48f1-829a-f470590b4bb5": {
-      "name": "Viper",
+    "b1a8a65c-501f-4f89-8fdb-39cab561436f": {
+      "name": "Imbued",
       "category": "gun",
-      "rare": "legendary",
+      "rare": "rare",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "bf215219-7b69-47aa-84fe-b152b91cc1de": {
       "name": "Toy",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 4.0
+      "price": 2.0
+    },
+    "c5cc8dd1-32a3-4bfe-9900-42e06b83e4ef": {
+      "name": "Xenoshot",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 3199.0
     },
     "c8a45a38-b23f-481c-9c88-f2d692632a56": {
       "name": "Bats",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
-    "e566e12a-1c67-4c49-9d62-722f7e393c22": {
-      "name": "Frostsaber",
-      "category": "knife",
+    "d3c79444-d066-412c-8927-bc995de1be21": {
+      "name": "Raygun",
+      "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 29.99
+      "price": 4200.0
+    },
+    "d90c328c-4f8b-4232-8729-b44b5b8cb6bf": {
+      "name": "Borealis",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 453.99
     },
     "f7b41518-ff5c-4fe5-b411-60e4bcd7a515": {
       "name": "Cowboy",
       "category": "gun",
       "rare": "classic",
       "chroma": false,
-      "price": 19.0
+      "price": 20.0
     },
     "006b917c-ef59-4d4e-81a5-6e246d29218e": {
       "name": "Popsicle",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 100.0
+      "price": 2.0
     },
     "0450e5a0-68cd-4197-af30-359bbc59f554": {
       "name": "Stickers",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 6.0
+      "price": 2.0
     },
     "04c4c6f3-f5fe-4221-a690-51d72a8ec0ff": {
       "name": "Peppermint",
@@ -1513,37 +1625,30 @@
       "chroma": false,
       "price": 2.0
     },
-    "0c6f884d-f0eb-4250-a10d-2e2ad490151d": {
-      "name": "Sketch",
-      "category": "gun",
+    "387980bc-c990-4afb-934c-6d5d6c5b07bf": {
+      "name": "Circuit",
+      "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 15.0
+      "price": 6.0
     },
     "3ab7f921-e290-41b3-8287-bc8e2773aeef": {
       "name": "Melon",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "3d45b654-e573-460f-97ed-e3eadfa290c9": {
       "name": "Love",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 260.0
+      "price": 2.0
     },
     "5cc64d9e-6264-49c5-b224-c60e3479d9f7": {
       "name": "Cherries",
       "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
-    "60cfcc18-c943-4341-bd49-23aae50bd2db": {
-      "name": "Skyline",
-      "category": "knife",
       "rare": "common",
       "chroma": false,
       "price": 2.0
@@ -1560,35 +1665,28 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 90.0
+      "price": 80.0
     },
     "80e55c3e-fdf6-4681-aa4b-86acb07f02a6": {
       "name": "UFOs",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
-    "82bcd88d-4a51-42b4-b623-8dfd78a0160c": {
-      "name": "Cold",
-      "category": "gun",
-      "rare": "common",
+    "88a32781-3e2d-4128-ae7d-8c813069ab88": {
+      "name": "Blue",
+      "category": "knife",
+      "rare": "uncommon",
       "chroma": false,
-      "price": 400.0
+      "price": 2.0
     },
     "8900ed75-6dcb-4e78-a867-a6eb160f0c3c": {
       "name": "Aqua",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 15.0
-    },
-    "8ee3d18b-eeab-489a-857d-9511688952c3": {
-      "name": "Tides",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 35.0
+      "price": 2.0
     },
     "96092a46-48c0-428b-8ee7-318fd711e2c7": {
       "name": "Clownfish",
@@ -1604,47 +1702,47 @@
       "chroma": false,
       "price": 1500.0
     },
-    "a577bcd1-9d4e-4162-a586-6fdac9031cb9": {
-      "name": "Fang",
-      "category": "knife",
-      "rare": "godly",
+    "a1224928-5e45-4b65-a087-4dc78fbc6c14": {
+      "name": "Galactic",
+      "category": "gun",
+      "rare": "rare",
       "chroma": false,
-      "price": 60.0
+      "price": 2.0
+    },
+    "a2823db1-0547-4c6f-8bd2-8d98ac450a68": {
+      "name": "Spring",
+      "category": "knife",
+      "rare": "rare",
+      "chroma": false,
+      "price": 2.0
     },
     "aec93a3f-560c-480d-8af3-cf8e6ecda1f7": {
       "name": "Tides",
       "category": "knife",
       "rare": "godly",
       "chroma": true,
-      "price": 80.0
+      "price": null
     },
     "c2b8e732-95ce-4c34-b422-ca3f0bb48d3b": {
       "name": "Camo",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
-    "c5cc8dd1-32a3-4bfe-9900-42e06b83e4ef": {
-      "name": "Xenoshot",
-      "category": "gun",
-      "rare": "godly",
+    "da36f3ef-20b9-409a-88fc-463648d54b70": {
+      "name": "Fusion",
+      "category": "knife",
+      "rare": "legendary",
       "chroma": false,
-      "price": 1099.0
+      "price": 9.0
     },
-    "d3c79444-d066-412c-8927-bc995de1be21": {
-      "name": "Raygun",
-      "category": "gun",
-      "rare": "godly",
+    "ee1112ce-ef58-46dc-9b8d-4cab0d46171d": {
+      "name": "Bio",
+      "category": "knife",
+      "rare": "rare",
       "chroma": false,
-      "price": 4000.0
-    },
-    "d90c328c-4f8b-4232-8729-b44b5b8cb6bf": {
-      "name": "Borealis",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 425.0
+      "price": 2.0
     },
     "f16ef5bb-60da-4d66-8fd4-99429d3919c1": {
       "name": "Carrot",
@@ -1658,14 +1756,14 @@
       "category": "gun",
       "rare": "rare",
       "chroma": false,
-      "price": null
+      "price": 2.5
     },
     "0206fd8d-e4b7-431d-a0a5-126c4546e911": {
       "name": "Aliens",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "05444b07-7678-4b69-8eea-21d26e1ca863": {
       "name": "Penguin",
@@ -1679,21 +1777,21 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 55.0
+      "price": 54.0
     },
     "154625d2-91b4-4340-b404-df9e4434fe4b": {
       "name": "Corrupt",
       "category": "knife",
       "rare": "unique",
       "chroma": false,
-      "price": 1249.0
+      "price": null
     },
     "19008244-1247-4432-8aca-b22bc406db23": {
       "name": "Vines",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 30.0
+      "price": 2.0
     },
     "1c9895a9-505d-4b4d-b2f8-e89bc7ff59ab": {
       "name": "Euro",
@@ -1707,7 +1805,7 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 4.0
+      "price": 2.0
     },
     "272a9c13-4af6-4bd3-bd8d-98a8e9f99c36": {
       "name": "Frostfade",
@@ -1728,7 +1826,7 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 200.0
+      "price": null
     },
     "29853ff9-7256-4ee5-b3d6-86b11bd89ae2": {
       "name": "Neon",
@@ -1736,13 +1834,6 @@
       "rare": "rare",
       "chroma": false,
       "price": 20.0
-    },
-    "2daeeeaa-01b7-4c23-8b27-91f48bd1399e": {
-      "name": "Turtles",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
     },
     "2f8155cc-4279-4e0b-9ebf-30dc20541f39": {
       "name": "Darkgun",
@@ -1756,21 +1847,21 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 32.99
+      "price": 20.0
     },
     "3582a587-c121-45b7-b9ef-d8a8a92aedc1": {
       "name": "Cheesy",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 5.0
+      "price": 2.0
     },
-    "387980bc-c990-4afb-934c-6d5d6c5b07bf": {
-      "name": "Circuit",
+    "35c69795-807a-4246-82c4-78cfcfb24895": {
+      "name": "Arctic",
       "category": "knife",
-      "rare": "uncommon",
+      "rare": "legendary",
       "chroma": false,
-      "price": 6.0
+      "price": 9.0
     },
     "38d521be-bed4-4b46-8f1d-de2939738b09": {
       "name": "Sparkle7",
@@ -1779,12 +1870,26 @@
       "chroma": false,
       "price": null
     },
+    "406f837a-0e6b-4d05-a050-eb67848ae0ac": {
+      "name": "Juice",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
     "4ece16af-a465-4e29-ae97-b3639dae5214": {
       "name": "Wood",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
+    },
+    "58f6f94b-c9d3-4196-a8ee-7855400f1d21": {
+      "name": "Candy Corn",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
     },
     "7847afae-9501-4245-82f1-f8eba7c27eca": {
       "name": "Eyeball",
@@ -1800,40 +1905,26 @@
       "chroma": false,
       "price": 15.0
     },
-    "8005dc2f-a0cc-45bc-84d8-78ac17167a9c": {
-      "name": "Heartbreak",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 2.0
-    },
     "814f887f-0f8e-4c4f-a0b4-d55538d9cb1a": {
       "name": "Doge",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 150.0
+      "price": 2.0
     },
     "85f8aacc-1201-47dd-b910-2ffc8382d204": {
       "name": "Ghosts",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 12.0
+      "price": 2.0
     },
     "86a4fd26-b6d8-477b-b2a5-c05f1c7360d9": {
       "name": "Gingerbread",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
-    },
-    "88a32781-3e2d-4128-ae7d-8c813069ab88": {
-      "name": "Blue",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 19.0
+      "price": 2.0
     },
     "9ac1be5d-f556-46eb-aab0-b7c968f61fe8": {
       "name": "Box of Red Wrapping Paper",
@@ -1842,26 +1933,26 @@
       "chroma": false,
       "price": 15.0
     },
-    "a1224928-5e45-4b65-a087-4dc78fbc6c14": {
-      "name": "Galactic",
-      "category": "gun",
-      "rare": "rare",
+    "a5e4a41d-77c6-4274-bf27-aeef9adf4804": {
+      "name": "Sakura",
+      "category": "knife",
+      "rare": "godly",
       "chroma": false,
-      "price": 2.0
-    },
-    "b1a8a65c-501f-4f89-8fdb-39cab561436f": {
-      "name": "Imbued",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 9.0
+      "price": 3190.0
     },
     "b851b7bc-0cbd-48c1-91f0-d8768c198619": {
       "name": "Sparkle9",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 198.98
+      "price": 189.99
+    },
+    "c09455a7-8a3c-480b-bf53-7744520b6b9e": {
+      "name": "Sparkle10",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 149.0
     },
     "c5976f29-95d1-434b-8d16-8c59464405fd": {
       "name": "Ace",
@@ -1882,21 +1973,14 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 7.0
-    },
-    "da36f3ef-20b9-409a-88fc-463648d54b70": {
-      "name": "Fusion",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 9.0
+      "price": 2.0
     },
     "dd1e935e-feec-4804-ba87-f34aac86af93": {
       "name": "Galaxy",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
     "de964643-763b-40a6-98ec-fe7fc2bc670f": {
       "name": "Vampire",
@@ -1910,7 +1994,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 2222.0
+      "price": 4999.0
     },
     "eb3276dd-5314-4fb4-918e-e69365dce450": {
       "name": "Gingerheart",
@@ -1938,6 +2022,13 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
+      "price": 2.0
+    },
+    "0991731f-43a9-4674-97bb-4a67e1c0dcb8": {
+      "name": "Nuke",
+      "category": "gun",
+      "rare": "rare",
+      "chroma": false,
       "price": null
     },
     "0a34b0d5-6b42-42cd-bca1-b802c96be2db": {
@@ -1945,17 +2036,24 @@
       "category": "gun",
       "rare": "legendary",
       "chroma": false,
-      "price": 89.0
+      "price": 50.0
     },
     "0c6998cf-4250-413b-a58e-d85cca191560": {
       "name": "Snowball",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "0ca12bf9-c6e7-4d01-b88a-213cd1cab8fb": {
       "name": "Lights",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
+    "0dfae212-48e2-4cf0-967e-f80e9f0c56e8": {
+      "name": "Candied",
       "category": "knife",
       "rare": "common",
       "chroma": false,
@@ -1966,28 +2064,28 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 3.0
+      "price": 2.0
     },
     "145c2c7d-03d9-47a0-9c89-1db26656c68e": {
       "name": "Box of Blue Wrapping Paper",
       "category": "misc",
       "rare": "christmas",
       "chroma": false,
-      "price": 17.99
+      "price": 17.98
     },
     "150779ad-e406-478e-87a2-26f3416a92d1": {
       "name": "Stickers",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "1a96f0fa-5029-4be2-a3f5-1754856a6100": {
       "name": "Purple",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 4.0
+      "price": 2.0
     },
     "1abb14ce-cdfd-4cd7-9e35-34973e5ad582": {
       "name": "High Tech",
@@ -2008,7 +2106,7 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "3cbba019-c52a-4c8e-8d61-f7b0be4d8531": {
       "name": "Stickers",
@@ -2017,31 +2115,24 @@
       "chroma": false,
       "price": 2.0
     },
+    "45a9a85b-e571-47a1-882e-9228a4685587": {
+      "name": "Bluesteel",
+      "category": "gun",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
+    },
     "4a0af6af-5371-4213-9919-b6806d08b496": {
       "name": "Skeleton Key 2018",
       "category": "misc",
       "rare": "halloween",
       "chroma": false,
-      "price": 399.0
-    },
-    "5042b339-4d5b-42cc-8bdb-a1d1b9c565c7": {
-      "name": "Coal",
-      "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": 307.0
+      "price": null
     },
     "57bd4a78-4d85-462e-808b-c98227823494": {
       "name": "Musical",
       "category": "knife",
       "rare": "rare",
-      "chroma": false,
-      "price": 10.0
-    },
-    "58f6f94b-c9d3-4196-a8ee-7855400f1d21": {
-      "name": "Candy Corn",
-      "category": "gun",
-      "rare": "common",
       "chroma": false,
       "price": 2.0
     },
@@ -2050,14 +2141,14 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 5.0
+      "price": 2.0
     },
     "5dbc0386-9163-49f7-bdc8-2760187dc462": {
       "name": "Bluesteel",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "62b061fe-5a44-4c03-9c73-1b94636a13be": {
       "name": "Ritual",
@@ -2078,21 +2169,28 @@
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 2749.0
+      "price": 2800.0
     },
     "74017e18-9cf8-4c0d-97be-bbd7011b363f": {
       "name": "Overseer",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": null
+      "price": 6.25
     },
-    "7580402f-2f08-479b-9655-649160eaec97": {
-      "name": "Sweater",
-      "category": "gun",
-      "rare": "uncommon",
+    "78a10888-53d7-4b62-afd4-0dbdef19e1e9": {
+      "name": "Rainbow",
+      "category": "knife",
+      "rare": "godly",
       "chroma": false,
       "price": null
+    },
+    "79eb5db3-40c2-4250-b245-84b4c052cd7a": {
+      "name": "Gingermint",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 55.99
     },
     "81bd6f80-7258-4bff-922f-ff6989b3c60b": {
       "name": "Celestial",
@@ -2100,6 +2198,13 @@
       "rare": "ancient",
       "chroma": false,
       "price": 6999.0
+    },
+    "838b0442-9c93-4f46-9c86-fa1b24972fc0": {
+      "name": "Sparkle5",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": null
     },
     "8beb5b0a-b590-473b-9b53-b767e0545087": {
       "name": "Bats",
@@ -2120,7 +2225,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 3.0
+      "price": 2.0
     },
     "9846e644-1923-46ed-ad70-0b740b6f88a4": {
       "name": "Green",
@@ -2134,7 +2239,14 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 44.99
+      "price": 2.0
+    },
+    "9ca896fb-3263-4095-b6f0-7d7e99f7a487": {
+      "name": "Ghosts",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
     },
     "9fe3689c-d769-46ce-a694-a1268ce6a05b": {
       "name": "Sleigh",
@@ -2155,28 +2267,14 @@
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 1040.0
-    },
-    "a5e4a41d-77c6-4274-bf27-aeef9adf4804": {
-      "name": "Sakura",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 3190.0
-    },
-    "a68cf6dd-e9d8-44bc-8952-6d782fba6924": {
-      "name": "Blossom",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
+      "price": null
     },
     "a841f235-5149-4186-890a-b9e7b170acad": {
       "name": "Tiger",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
     "aedd1ee2-a84b-4601-adb3-aa4cee7d4b68": {
       "name": "Green Elite",
@@ -2204,7 +2302,7 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "b6b497e6-a7a6-4649-8115-0f80807323e3": {
       "name": "Lovely",
@@ -2218,33 +2316,33 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 38.0
+      "price": 37.98
     },
     "c9983b38-2fe3-4b88-b445-b137308e8f76": {
       "name": "Ghostly",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
+    },
+    "cb216103-e237-4619-a5f4-f4cd5eb6360e": {
+      "name": "Snowflake",
+      "category": "gun",
+      "rare": "rare",
+      "chroma": false,
+      "price": 7.0
     },
     "cbe85281-c28b-41f7-a36c-fb6fff329584": {
       "name": "Pool",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 5.0
+      "price": 2.0
     },
     "ebe3fef6-5372-45a9-9c8b-fa807636c3f4": {
       "name": "Meadow",
       "category": "gun",
       "rare": "uncommon",
-      "chroma": false,
-      "price": 6.0
-    },
-    "ee1112ce-ef58-46dc-9b8d-4cab0d46171d": {
-      "name": "Bio",
-      "category": "knife",
-      "rare": "rare",
       "chroma": false,
       "price": 2.0
     },
@@ -2255,12 +2353,19 @@
       "chroma": false,
       "price": 44.0
     },
+    "f4b6a991-01fe-4deb-a45a-32163736d15a": {
+      "name": "Sparkle8",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 174.99
+    },
     "f7f4a115-4952-4ecd-8385-3275b6de858d": {
       "name": "Reindeer",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "fe54fd1f-002a-4dcf-9ebb-59829f3e0052": {
       "name": "Neopolitan",
@@ -2288,42 +2393,28 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 3.0
+      "price": 2.0
     },
     "06d5142a-0269-4737-88e1-8dd1a589f933": {
       "name": "Forest",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 13.0
+      "price": 2.0
     },
     "0858840e-3251-469e-ab50-c21b65608c97": {
       "name": "Fragile",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "08a1f673-ce8f-461e-b2eb-c39a93b221da": {
       "name": "Lava",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 59.99
-    },
-    "0991731f-43a9-4674-97bb-4a67e1c0dcb8": {
-      "name": "Nuke",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
       "price": 2.0
-    },
-    "0dfae212-48e2-4cf0-967e-f80e9f0c56e8": {
-      "name": "Candied",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": null
     },
     "17e2c43c-8f82-4853-962e-93df8321ed2f": {
       "name": "Scratch",
@@ -2332,12 +2423,19 @@
       "chroma": false,
       "price": 87.0
     },
+    "186f5271-ba46-42e9-85c4-b4a50eae68f3": {
+      "name": "Peppermint",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
     "1a033d99-2f72-4753-af9c-44de33800cab": {
       "name": "Eclipse",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 4.0
     },
     "1dbe7041-05d9-4e0f-826f-4c215185bce1": {
       "name": "Balloons",
@@ -2346,12 +2444,26 @@
       "chroma": false,
       "price": 2.0
     },
+    "21eeaff1-3cb7-4e11-83ef-2f5581a80b33": {
+      "name": "Glitch2",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 449.0
+    },
     "223d80cc-808a-474d-b610-dab53afc42ef": {
       "name": "Aurora",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
       "price": 53.0
+    },
+    "22868a90-ae6b-49b0-9537-6d9b5e4505d9": {
+      "name": "Sparkle1",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 79.0
     },
     "271c411e-e441-4540-b378-779790720dd8": {
       "name": "Canes",
@@ -2360,16 +2472,16 @@
       "chroma": false,
       "price": 20.0
     },
+    "35fdec37-93a8-4a4c-8ac3-537d2831e6d9": {
+      "name": "Infiltrator",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
     "369d3e5b-981a-47f3-ae29-2912ad7cae26": {
       "name": "Stainless",
       "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 77.0
-    },
-    "3927ed09-fa0a-41d1-bbe9-d603186e2805": {
-      "name": "Fall",
-      "category": "gun",
       "rare": "common",
       "chroma": false,
       "price": 2.0
@@ -2386,7 +2498,7 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 9.0
+      "price": 2.0
     },
     "431df953-2fdf-4ca7-bba5-d3afee2f7336": {
       "name": "Sparkle6",
@@ -2402,19 +2514,12 @@
       "chroma": false,
       "price": null
     },
-    "45a9a85b-e571-47a1-882e-9228a4685587": {
-      "name": "Bluesteel",
-      "category": "gun",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 9.0
-    },
     "4ea8a019-237e-4850-8e39-60769ab6dc0c": {
       "name": "Tropical",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "4ed971f9-bcd3-40dd-af83-9dbc2402b8cc": {
       "name": "Toxic",
@@ -2428,7 +2533,14 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 100.0
+      "price": null
+    },
+    "662f63e9-ccf6-45f6-b929-81d506b3ec06": {
+      "name": "Pumpking",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 37.0
     },
     "6a50714a-d973-4936-8730-6f2bde9c49d6": {
       "name": "Future",
@@ -2463,42 +2575,35 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 50.0
+      "price": 2.0
     },
     "70ee2f81-59fe-4af2-b6ca-b50cb0edb442": {
       "name": "Gifts 2015",
       "category": "misc",
       "rare": "christmas",
       "chroma": false,
-      "price": 39.99
+      "price": 38.99
     },
     "725ae40b-826c-4bb8-9f2c-c987a8622c13": {
       "name": "Stalker",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 50.0
-    },
-    "78a10888-53d7-4b62-afd4-0dbdef19e1e9": {
-      "name": "Rainbow",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 1580.0
+      "price": 2.0
     },
     "790229ea-4241-415a-a9f2-404650c197b6": {
       "name": "Snowglobe",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
-    "79eb5db3-40c2-4250-b245-84b4c052cd7a": {
-      "name": "Gingermint",
-      "category": "gun",
+    "7a2813a9-fc2e-4f02-8adf-6d8167f34a4e": {
+      "name": "Fang",
+      "category": "knife",
       "rare": "godly",
-      "chroma": false,
-      "price": 55.0
+      "chroma": true,
+      "price": 78.72
     },
     "823738b4-37d7-4603-9842-fc7b7be80244": {
       "name": "Sparkle3",
@@ -2506,13 +2611,6 @@
       "rare": "common",
       "chroma": false,
       "price": 150.0
-    },
-    "838b0442-9c93-4f46-9c86-fa1b24972fc0": {
-      "name": "Sparkle5",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 149.99
     },
     "86c10c09-aa19-48ce-ba0f-b3dfdaebbb7c": {
       "name": "Coconut",
@@ -2547,7 +2645,7 @@
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 3500.0
+      "price": 3440.0
     },
     "93944b00-9f0d-4999-ac02-30d2bc69f854": {
       "name": "Pumpkin",
@@ -2563,13 +2661,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "9ca896fb-3263-4095-b6f0-7d7e99f7a487": {
-      "name": "Ghosts",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
     "9f9826c0-ee85-497f-8da7-bc7b64cf1d95": {
       "name": "Stockings",
       "category": "gun",
@@ -2577,19 +2668,19 @@
       "chroma": false,
       "price": null
     },
-    "a2823db1-0547-4c6f-8bd2-8d98ac450a68": {
-      "name": "Spring",
-      "category": "knife",
-      "rare": "rare",
-      "chroma": false,
-      "price": 2.0
-    },
     "a2cfd7d1-90d2-4e33-81ce-ae53d0d6f7a3": {
       "name": "Ginger",
       "category": "gun",
       "rare": "rare",
       "chroma": false,
       "price": null
+    },
+    "a54cbaea-7310-41f4-856e-2378d3ccb711": {
+      "name": "Sunset",
+      "category": "gun",
+      "rare": "rare",
+      "chroma": false,
+      "price": 2.0
     },
     "ad98ebad-f0ec-4e58-bdfb-a604b6532196": {
       "name": "Cheddar",
@@ -2602,6 +2693,13 @@
       "name": "Hearts",
       "category": "knife",
       "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
+    "bb707154-a564-4e8e-8f45-cad1a08c5535": {
+      "name": "Soda",
+      "category": "gun",
+      "rare": "uncommon",
       "chroma": false,
       "price": 2.0
     },
@@ -2619,26 +2717,12 @@
       "chroma": false,
       "price": 2.0
     },
-    "c09455a7-8a3c-480b-bf53-7744520b6b9e": {
-      "name": "Sparkle10",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 149.0
-    },
     "c4bb6ff8-4081-466a-a46c-73d92c724dd5": {
       "name": "Vortex",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 14.0
-    },
-    "cb216103-e237-4619-a5f4-f4cd5eb6360e": {
-      "name": "Snowflake",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 55.0
+      "price": 2.0
     },
     "cd8c0e0e-749c-4f6d-94af-23d8133d0714": {
       "name": "CandyCorn",
@@ -2653,6 +2737,13 @@
       "rare": "common",
       "chroma": false,
       "price": 2.0
+    },
+    "d45ecc5d-91f4-4a34-8e92-9ab348317f53": {
+      "name": "Sparkle2",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": null
     },
     "d599989b-8a2d-4e9d-93a6-2aff30357f61": {
       "name": "Orange",
@@ -2680,14 +2771,14 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 8.0
+      "price": 3.0
     },
     "ded08be3-7bfc-473d-ab6a-98b776ed555b": {
       "name": "Darkshot",
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 3477.0
+      "price": null
     },
     "e39fddab-2264-4860-929d-a57fc116e8f6": {
       "name": "Beach",
@@ -2708,7 +2799,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 5.0
+      "price": 2.0
     },
     "ed76f4cc-4b91-4647-8096-1022b11af32d": {
       "name": "Box of Ultra Wrapping Paper",
@@ -2729,28 +2820,28 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 6.0
-    },
-    "f4b6a991-01fe-4deb-a45a-32163736d15a": {
-      "name": "Sparkle8",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 111.0
+      "price": 2.0
     },
     "f5898532-a991-4922-a387-65661558f72d": {
       "name": "Igloo",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
+    },
+    "f7c533d0-4020-482d-ab80-e49bb03c3e9b": {
+      "name": "Apocalypse",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 8.0
     },
     "f7f6419f-904c-4d62-9755-a981159d91e3": {
       "name": "Igloo",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 5.0
+      "price": 2.0
     },
     "fcf605ec-964e-4ede-9c05-6b9e42a83903": {
       "name": "Energized",
@@ -2758,6 +2849,13 @@
       "rare": "legendary",
       "chroma": false,
       "price": 99.99
+    },
+    "febc2a7b-7e0f-459c-b8ed-b9e938e8cc34": {
+      "name": "Coal",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 7.0
     },
     "01fd9d5a-0044-43af-b5b6-d70e210c30a9": {
       "name": "Swirl",
@@ -2769,6 +2867,13 @@
     "02c35fb5-3363-4c92-9132-6ebf1711fa70": {
       "name": "Wreaths",
       "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
+    },
+    "02c7dcbb-3a47-44a9-a821-9623512aa1c2": {
+      "name": "Fall Camo",
+      "category": "gun",
       "rare": "uncommon",
       "chroma": false,
       "price": null
@@ -2813,17 +2918,10 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "09812645-05b1-4404-9f75-c62b68084d49": {
       "name": "Candy Corn",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
-    "0e55ae68-771f-45e4-b415-cc55d3137d05": {
-      "name": "Sand",
       "category": "knife",
       "rare": "common",
       "chroma": false,
@@ -2848,7 +2946,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 23.99
+      "price": 20.0
     },
     "13289572-8403-4ac3-85b2-c6a3eb134d38": {
       "name": "Xeno",
@@ -2876,7 +2974,7 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 15.0
+      "price": 34.0
     },
     "1771c117-7a17-4b54-8e19-e2c5edab16a3": {
       "name": "Storm",
@@ -2887,13 +2985,6 @@
     },
     "178e09f3-009b-4dd5-b497-85fcf46b4826": {
       "name": "News",
-      "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": null
-    },
-    "186f5271-ba46-42e9-85c4-b4a50eae68f3": {
-      "name": "Peppermint",
       "category": "gun",
       "rare": "common",
       "chroma": false,
@@ -2925,7 +3016,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "1d5049ba-ed87-449c-90fa-ddff2d7de870": {
       "name": "Vampire",
@@ -2941,22 +3032,15 @@
       "chroma": false,
       "price": null
     },
-    "21eeaff1-3cb7-4e11-83ef-2f5581a80b33": {
-      "name": "Glitch2",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 50.0
-    },
-    "22868a90-ae6b-49b0-9537-6d9b5e4505d9": {
-      "name": "Sparkle1",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 76.0
-    },
     "236b1885-f9f8-41d6-8241-add9d937543b": {
       "name": "Pumpkin Pie",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": null
+    },
+    "2872e5e3-dd67-4e7b-a29f-eaed6bd2ef2a": {
+      "name": "Pumpkin",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
@@ -3016,7 +3100,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "2ff6b0ab-98c1-4ad8-8b85-dcc73af2cdce": {
       "name": "Bunny",
@@ -3039,6 +3123,13 @@
       "chroma": false,
       "price": 15.0
     },
+    "34135eda-2d17-40b5-94f7-a77a85e81be0": {
+      "name": "Apocalypse",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
     "34c328b1-acdd-4a4f-bd16-fffcdfa90d73": {
       "name": "Snowy",
       "category": "knife",
@@ -3053,22 +3144,8 @@
       "chroma": false,
       "price": null
     },
-    "35c69795-807a-4246-82c4-78cfcfb24895": {
-      "name": "Arctic",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 9.0
-    },
-    "35fdec37-93a8-4a4c-8ac3-537d2831e6d9": {
-      "name": "Infiltrator",
-      "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
-    "406f837a-0e6b-4d05-a050-eb67848ae0ac": {
-      "name": "Juice",
+    "39e1311d-3fa8-4041-9f40-de53dda89fd8": {
+      "name": "Pea",
       "category": "gun",
       "rare": "common",
       "chroma": false,
@@ -3107,7 +3184,7 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "55843a6f-6428-4557-b7f2-ff865fc087f7": {
       "name": "Moons",
@@ -3135,28 +3212,28 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 100.0
     },
     "5d80883b-cdd6-477c-80a4-aac4aa95d119": {
       "name": "Midnight",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 50.0
+      "price": 40.0
     },
     "5fa8da68-bc57-45a5-8ef6-99531cd44937": {
       "name": "Predator",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 88.0
+      "price": 90.0
     },
     "6145e804-406f-4c78-ada4-05fe74d74a19": {
       "name": "Abstract",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 9.0
+      "price": 6.0
     },
     "623cbc4e-7b6f-40f0-9356-8b745d73eb5e": {
       "name": "Snowflake",
@@ -3165,19 +3242,19 @@
       "chroma": false,
       "price": null
     },
-    "662f63e9-ccf6-45f6-b929-81d506b3ec06": {
-      "name": "Pumpking",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 37.0
-    },
     "68522437-bc8c-4d01-9ae6-8968e23c5eb3": {
       "name": "Emerald",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
       "price": 24.99
+    },
+    "69d3264c-3334-4149-8a6e-b18fc09fc25a": {
+      "name": "Sandy",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
     },
     "6df86350-42ae-4f8e-9bfd-98f6cac5e8f7": {
       "name": "Box of Fertilizer",
@@ -3212,7 +3289,7 @@
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 40.0
+      "price": 33.0
     },
     "7ab0e81d-5f07-462d-ac1c-49f1c7593e0f": {
       "name": "Glowy",
@@ -3233,7 +3310,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 20.0
+      "price": 2.0
     },
     "7e68758d-9140-4ee4-b2af-48cc98352846": {
       "name": "Jellyfish",
@@ -3254,14 +3331,14 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "834a9967-078c-4505-bb88-33b1730233fc": {
       "name": "Painted",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "8500b9ef-39d9-4a95-9a05-b3cbebd4a610": {
       "name": "Carrot",
@@ -3310,7 +3387,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "96b06745-e559-47d5-9b81-54f9e46ba2ef": {
       "name": "Coal",
@@ -3345,14 +3422,14 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 15.0
     },
     "9de5d47b-5869-4e04-8515-0dd855b43528": {
       "name": "Nova",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 45.0
+      "price": 35.0
     },
     "9f65754c-ded8-4502-8442-24fdfa60c052": {
       "name": "Alex",
@@ -3373,7 +3450,7 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 94.99
+      "price": 94.0
     },
     "a192a70c-2414-4295-add0-60f91d8e699f": {
       "name": "Prism",
@@ -3417,19 +3494,19 @@
       "chroma": false,
       "price": 55.0
     },
-    "a54cbaea-7310-41f4-856e-2378d3ccb711": {
-      "name": "Sunset",
-      "category": "gun",
-      "rare": "rare",
-      "chroma": false,
-      "price": 2.0
-    },
     "a710781a-9b5b-47da-ab7c-8db347adf9a8": {
       "name": "Box of Purple Wrapping Paper",
       "category": "misc",
       "rare": "christmas",
       "chroma": false,
       "price": 15.0
+    },
+    "ac17e6a9-f71a-4340-b081-567b4154f680": {
+      "name": "Cavern",
+      "category": "gun",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 50.0
     },
     "acbeb41b-0cd9-43c8-8675-2652ff703776": {
       "name": "Ghost",
@@ -3443,28 +3520,28 @@
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 50.0
+      "price": 45.0
     },
     "af9ac534-ae41-4978-9f76-92ea672af4b2": {
       "name": "Spectrum",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "b0403b73-7d00-495f-99b3-9f1889ebfb8e": {
       "name": "Vampire's Axe",
       "category": "knife",
       "rare": "ancient",
       "chroma": false,
-      "price": 3200.0
+      "price": 3000.0
     },
     "b0bee1f4-e1ec-4d22-8708-0e17d8e87a21": {
       "name": "iRevolver",
       "category": "gun",
       "rare": "rare",
       "chroma": false,
-      "price": 7.0
+      "price": 2.0
     },
     "b2f082b1-e3d7-40ef-888f-711abeeb286b": {
       "name": "Sunrise",
@@ -3485,7 +3562,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 35.0
     },
     "bade6fe3-58fc-48e3-b4d6-048a3f775e08": {
       "name": "Spitfire",
@@ -3493,13 +3570,6 @@
       "rare": "rare",
       "chroma": false,
       "price": 15.0
-    },
-    "bb707154-a564-4e8e-8f45-cad1a08c5535": {
-      "name": "Soda",
-      "category": "gun",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
     },
     "bdc4a512-866a-4093-8e7e-4564191010b7": {
       "name": "Striped",
@@ -3527,7 +3597,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 24.0
+      "price": 23.0
     },
     "cb60b961-5f9e-4c8b-b206-55d1003e623c": {
       "name": "Evergreen",
@@ -3541,14 +3611,14 @@
       "category": "misc",
       "rare": "halloween",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "cf68ab33-4ece-44aa-99e8-a64242359707": {
       "name": "Korblox",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 15.0
+      "price": 12.0
     },
     "d0a2ff23-7dd9-4a99-ae8f-a805b2ee146a": {
       "name": "Hardened",
@@ -3578,13 +3648,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "d45ecc5d-91f4-4a34-8e92-9ab348317f53": {
-      "name": "Sparkle2",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 99.99
-    },
     "d5aa8fd3-8d48-460a-b9bc-9fd67fa5d16d": {
       "name": "Overseer",
       "category": "gun",
@@ -3611,7 +3674,7 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 15.0
+      "price": 2.0
     },
     "df2192ea-6da7-41ab-9072-d89d2f767a19": {
       "name": "Vines",
@@ -3625,42 +3688,49 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "e1a23efa-d27a-43b7-8492-3ea7b0240e9b": {
       "name": "Moon",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 40.0
+      "price": 30.0
     },
     "e501f37b-33fc-4e84-8576-5a341591c4fe": {
       "name": "Darksword",
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 3499.0
+      "price": 3999.0
     },
     "e502ac0f-b458-4bfc-995c-a0b01ac1abe0": {
       "name": "Paper",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
+    },
+    "ea0828a4-ec8b-4620-8572-71f3c2dadac0": {
+      "name": "Saw",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": true,
+      "price": 300.0
     },
     "ed896bf7-4deb-4dac-80b2-261cc4ed8451": {
       "name": "Snowball",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 4.0
+      "price": 2.0
     },
     "eeb73747-ab11-45f1-984b-84b09d8ec2e0": {
       "name": "Frostflame",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": null
+      "price": 4.0
     },
     "ef780e60-c84b-4c38-8b70-82dc49eb2f7a": {
       "name": "Blue Elite",
@@ -3669,17 +3739,17 @@
       "chroma": false,
       "price": 35.0
     },
+    "f1ce7392-06ac-46b9-86ea-a8ac31ef940c": {
+      "name": "Gingerblade",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": true,
+      "price": 74.97
+    },
     "f3e285f0-19a3-4cfa-ae58-1a790fa7fd80": {
       "name": "Fade",
       "category": "knife",
       "rare": "legendary",
-      "chroma": false,
-      "price": 10.0
-    },
-    "f7c533d0-4020-482d-ab80-e49bb03c3e9b": {
-      "name": "Apocalypse",
-      "category": "gun",
-      "rare": "common",
       "chroma": false,
       "price": 8.0
     },
@@ -3695,7 +3765,7 @@
       "category": "gun",
       "rare": "legendary",
       "chroma": false,
-      "price": 13.0
+      "price": 35.0
     },
     "faba37ba-60cf-416c-8ed8-bd173ef900af": {
       "name": "Leaves",
@@ -3725,13 +3795,6 @@
       "chroma": false,
       "price": 80.0
     },
-    "febc2a7b-7e0f-459c-b8ed-b9e938e8cc34": {
-      "name": "Coal",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 7.0
-    },
     "fec01657-b999-4cc8-b9a2-c3110b756cf2": {
       "name": "Pier",
       "category": "knife",
@@ -3745,6 +3808,13 @@
       "rare": "common",
       "chroma": false,
       "price": null
+    },
+    "ff1753ce-5cfc-47bc-8122-4d46e7513ac5": {
+      "name": "Decorated",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
     },
     "00165efe-c79b-4c86-a9bb-50af3d2dab0e": {
       "name": "Traveler",
@@ -3785,13 +3855,6 @@
       "name": "Splatter",
       "category": "knife",
       "rare": "common",
-      "chroma": false,
-      "price": null
-    },
-    "02c7dcbb-3a47-44a9-a821-9623512aa1c2": {
-      "name": "Fall Camo",
-      "category": "gun",
-      "rare": "uncommon",
       "chroma": false,
       "price": 2.0
     },
@@ -3842,7 +3905,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 7.0
     },
     "0c1a2d96-426d-4f59-bd4a-004633ee3b70": {
       "name": "Zombie Camo",
@@ -3905,7 +3968,7 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 380.0
+      "price": 2.0
     },
     "10e0bd30-b095-41bb-8419-01790b35f449": {
       "name": "Constellation",
@@ -3968,14 +4031,14 @@
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 547.0
+      "price": null
     },
     "197d064a-f7ec-43e8-8340-5f8b00b5d2e0": {
       "name": "Engraved",
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "19f6e5e6-51a8-4646-8a84-e73405ec7c97": {
       "name": "Ollie",
@@ -3996,7 +4059,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "1c1de043-3300-47d5-9c3d-0e1e8a7bde8f": {
       "name": "Wrapped",
@@ -4010,7 +4073,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "1d621566-4617-48d7-90fd-c9ef7817217f": {
       "name": "Wolf",
@@ -4103,13 +4166,6 @@
       "chroma": false,
       "price": null
     },
-    "2872e5e3-dd67-4e7b-a29f-eaed6bd2ef2a": {
-      "name": "Pumpkin",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
-    },
     "28d1bad8-d9eb-449f-a02f-6bd86670a5d6": {
       "name": "Bats",
       "category": "knife",
@@ -4143,7 +4199,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "2f420059-0b17-4057-b0ec-12a798ca3db8": {
       "name": "Traveler's Axe",
@@ -4185,14 +4241,14 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "333b5ac4-60dd-42c9-9c4f-0ec24995a34c": {
       "name": "Trees",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "33800830-3bcc-4a63-9301-6f7fb6bbc76c": {
       "name": "Icicles",
@@ -4207,13 +4263,6 @@
       "rare": "common",
       "chroma": false,
       "price": null
-    },
-    "34135eda-2d17-40b5-94f7-a77a85e81be0": {
-      "name": "Apocalypse",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 3.0
     },
     "35b59e1f-e94c-4dc6-9e61-63d0cefce115": {
       "name": "Gold Swirly",
@@ -4234,7 +4283,7 @@
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "3668562d-f659-4f13-9302-432ec3c7ec07": {
       "name": "Gold Vamp's Edge",
@@ -4248,7 +4297,7 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 3.0
+      "price": 2.0
     },
     "3736401e-5ec2-45ee-9b0e-e8f15fee8e4d": {
       "name": "Ornament1",
@@ -4341,13 +4390,6 @@
       "chroma": false,
       "price": null
     },
-    "39e1311d-3fa8-4041-9f40-de53dda89fd8": {
-      "name": "Pea",
-      "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
     "39e6f667-5634-4c50-9dcb-e53f19b3b8a3": {
       "name": "Frozen",
       "category": "gun",
@@ -4388,7 +4430,7 @@
       "category": "gun",
       "rare": "godly",
       "chroma": true,
-      "price": 7520.0
+      "price": 3600.0
     },
     "3f126d8a-19ea-47f6-8ad9-30a5bdf4eac7": {
       "name": "Phantom",
@@ -4409,7 +4451,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 20.0
+      "price": 19.0
     },
     "401bc538-f822-4471-aec4-82b0fe9ef9c0": {
       "name": "Bronze Swirly",
@@ -4458,14 +4500,14 @@
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 15.0
+      "price": 14.0
     },
     "433c51ea-4619-43d3-9eac-159bc4708e18": {
       "name": "Witched",
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 30.0
+      "price": 29.99
     },
     "4370f610-5b6a-4831-82b2-68e5459fc258": {
       "name": "Gingerbread",
@@ -4521,7 +4563,7 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 40.0
+      "price": 2.0
     },
     "482f5687-136d-4649-9a1c-d17ad999f397": {
       "name": "Sweater",
@@ -4563,7 +4605,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 4920.0
+      "price": 4800.0
     },
     "4e446fec-ea23-434b-8e8d-3b31fb9293d3": {
       "name": "Latte",
@@ -4731,7 +4773,7 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 69.0
+      "price": 67.0
     },
     "5bc26fda-c156-48f6-b240-85d3132a382f": {
       "name": "Latte",
@@ -4745,7 +4787,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 70.0
     },
     "5ca6b7bc-1d03-4371-b660-f64b373147a2": {
       "name": "Egg",
@@ -4787,7 +4829,7 @@
       "category": "knife",
       "rare": "legendary",
       "chroma": false,
-      "price": 55.0
+      "price": 54.99
     },
     "6590ce6d-3183-4f31-87e6-26918c593d2b": {
       "name": "Eco",
@@ -4829,14 +4871,7 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 12.0
-    },
-    "69d3264c-3334-4149-8a6e-b18fc09fc25a": {
-      "name": "Sandy",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
+      "price": 10.0
     },
     "6b435d23-62f0-4f96-b1b3-37f493dec395": {
       "name": "Roses",
@@ -4864,7 +4899,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "6c172b65-c702-44bf-9ac5-48084111b227": {
       "name": "Cat",
@@ -4906,7 +4941,7 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 50.0
+      "price": 2.0
     },
     "7191260a-1a91-4c14-b9f9-335d4881e855": {
       "name": "Starfish",
@@ -4948,14 +4983,14 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "7671e14c-05ea-49f7-b806-2c6db4a394e7": {
       "name": "Heart Wand",
       "category": "knife",
       "rare": "godly",
       "chroma": true,
-      "price": 11999.0
+      "price": null
     },
     "77993778-1933-49dc-b572-ebeaeed4a5b7": {
       "name": "Candy Corn",
@@ -4976,7 +5011,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "793f92c9-7646-4a1e-951f-cb4c7df0524a": {
       "name": "Vampire's Axe",
@@ -4997,14 +5032,7 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
-    },
-    "7a2813a9-fc2e-4f02-8adf-6d8167f34a4e": {
-      "name": "Fang",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 78.74
+      "price": 100.0
     },
     "7a75a5db-2eff-4fc6-a933-554af0035d72": {
       "name": "Etched",
@@ -5018,7 +5046,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 150.0
     },
     "7b5a725d-b266-45ba-9ddf-c51d34701944": {
       "name": "Corl",
@@ -5067,21 +5095,21 @@
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 20.0
+      "price": 15.0
     },
     "846c69d7-6f95-4b8e-a452-bda0ecf269a5": {
       "name": "Grave",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 150.0
     },
     "85453a6d-785d-44c2-b1a7-df5ec89dc9fe": {
       "name": "Stockings",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "86850194-448b-4fdf-a423-4078431bcdcc": {
       "name": "Stickers",
@@ -5102,21 +5130,21 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 20.0
+      "price": 19.99
     },
     "88d5ed68-7c58-4780-ab3d-e9afa98d9f89": {
       "name": "Aurora",
       "category": "gun",
       "rare": "rare",
       "chroma": false,
-      "price": 60.0
+      "price": 25.0
     },
     "8a2b31e7-fce7-426b-8e76-7fac6ab60120": {
       "name": "Candy Corn",
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "8b3f90e7-dd89-4073-87ab-d4505088d033": {
       "name": "Asteroid",
@@ -5137,7 +5165,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": true,
-      "price": 130.0
+      "price": 135.0
     },
     "8e69e25f-ff6c-46b7-8a7f-ce444fb2f5f1": {
       "name": "Snowstorm",
@@ -5200,7 +5228,7 @@
       "category": "gun",
       "rare": "legendary",
       "chroma": false,
-      "price": 39.97
+      "price": 29.0
     },
     "9334f89f-332e-42a8-a8d1-0f4c8f4cbe8a": {
       "name": "Hive",
@@ -5277,7 +5305,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "98366352-7213-4963-84ce-fb411f1e1f80": {
       "name": "Blue Vamp's Edge",
@@ -5312,7 +5340,7 @@
       "category": "gun",
       "rare": "godly",
       "chroma": true,
-      "price": 5999.0
+      "price": null
     },
     "9b1c75c1-1fa0-4084-b11f-177e3fa78716": {
       "name": "Scratch",
@@ -5417,7 +5445,7 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": null
+      "price": 45.0
     },
     "a4cee092-fa8b-4c53-ad3c-789302707453": {
       "name": "Bats",
@@ -5431,14 +5459,14 @@
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": null
+      "price": 14.0
     },
     "a52cb71f-188a-4b48-a2d5-4363e037964d": {
       "name": "Xeno",
       "category": "gun",
       "rare": "rare",
       "chroma": false,
-      "price": 250.0
+      "price": 249.9
     },
     "a5eb2eb5-365a-4667-bd61-ff9b496421f3": {
       "name": "Sweater",
@@ -5459,7 +5487,7 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "a77d2726-fd12-462b-a0c8-5dcce4fadf98": {
       "name": "Tree",
@@ -5473,7 +5501,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 76.0
     },
     "a7db3046-9eda-4384-9c9b-feff192c532e": {
       "name": "Traveler's Gun",
@@ -5494,7 +5522,7 @@
       "category": "gun",
       "rare": "legendary",
       "chroma": false,
-      "price": 77.0
+      "price": 76.99
     },
     "ab5c053e-e58e-461e-a1f1-f57193026009": {
       "name": "Retro",
@@ -5523,13 +5551,6 @@
       "rare": "uncommon",
       "chroma": false,
       "price": null
-    },
-    "ac17e6a9-f71a-4340-b081-567b4154f680": {
-      "name": "Cavern",
-      "category": "gun",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 50.0
     },
     "ae1706db-6268-4844-9423-32a9d5807488": {
       "name": "Tree",
@@ -5564,7 +5585,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 2.0
     },
     "b00e91df-5c20-4fca-a2a0-aaef663d4684": {
       "name": "Watcher",
@@ -5585,7 +5606,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 5.0
+      "price": 2.0
     },
     "b3832633-1306-46dd-94aa-13bf286b455e": {
       "name": "Denis",
@@ -5634,7 +5655,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 70.0
+      "price": 69.99
     },
     "b66975ba-5d95-40b0-a04c-57258beb9f69": {
       "name": "Slime",
@@ -5683,7 +5704,7 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 30.0
+      "price": 2.0
     },
     "bca645f2-38ca-44c0-a543-4563c40145c0": {
       "name": "Ornament",
@@ -5718,14 +5739,14 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 70.0
+      "price": 2.0
     },
     "bd7c379c-21e5-4302-b348-1afca7c3ae15": {
       "name": "Stockings",
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 5.0
+      "price": 2.0
     },
     "c09e3968-9b94-41f9-aa54-85ee2621f695": {
       "name": "Valentine",
@@ -5858,7 +5879,7 @@
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 8.0
+      "price": 2.0
     },
     "cc33e8cd-5a83-425c-b37b-9c7acde0b9de": {
       "name": "Bronze Traveler's",
@@ -5879,7 +5900,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": true,
-      "price": 4999.0
+      "price": null
     },
     "cf732ff8-0257-4f9a-9fe5-0e773e25b3cd": {
       "name": "Sub",
@@ -5921,7 +5942,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": true,
-      "price": 3498.0
+      "price": 3499.0
     },
     "d78ff03e-ff6e-4822-892c-964980a9deb9": {
       "name": "Shaded",
@@ -5942,7 +5963,7 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 140.0
     },
     "daddde86-6cad-4d98-bebd-69e497d8e24a": {
       "name": "Frosty",
@@ -5963,7 +5984,7 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 12.0
+      "price": 2.0
     },
     "df5d882c-e5f6-425b-a76b-2414d996cd87": {
       "name": "Mummy",
@@ -5991,7 +6012,7 @@
       "category": "gun",
       "rare": "common",
       "chroma": false,
-      "price": 98.0
+      "price": 97.99
     },
     "e1acb354-ad8b-4458-9cc0-25dab8ad4bc2": {
       "name": "Ornament",
@@ -6026,7 +6047,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": 10.0
+      "price": 2.0
     },
     "e7914a13-a588-4566-8eb4-f9011e3b010b": {
       "name": "Webs",
@@ -6049,19 +6070,12 @@
       "chroma": false,
       "price": null
     },
-    "ea0828a4-ec8b-4620-8572-71f3c2dadac0": {
-      "name": "Saw",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 270.0
-    },
     "ea660135-d800-4716-a9d2-8022080953e7": {
       "name": "Orange Marble",
       "category": "knife",
       "rare": "rare",
       "chroma": false,
-      "price": 100.0
+      "price": 99.99
     },
     "ebcd0a23-0e68-407f-a67e-b5c19b774569": {
       "name": "Zombified",
@@ -6103,7 +6117,7 @@
       "category": "gun",
       "rare": "rare",
       "chroma": false,
-      "price": 45.0
+      "price": 44.99
     },
     "ecf18ffd-82cf-4434-ab17-4379f2c31720": {
       "name": "Blue Swirly",
@@ -6124,7 +6138,7 @@
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": null
+      "price": 7000.0
     },
     "f0b2a788-2633-4b09-b526-0b0b297d4400": {
       "name": "Witchbrew",
@@ -6146,13 +6160,6 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 45.0
-    },
-    "f1ce7392-06ac-46b9-86ea-a8ac31ef940c": {
-      "name": "Gingerblade",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 74.99
     },
     "f2a75857-f8f1-4a8a-bd23-9448e72e0752": {
       "name": "Infected",
@@ -6180,7 +6187,7 @@
       "category": "knife",
       "rare": "common",
       "chroma": false,
-      "price": null
+      "price": 200.0
     },
     "f5adcb8b-f354-4088-bea8-bd931c4d2134": {
       "name": "Wrapped",
@@ -6237,13 +6244,6 @@
       "rare": "uncommon",
       "chroma": false,
       "price": null
-    },
-    "ff1753ce-5cfc-47bc-8122-4d46e7513ac5": {
-      "name": "Decorated",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
     }
   }
 }
