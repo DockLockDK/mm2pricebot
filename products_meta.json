@@ -469,7 +469,7 @@
     "chroma": false
   },
   "08ef9810-3d2d-4323-a1db-1ff61a4b1454": {
-    "name_ru": "Хрома даркбрингер",
+    "name_ru": "Даркбрингер",
     "name_en": "Darkbringer",
     "category": "gun",
     "rare": "godly",
@@ -714,7 +714,7 @@
     "chroma": false
   },
   "3026acc5-69df-4ac1-b729-d1f333ab2064": {
-    "name_ru": "Хрома светоносец",
+    "name_ru": "Светоносец",
     "name_en": "Lightbringer",
     "category": "gun",
     "rare": "godly",
@@ -763,7 +763,7 @@
     "chroma": false
   },
   "5cc78a6b-ce4f-4f6d-9031-9aad0390be20": {
-    "name_ru": "Хрома пламя свечи",
+    "name_ru": "Пламя свечи",
     "name_en": "Candleflame",
     "category": "knife",
     "rare": "godly",
@@ -819,7 +819,7 @@
     "chroma": false
   },
   "71b15758-21ea-498d-a6df-7a27e497f5b3": {
-    "name_ru": "Хрома лезвие элдервуда",
+    "name_ru": "Лезвие элдервуда",
     "name_en": "Elderwood Blade",
     "category": "knife",
     "rare": "godly",
@@ -861,14 +861,14 @@
     "chroma": false
   },
   "99de6c82-83fb-482b-9ec2-bdfff6850c73": {
-    "name_ru": "Хрома люгер",
+    "name_ru": "Люгер",
     "name_en": "Luger",
     "category": "gun",
     "rare": "godly",
     "chroma": true
   },
   "48ef7349-901e-4c17-9556-d7374899e13f": {
-    "name_ru": "Хрома пистолет свирли",
+    "name_ru": "Пистолет свирли",
     "name_en": "Swirly Gun",
     "category": "gun",
     "rare": "godly",
@@ -917,7 +917,7 @@
     "chroma": false
   },
   "565d5148-7a00-4976-a388-9889b0cd7a3a": {
-    "name_ru": "Хрома лазер",
+    "name_ru": "Лазер",
     "name_en": "Laser",
     "category": "gun",
     "rare": "godly",
@@ -980,7 +980,7 @@
     "chroma": false
   },
   "eced1539-ddd7-4029-b372-66efeb49a7d4": {
-    "name_ru": "Хрома клык",
+    "name_ru": "Клык",
     "name_en": "Fang",
     "category": "knife",
     "rare": "godly",
@@ -1008,7 +1008,7 @@
     "chroma": false
   },
   "3c9fe182-37c6-42c6-99c4-080d6aa301dc": {
-    "name_ru": "Хрома сир",
+    "name_ru": "Сир",
     "name_en": "Seer",
     "category": "knife",
     "rare": "godly",
@@ -1029,7 +1029,7 @@
     "chroma": false
   },
   "a0f445ef-79fd-4b57-8e05-a36530eae081": {
-    "name_ru": "Хрома осколок смерти",
+    "name_ru": "Осколок смерти",
     "name_en": "Deathshard",
     "category": "knife",
     "rare": "godly",
@@ -1085,14 +1085,14 @@
     "chroma": false
   },
   "b0662784-4292-4c08-9f66-69207cfc5376": {
-    "name_ru": "Хрома Жара",
+    "name_ru": "Жара",
     "name_en": "Heat",
     "category": "knife",
     "rare": "godly",
     "chroma": true
   },
   "65a256c7-4577-4969-833b-b4d6619fe377": {
-    "name_ru": "Хрома костяной клинок",
+    "name_ru": "Костяной клинок",
     "name_en": "Boneblade",
     "category": "knife",
     "rare": "godly",
@@ -1141,7 +1141,7 @@
     "chroma": false
   },
   "35172af1-e8b3-42d4-85e6-b50ce6ab8811": {
-    "name_ru": "Хрома пила",
+    "name_ru": "Пила",
     "name_en": "Saw",
     "category": "knife",
     "rare": "godly",
@@ -1183,7 +1183,7 @@
     "chroma": false
   },
   "94007183-aa3f-46be-ba4e-ffcbe85f37f3": {
-    "name_ru": "Хрома слэшер",
+    "name_ru": "Слэшер",
     "name_en": "Slasher",
     "category": "knife",
     "rare": "godly",
@@ -1218,14 +1218,14 @@
     "chroma": false
   },
   "d1d0c53d-a80c-46b9-8f64-ea93b4d44cb0": {
-    "name_ru": "Хрома драгоценный камень",
+    "name_ru": "Драгоценный камень",
     "name_en": "Gemstone",
     "category": "knife",
     "rare": "godly",
     "chroma": true
   },
   "2d1b3234-29a0-406c-a450-59dc0d89afcd": {
-    "name_ru": "Хрома имбирный клинок",
+    "name_ru": "Имбирный клинок",
     "name_en": "Gingerblade",
     "category": "knife",
     "rare": "godly",
@@ -1239,7 +1239,7 @@
     "chroma": false
   },
   "323f645e-d222-4c80-b01b-3619cbc45001": {
-    "name_ru": "Хрома тайдс",
+    "name_ru": "Тайдс",
     "name_en": "Tides",
     "category": "knife",
     "rare": "godly",
@@ -1267,7 +1267,7 @@
     "chroma": false
   },
   "e38dbf58-faf5-4483-89d1-98d9b347b34b": {
-    "name_ru": "Хрома акула",
+    "name_ru": "Акула",
     "name_en": "Shark",
     "category": "gun",
     "rare": "godly",
@@ -1400,7 +1400,7 @@
     "chroma": false
   },
   "0ebd44c1-f83d-41ed-b6ad-c469f35922ea": {
-    "name_ru": "Хрома печенетрость",
+    "name_ru": "Печенетрость",
     "name_en": "Cookiecane",
     "category": "knife",
     "rare": "godly",
@@ -5117,7 +5117,7 @@
     "chroma": false
   },
   "11cb118c-a136-4eb2-aedc-b6fa05d649cc": {
-    "name_ru": "Хрома Мороженое",
+    "name_ru": "Мороженое",
     "name_en": "Icecream",
     "category": "knife",
     "rare": "godly",
@@ -5208,7 +5208,7 @@
     "chroma": false
   },
   "034b9427-f31e-4586-8ae3-7fe939831238": {
-    "name_ru": "Хрома Пляжный",
+    "name_ru": "Пляжный",
     "name_en": "Beachy",
     "category": "knife",
     "rare": "godly",
@@ -5404,7 +5404,7 @@
     "chroma": false
   },
   "8c4be82b-3b19-4591-a09a-57111e156377": {
-    "name_ru": "Хрома Пески",
+    "name_ru": "Пески",
     "name_en": "Sands",
     "category": "gun",
     "rare": "godly",
@@ -5446,7 +5446,7 @@
     "chroma": false
   },
   "71f5a6fa-ef4a-419a-b7c7-41b5c5193a2e": {
-    "name_ru": "Хрома угощение",
+    "name_ru": "Угощение",
     "name_en": "Treat",
     "category": "gun",
     "rare": "godly",
@@ -5642,7 +5642,7 @@
     "chroma": false
   },
   "b9e44cd3-eab8-478e-82de-5ab48e0c6fe1": {
-    "name_ru": "Хрома сладкий",
+    "name_ru": "Сладкий",
     "name_en": "Sweet",
     "category": "knife",
     "rare": "godly",
@@ -5656,7 +5656,7 @@
     "chroma": false
   },
   "bb1ca705-24b3-4db4-ab97-37bcf0601947": {
-    "name_ru": "Хрома сердечная палочка",
+    "name_ru": "Сердечная палочка",
     "name_en": "Heart Wand",
     "category": "knife",
     "rare": "godly",
@@ -5768,7 +5768,7 @@
     "chroma": false
   },
   "39204242-be6f-477a-877b-3bfd4e2f996a": {
-    "name_ru": "Хрома Орнамент",
+    "name_ru": "Орнамент",
     "name_en": "Ornament",
     "category": "knife",
     "rare": "godly",
@@ -5789,7 +5789,7 @@
     "chroma": false
   },
   "1d7aeee2-1525-4fd0-97b1-0073009b8fbf": {
-    "name_ru": "Хрома закат",
+    "name_ru": "Закат",
     "name_en": "Sunset",
     "category": "knife",
     "rare": "godly",
@@ -5873,21 +5873,21 @@
     "chroma": false
   },
   "5a8c51dc-b90d-43e5-a407-2c5deea11224": {
-    "name_ru": "Хрома снежная пушка",
+    "name_ru": "Снежная пушка",
     "name_en": "Snowcannon",
     "category": "gun",
     "rare": "godly",
     "chroma": true
   },
   "c728ff8f-5eb4-43ec-bfba-e76d7714655c": {
-    "name_ru": "Хрома рейган",
+    "name_ru": "Рейган",
     "name_en": "Raygun",
     "category": "gun",
     "rare": "godly",
     "chroma": true
   },
   "f5b02349-3d62-44fa-9338-a7a405399f09": {
-    "name_ru": "Хрома снежная буря",
+    "name_ru": "Снежная буря",
     "name_en": "Snowstorm",
     "category": "knife",
     "rare": "godly",
@@ -5908,7 +5908,7 @@
     "chroma": false
   },
   "4ea571a2-9481-40f2-9bf3-4d2aead1a33b": {
-    "name_ru": "Хрома снежный кинжал",
+    "name_ru": "Снежный кинжал",
     "name_en": "Snow Dagger",
     "category": "knife",
     "rare": "godly",
@@ -5943,7 +5943,7 @@
     "chroma": false
   },
   "08bfcc46-23e3-434e-b646-c1c76152e71d": {
-    "name_ru": "Хрома водяной пистолет",
+    "name_ru": "Водяной пистолет",
     "name_en": "Watergun",
     "category": "gun",
     "rare": "godly",
@@ -5964,21 +5964,21 @@
     "chroma": false
   },
   "72ba0719-4e33-48a2-8d7a-a85a5c046341": {
-    "name_ru": "Хрома вечнозелёный",
+    "name_ru": "Вечнозелёный",
     "name_en": "Evergreen",
     "category": "knife",
     "rare": "godly",
     "chroma": true
   },
   "8fed6494-fe0e-43be-9df8-0daacab4381f": {
-    "name_ru": "Хрома эверган",
+    "name_ru": "Эверган",
     "name_en": "Evergun",
     "category": "gun",
     "rare": "godly",
     "chroma": true
   },
   "44931362-1114-42bb-8984-e4dbfce7d85b": {
-    "name_ru": "Хрома пистолет путешественника",
+    "name_ru": "Пистолет путешественника",
     "name_en": "Traveler's Gun",
     "category": "gun",
     "rare": "godly",
@@ -6062,7 +6062,7 @@
     "chroma": false
   },
   "881bc16a-f028-4222-9489-5d800bf97df5": {
-    "name_ru": "Хрома рассвет",
+    "name_ru": "Рассвет",
     "name_en": "Sunrise",
     "category": "gun",
     "rare": "godly",
@@ -6125,7 +6125,7 @@
     "chroma": false
   },
   "4d50e7ec-d786-403d-af35-550216aa57b7": {
-    "name_ru": "Хрома алиенбим",
+    "name_ru": "Алиенбим",
     "name_en": "Alienbeam",
     "category": "knife",
     "rare": "godly",
@@ -6146,7 +6146,7 @@
     "chroma": false
   },
   "b0c7bbb1-1eee-4d0d-99ee-400d0b20c3e1": {
-    "name_ru": "Хрома пистолет вампира",
+    "name_ru": "Пистолет вампира",
     "name_en": "Vampire's Gun",
     "category": "gun",
     "rare": "godly",
@@ -6160,7 +6160,7 @@
     "chroma": false
   },
   "6ac03131-b0af-43b4-a47d-9fe6fd858cc9": {
-    "name_ru": "Хрома ёлочный шар",
+    "name_ru": "Ёлочный шар",
     "name_en": "Bauble",
     "category": "gun",
     "rare": "godly",
@@ -6363,7 +6363,7 @@
     "chroma": false
   },
   "7e9e19aa-f586-4c84-a1c8-ab0bf692423e": {
-    "name_ru": "Хрома созвездие",
+    "name_ru": "Созвездие",
     "name_en": "Constellation",
     "category": "gun",
     "rare": "godly",
@@ -6496,7 +6496,7 @@
     "chroma": false
   },
   "db901bdb-e163-4fbc-9046-df39d0a42c83": {
-    "name_ru": "Хрома метель",
+    "name_ru": "Метель",
     "name_en": "Blizzard",
     "category": "gun",
     "rare": "godly",
