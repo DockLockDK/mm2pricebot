@@ -66,6 +66,7 @@
   .item-change.up{ color:var(--up); }
   .item-change.down{ color:var(--down); }
   .item-deal{ font-size:11px; font-weight:700; color:var(--deal); }
+  .item-values{ font-size:10.5px; color:var(--hint); line-height:1.3; }
 
   .empty{ color:var(--hint); font-size:14px; padding:20px 0; text-align:center; }
 
@@ -87,6 +88,13 @@
   .buy-btn.secondary{ background:var(--card); color:var(--text); font-weight:600; font-size:14px; }
   .buy-btn .tag{ display:block; font-size:11px; font-weight:600; opacity:.85; margin-top:2px; }
   .deal-note{ text-align:center; color:var(--deal); font-size:12px; font-weight:600; margin:-8px 0 14px; }
+
+  .community-values{ display:none; flex-direction:column; gap:8px; margin:14px 0; padding:12px 14px; background:var(--card); border-radius:12px; }
+  .community-values .cv-title{ font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--hint); margin-bottom:2px; }
+  .community-values .cv-row{ display:flex; justify-content:space-between; align-items:baseline; font-size:13px; }
+  .community-values .cv-row a{ color:var(--text); text-decoration:none; }
+  .community-values .cv-label{ color:var(--hint); }
+  .community-values .cv-value{ font-weight:700; }
 
   .loading{ text-align:center; color:var(--hint); padding:30px 0; }
 </style>
@@ -122,6 +130,7 @@
     <div id="chart"></div>
     <div id="deal-note" class="deal-note" style="display:none;"></div>
     <div class="buy-group" id="buy-group"></div>
+    <div class="community-values" id="community-values"></div>
   </section>
 </main>
 
@@ -164,6 +173,10 @@ function itemCard(item, onOpen) {
   const changeText = change == null ? "" : `${change > 0 ? "+" : ""}${change.toFixed(1)}%`;
   const hasDeal = item.cheaper_source === "legacy" && item.legacy_price != null;
   const mainPrice = item.best_price != null ? item.best_price : item.price;
+  const shortLabel = { mm2values: "MM2V", supremevalues: "SV" };
+  const valuesLine = (item.community_values || [])
+    .map(v => `${shortLabel[v.source] || v.label}: ${v.value_raw}`)
+    .join(" · ");
   card.innerHTML = `
     <img src="${item.image}" loading="lazy" alt="">
     <div class="item-name">${escapeHtml(item.name)}</div>
@@ -171,6 +184,7 @@ function itemCard(item, onOpen) {
     ${item.prev_price != null ? `<div class="item-prev">было ${fmtPrice(item.prev_price)}</div>` : ""}
     ${changeText ? `<div class="item-change ${changeClass}">${changeText}</div>` : ""}
     ${hasDeal ? `<div class="item-deal">⚡ в обычном дороже: ${fmtPrice(item.price)}</div>` : ""}
+    ${valuesLine ? `<div class="item-values">${escapeHtml(valuesLine)}</div>` : ""}
   `;
   card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
   card.onclick = onOpen;
@@ -268,6 +282,25 @@ async function loadItem(id, backFn) {
     : "";
 
   buyGroup.innerHTML = legacyCheaper ? (legacyBtn.replace('secondary', '') + currentBtn.replace('buy-btn', 'buy-btn secondary')) : (currentBtn + legacyBtn);
+
+  // Community value (mm2values.com / supremevalues.com) — справочно, не цена покупки.
+  const cvWrap = el("#community-values");
+  const communityValues = item.community_values || [];
+  if (communityValues.length) {
+    cvWrap.style.display = "flex";
+    cvWrap.innerHTML = `<div class="cv-title">Community value (не цена покупки)</div>` +
+      communityValues.map(v => `
+        <div class="cv-row">
+          <a href="${v.url}" target="_blank" rel="noopener">
+            <span class="cv-label">${escapeHtml(v.label)}</span>
+          </a>
+          <span class="cv-value">${escapeHtml(String(v.value_raw))}</span>
+        </div>
+      `).join("");
+  } else {
+    cvWrap.style.display = "none";
+    cvWrap.innerHTML = "";
+  }
 
   const chartEl = el("#chart");
   chartEl.innerHTML = "";
