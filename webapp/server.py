@@ -97,11 +97,11 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 # с основной проверкой цен (см. run_price_check_once).
 _legacy_index = {}
 
-# Снапшоты community value-сайтов (mm2values.com, supremevalues.com) — НЕ
-# магазины, только справочная "Value" для карточки предмета. Ключ —
-# mm2_api.normalize_name(name). Обновляются в фоне вместе с остальным.
+# Снапшот community value-сайта (mm2values.com) — НЕ магазин, только
+# справочная "Value" для карточки предмета. Ключ — mm2_api.normalize_name(name).
+# Обновляется в фоне вместе с остальным. (supremevalues.com сюда сознательно
+# не подключён — стоит за анти-бот защитой Incapsula, см. mm2_api.py.)
 _mm2values_index = {}
-_supremevalues_index = {}
 
 
 # ---------- Чтение накопленных данных ----------
@@ -192,8 +192,8 @@ def item_view(pid, item, old_snapshot):
             # Крупный ценник всегда показывает самый дешёвый вариант из двух каталогов.
             view["best_price"] = legacy["price"]
 
-    # Community value (mm2values.com / supremevalues.com) — НЕ цена покупки,
-    # справочный ориентир комьюнити. Никогда не влияет на best_price/cheaper_source.
+    # Community value (mm2values.com) — НЕ цена покупки, справочный ориентир
+    # комьюнити. Никогда не влияет на best_price/cheaper_source.
     name_key = mm2_api.normalize_name(item.get("name"))
     community_values = []
     mm2v = _mm2values_index.get(name_key)
@@ -206,17 +206,6 @@ def item_view(pid, item, old_snapshot):
             "rarity": mm2v.get("rarity"),
             "stability": mm2v.get("stability"),
             "url": mm2v["url"],
-        })
-    sv = _supremevalues_index.get(name_key)
-    if sv and sv.get("value_raw") not in (None, ""):
-        community_values.append({
-            "source": "supremevalues",
-            "label": "Supreme Values",
-            "value_raw": sv["value_raw"],
-            "demand": sv.get("demand"),
-            "rarity": sv.get("rarity"),
-            "stability": sv.get("stability"),
-            "url": sv["url"],
         })
     view["community_values"] = community_values
 
@@ -453,7 +442,7 @@ def run_price_check_once():
     except Exception:
         log.exception("Ошибка при обновлении legacy-каталога")
 
-    global _mm2values_index, _supremevalues_index
+    global _mm2values_index
     try:
         idx = mm2_api.fetch_mm2values()
         if idx:
@@ -463,16 +452,6 @@ def run_price_check_once():
             log.warning("Не удалось получить данные с mm2values.com.")
     except Exception:
         log.exception("Ошибка при обновлении mm2values.com")
-
-    try:
-        idx = mm2_api.fetch_supremevalues()
-        if idx:
-            _supremevalues_index = idx
-            log.info("supremevalues.com обновлён (%d предметов).", len(idx))
-        else:
-            log.warning("Не удалось получить данные с supremevalues.com.")
-    except Exception:
-        log.exception("Ошибка при обновлении supremevalues.com")
 
     # Алерты о сильном падении цены (Godly/Ancient, ниже средней минимум на
     # DROP_ALERT_THRESHOLD_PERCENT %) — считаем ДО дописывания новой точки в

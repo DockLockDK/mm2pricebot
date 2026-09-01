@@ -173,7 +173,7 @@ function itemCard(item, onOpen) {
   const changeText = change == null ? "" : `${change > 0 ? "+" : ""}${change.toFixed(1)}%`;
   const hasDeal = item.cheaper_source === "legacy" && item.legacy_price != null;
   const mainPrice = item.best_price != null ? item.best_price : item.price;
-  const shortLabel = { mm2values: "MM2V", supremevalues: "SV" };
+  const shortLabel = { mm2values: "MM2V" };
   const valuesLine = (item.community_values || [])
     .map(v => `${shortLabel[v.source] || v.label}: ${v.value_raw}`)
     .join(" · ");
@@ -283,7 +283,7 @@ async function loadItem(id, backFn) {
 
   buyGroup.innerHTML = legacyCheaper ? (legacyBtn.replace('secondary', '') + currentBtn.replace('buy-btn', 'buy-btn secondary')) : (currentBtn + legacyBtn);
 
-  // Community value (mm2values.com / supremevalues.com) — справочно, не цена покупки.
+  // Community value (mm2values.com) — справочно, не цена покупки.
   const cvWrap = el("#community-values");
   const communityValues = item.community_values || [];
   if (communityValues.length) {

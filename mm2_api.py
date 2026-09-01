@@ -202,11 +202,18 @@ def legacy_buy_url(product_id, name):
 
 
 # ---------------------------------------------------------------------------
-# Community value-сайты (mm2values.com, supremevalues.com) — это НЕ магазины.
-# Там нет ни кнопки "купить", ни реальных денег — только условная "Value",
-# ориентир комьюнити для трейдинга (сколько предмет "стоит" в сделках между
-# игроками). Используется исключительно как справочная информация на карточке
-# предмета и НИКОГДА не участвует в сравнении цен "где дешевле купить".
+# Community value-сайт (mm2values.com) — это НЕ магазин. Там нет ни кнопки
+# "купить", ни реальных денег — только условная "Value", ориентир комьюнити
+# для трейдинга (сколько предмет "стоит" в сделках между игроками).
+# Используется исключительно как справочная информация на карточке предмета
+# и НИКОГДА не участвует в сравнении цен "где дешевле купить".
+#
+# supremevalues.com — второй такой сайт — сюда сознательно не подключён:
+# он стоит за анти-бот защитой Incapsula, которая блокирует любой запрос без
+# реального браузера с JS (не вопрос частоты запросов — блокирует и один
+# аккуратный запрос раз в 5 минут). Обойти можно только headless-браузером
+# (Playwright) — решили не тащить эту зависимость на сервер ради одного
+# источника, раз mm2values.com даёт то же самое без проблем.
 VALUE_SITE_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
@@ -218,9 +225,6 @@ VALUE_SITE_HEADERS = {
 MM2VALUES_URL_TMPL = "https://mm2values.com/?p={category}"
 MM2VALUES_CATEGORIES = ["godly", "ancient", "unique"]
 
-SUPREMEVALUES_URL_TMPL = "https://supremevalues.com/mm2/{slug}"
-SUPREMEVALUES_CATEGORIES = {"godly": "godlies", "ancient": "ancients", "unique": "uniques"}
-
 _MM2VALUES_ITEM_RE = re.compile(
     r"<b>([^<]+)</b><br> Value: ([^<]+)<br>Range: ([^<]*)<br>"
     r"Demand: ([^-]+) - Rarity: ([^<]+)<br>Stability: ([^<]+)<hr>"
@@ -228,8 +232,8 @@ _MM2VALUES_ITEM_RE = re.compile(
 
 
 def normalize_name(name):
-    """Ключ для сопоставления одного и того же предмета между dreampets,
-    mm2values и supremevalues — сайты по-разному пишут одно и то же имя
+    """Ключ для сопоставления одного и того же предмета между dreampets и
+    mm2values — сайты по-разному пишут одно и то же имя
     ('Icewing' / 'Ice Wing', 'Niks Scythe' / \"Nik's Scythe\"), поэтому
     оставляем только буквы/цифры в нижнем регистре."""
     return re.sub(r"[^a-z0-9]", "", (name or "").lower())
@@ -274,51 +278,4 @@ def fetch_mm2values():
     return result
 
 
-def fetch_supremevalues():
-    """Забирает Value/Demand/Rarity/Stability для godly/ancient/unique с
-    supremevalues.com. Данные там лежат готовым JSON прямо в HTML
-    (var _svPopup={...};</script>). Возвращает {normalize_name(имя): {...}}."""
-    result = {}
-    for category, slug in SUPREMEVALUES_CATEGORIES.items():
-        url = SUPREMEVALUES_URL_TMPL.format(slug=slug)
-        try:
-            resp = requests.get(url, headers=VALUE_SITE_HEADERS, timeout=REQUEST_TIMEOUT)
-            resp.raise_for_status()
-        except requests.RequestException as e:
-            print(f"[!] Ошибка запроса supremevalues ({category}): {e}")
-            continue
 
-        html = resp.text
-        start_marker = "var _svPopup="
-        start = html.find(start_marker)
-        if start == -1:
-            print(f"[!] supremevalues ({category}): не найден блок _svPopup")
-            continue
-        start += len(start_marker)
-        end_marker = "};</script>"
-        end = html.find(end_marker, start)
-        if end == -1:
-            print(f"[!] supremevalues ({category}): не найден конец блока _svPopup")
-            continue
-
-        try:
-            data = json.loads(html[start:end + 1])
-        except ValueError as e:
-            print(f"[!] Не удалось разобрать JSON supremevalues ({category}): {e}")
-            continue
-
-        for name, info in data.items():
-            key = normalize_name(name)
-            if not key:
-                continue
-            value_raw = info.get("value")
-            result[key] = {
-                "name": name,
-                "value": _parse_value_number(value_raw) if value_raw is not None else info.get("rawValue"),
-                "value_raw": value_raw if value_raw is not None else info.get("rawValue"),
-                "demand": info.get("demand"),
-                "rarity": info.get("rarity"),
-                "stability": info.get("stability"),
-                "url": url,
-            }
-    return result
