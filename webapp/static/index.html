@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>MM2 Каталог</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+  :root{
+    --bg: var(--tg-theme-bg-color, #0f1115);
+    --card: var(--tg-theme-secondary-bg-color, #1a1d24);
+    --text: var(--tg-theme-text-color, #e8e8ec);
+    --hint: var(--tg-theme-hint-color, #8b8f9a);
+    --accent: var(--tg-theme-button-color, #4f8cff);
+    --accent-text: var(--tg-theme-button-text-color, #ffffff);
+    --up: #33c266;
+    --down: #ef5350;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding-bottom: 24px;
+  }
+  header{
+    padding:16px; position:sticky; top:0; background:var(--bg); z-index:10;
+    display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  header h1{ font-size:18px; margin:0; flex:1; }
+  #back-btn{
+    display:none; background:none; border:none; color:var(--accent);
+    font-size:15px; cursor:pointer; padding:4px 0;
+  }
+  main{ padding:12px 16px; }
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+
+  .cat-row{ display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+  .cat-btn{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--card); border:none; border-radius:12px; padding:14px 16px;
+    color:var(--text); font-size:16px; cursor:pointer;
+  }
+  .cat-btn .count{ color:var(--hint); font-size:14px; }
+
+  h2.section-title{ font-size:14px; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--hint); margin:0 0 10px; }
+
+  .grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; }
+  .item-card{
+    background:var(--card); border-radius:12px; padding:10px; cursor:pointer;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .item-card img{
+    width:100%; aspect-ratio:1/1; object-fit:contain; background:rgba(255,255,255,0.04);
+    border-radius:8px;
+  }
+  .item-name{ font-size:13px; font-weight:600; line-height:1.25;
+    overflow:hidden; text-overflow:ellipsis; display:-webkit-box;
+    -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .item-price{ font-size:15px; font-weight:700; }
+  .item-prev{ font-size:11px; color:var(--hint); }
+  .item-change{ font-size:12px; font-weight:600; }
+  .item-change.up{ color:var(--up); }
+  .item-change.down{ color:var(--down); }
+
+  .empty{ color:var(--hint); font-size:14px; padding:20px 0; text-align:center; }
+
+  #item-image{ width:100%; max-width:220px; aspect-ratio:1/1; object-fit:contain;
+    background:var(--card); border-radius:16px; display:block; margin:0 auto 16px; }
+  #item-name{ font-size:20px; font-weight:700; text-align:center; margin-bottom:4px; }
+  #item-sub{ text-align:center; color:var(--hint); font-size:13px; margin-bottom:14px; }
+  .price-row{ display:flex; justify-content:center; align-items:baseline; gap:10px; margin-bottom:18px; }
+  #item-price{ font-size:26px; font-weight:800; }
+  #item-prev{ font-size:14px; color:var(--hint); }
+
+  #chart{ width:100%; border-radius:12px; overflow:hidden; margin-bottom:18px; background:var(--card); }
+
+  .buy-btn{
+    display:block; text-align:center; background:var(--accent); color:var(--accent-text);
+    text-decoration:none; padding:14px; border-radius:12px; font-size:16px; font-weight:700;
+  }
+
+  .loading{ text-align:center; color:var(--hint); padding:30px 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <button id="back-btn">‹ Назад</button>
+  <h1 id="header-title">MM2 Каталог</h1>
+</header>
+
+<main>
+  <section id="screen-home" class="screen active">
+    <h2 class="section-title">Категории</h2>
+    <div id="categories" class="cat-row"><div class="loading">Загрузка…</div></div>
+
+    <h2 class="section-title">Сильно изменились в цене</h2>
+    <div id="movers" class="grid"></div>
+  </section>
+
+  <section id="screen-category" class="screen">
+    <div id="category-grid" class="grid"><div class="loading">Загрузка…</div></div>
+  </section>
+
+  <section id="screen-item" class="screen">
+    <img id="item-image" src="" alt="" />
+    <div id="item-name"></div>
+    <div id="item-sub"></div>
+    <div class="price-row">
+      <div id="item-price"></div>
+      <div id="item-prev"></div>
+    </div>
+    <div id="chart"></div>
+    <a id="buy-link" class="buy-btn" href="#" target="_blank" rel="noopener">Купить на DreamPets</a>
+  </section>
+</main>
+
+<script>
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+
+const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
+  '<rect width="100" height="100" fill="#2a2d36"/>' +
+  '<text x="50" y="55" font-size="12" fill="#666" text-anchor="middle">нет фото</text></svg>'
+);
+
+function el(sel) { return document.querySelector(sel); }
+function escapeHtml(s) {
+  return (s || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function fmtPrice(p) { return p != null ? p.toFixed(2) + "₽" : "—"; }
+
+let backAction = null;
+
+function showScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  el("#screen-" + name).classList.add("active");
+  el("#back-btn").style.display = name === "home" ? "none" : "block";
+  if (tg) {
+    if (name === "home") tg.BackButton.hide();
+    else { tg.BackButton.show(); }
+  }
+}
+
+el("#back-btn").onclick = () => { if (backAction) backAction(); };
+if (tg) tg.BackButton.onClick(() => { if (backAction) backAction(); });
+
+function itemCard(item, onOpen) {
+  const card = document.createElement("div");
+  card.className = "item-card";
+  const change = item.change_percent;
+  const changeClass = change == null ? "" : (change < 0 ? "down" : "up");
+  const changeText = change == null ? "" : `${change > 0 ? "+" : ""}${change.toFixed(1)}%`;
+  card.innerHTML = `
+    <img src="${item.image}" loading="lazy" alt="">
+    <div class="item-name">${escapeHtml(item.name)}</div>
+    <div class="item-price">${fmtPrice(item.price)}</div>
+    ${item.prev_price != null ? `<div class="item-prev">было ${fmtPrice(item.prev_price)}</div>` : ""}
+    ${changeText ? `<div class="item-change ${changeClass}">${changeText}</div>` : ""}
+  `;
+  card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+  card.onclick = onOpen;
+  return card;
+}
+
+async function loadHome() {
+  showScreen("home");
+  el("#header-title").textContent = "MM2 Каталог";
+  backAction = null;
+
+  const res = await fetch("/api/menu");
+  const data = await res.json();
+
+  const catWrap = el("#categories");
+  catWrap.innerHTML = "";
+  for (const c of data.categories) {
+    const btn = document.createElement("button");
+    btn.className = "cat-btn";
+    btn.innerHTML = `<span>${c.label}</span><span class="count">${c.count}</span>`;
+    btn.onclick = () => loadCategory(c.key);
+    catWrap.appendChild(btn);
+  }
+
+  const moversWrap = el("#movers");
+  moversWrap.innerHTML = "";
+  if (!data.movers.length) {
+    moversWrap.innerHTML = '<div class="empty">Пока нет заметных изменений цен — они появятся, как только накопится история.</div>';
+  } else {
+    for (const item of data.movers) {
+      moversWrap.appendChild(itemCard(item, () => loadItem(item.id, loadHome)));
+    }
+  }
+}
+
+async function loadCategory(key) {
+  showScreen("category");
+  el("#header-title").textContent = key;
+  backAction = loadHome;
+
+  const res = await fetch(`/api/category/${key}`);
+  const data = await res.json();
+  el("#header-title").textContent = data.label;
+
+  const grid = el("#category-grid");
+  grid.innerHTML = "";
+  if (!data.items.length) {
+    grid.innerHTML = '<div class="empty">Нет предметов с активными лотами в этой категории.</div>';
+    return;
+  }
+  for (const item of data.items) {
+    grid.appendChild(itemCard(item, () => loadItem(item.id, () => loadCategory(key))));
+  }
+}
+
+async function loadItem(id, backFn) {
+  showScreen("item");
+  backAction = backFn || loadHome;
+  el("#header-title").textContent = "…";
+
+  const res = await fetch(`/api/item/${id}`);
+  if (!res.ok) {
+    el("#header-title").textContent = "Не найдено";
+    return;
+  }
+  const item = await res.json();
+
+  el("#header-title").textContent = item.name;
+  el("#item-image").src = item.image;
+  el("#item-image").onerror = function() { this.src = PLACEHOLDER; };
+  el("#item-name").textContent = item.name;
+  el("#item-sub").textContent = `${item.rare}${item.chroma ? " · chroma" : ""} · ${item.category}`;
+  el("#item-price").textContent = fmtPrice(item.price);
+  el("#item-prev").textContent = item.prev_price != null ? `было ${fmtPrice(item.prev_price)}` : "";
+  el("#buy-link").href = item.buy_url;
+
+  const chartEl = el("#chart");
+  chartEl.innerHTML = "";
+  if (item.candles && item.candles.length && window.LightweightCharts) {
+    const chart = LightweightCharts.createChart(chartEl, {
+      width: chartEl.clientWidth,
+      height: 260,
+      layout: { background: { color: "transparent" }, textColor: "#c8c8cc" },
+      grid: { vertLines: { color: "rgba(255,255,255,0.05)" }, horzLines: { color: "rgba(255,255,255,0.05)" } },
+      timeScale: { timeVisible: true, secondsVisible: false },
+      rightPriceScale: { borderVisible: false },
+      timeScale2: {},
+    });
+    const series = chart.addCandlestickSeries({
+      upColor: "#33c266", downColor: "#ef5350",
+      borderVisible: false, wickUpColor: "#33c266", wickDownColor: "#ef5350",
+    });
+    series.setData(item.candles);
+    chart.timeScale().fitContent();
+    window.addEventListener("resize", () => chart.applyOptions({ width: chartEl.clientWidth }));
+  } else {
+    chartEl.innerHTML = '<div class="empty">Пока недостаточно истории для графика — она копится каждые несколько минут.</div>';
+  }
+}
+
+loadHome();
+</script>
+</body>
+</html>
