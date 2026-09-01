@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-01T15:34:00.146690+00:00",
+  "timestamp": "2026-09-01T15:41:31.496984+00:00",
   "products": {
     "21f6d769-4358-42ba-9a4e-8d2b8c024cd1": {
       "name_ru": "Ледяное крыло",
@@ -89,14 +89,6 @@
       "chroma": false,
       "price": 477.0
     },
-    "3f68e758-7a79-42b2-9d5f-7639dc797a65": {
-      "name_ru": "Брызги",
-      "name_en": "Splash",
-      "category": "gun",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 10.95
-    },
     "b2dd0738-d0d2-4e9b-9789-7ea27f80d504": {
       "name_ru": "Конфеты",
       "name_en": "Candies",
@@ -104,6 +96,14 @@
       "rare": "halloween",
       "chroma": false,
       "price": 4.96
+    },
+    "3f68e758-7a79-42b2-9d5f-7639dc797a65": {
+      "name_ru": "Брызги",
+      "name_en": "Splash",
+      "category": "gun",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 10.95
     },
     "777b7055-c5b6-4aa8-9723-3d1deed7ef0d": {
       "name_ru": "Надзиратель",
@@ -217,14 +217,6 @@
       "chroma": false,
       "price": 4.44
     },
-    "f8bd37eb-47a3-486a-9cf6-e49c7c7d1b8a": {
-      "name_ru": "Пляжный",
-      "name_en": "Beachy",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 493.0
-    },
     "5eb06832-98aa-4824-b695-9d08c8d8a511": {
       "name_ru": "Брызги",
       "name_en": "Splash",
@@ -232,6 +224,14 @@
       "rare": "legendary",
       "chroma": false,
       "price": 3.32
+    },
+    "f8bd37eb-47a3-486a-9cf6-e49c7c7d1b8a": {
+      "name_ru": "Пляжный",
+      "name_en": "Beachy",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 493.0
     },
     "8c110922-9c1b-498c-8dca-4d89e229dc2a": {
       "name_ru": "Имбирное печенье",
@@ -353,14 +353,6 @@
       "chroma": false,
       "price": 886.0
     },
-    "d2972131-5af0-47b6-acb8-5980d1c10e8a": {
-      "name_ru": "Вихревой топор",
-      "name_en": "Swirly Axe",
-      "category": "knife",
-      "rare": "ancient",
-      "chroma": false,
-      "price": 107.99
-    },
     "8872ec04-c22d-4105-b1aa-d5631e2029e0": {
       "name_ru": "Вайтаут",
       "name_en": "Whiteout",
@@ -368,6 +360,14 @@
       "rare": "common",
       "chroma": false,
       "price": 28.89
+    },
+    "d2972131-5af0-47b6-acb8-5980d1c10e8a": {
+      "name_ru": "Вихревой топор",
+      "name_en": "Swirly Axe",
+      "category": "knife",
+      "rare": "ancient",
+      "chroma": false,
+      "price": 107.99
     },
     "9f6a1bb2-cff4-410e-a0d3-101e60d0dfcb": {
       "name_ru": "Боевой топор",
@@ -417,14 +417,6 @@
       "chroma": false,
       "price": 40.0
     },
-    "c2262447-eea6-45be-93fa-08c25ab951ac": {
-      "name_ru": "Купидон",
-      "name_en": "Cupid",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 40.65
-    },
     "0baf304b-99dc-4771-a281-709bf7ab75cb": {
       "name_ru": "Ковбой",
       "name_en": "Cowboy",
@@ -432,6 +424,14 @@
       "rare": "classic",
       "chroma": false,
       "price": 22.96
+    },
+    "c2262447-eea6-45be-93fa-08c25ab951ac": {
+      "name_ru": "Купидон",
+      "name_en": "Cupid",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 40.65
     },
     "e926c3ec-8c5d-4a39-8a5c-b7dff748f7ba": {
       "name_ru": "Плазмаклинок",
@@ -457,14 +457,6 @@
       "chroma": false,
       "price": 28.0
     },
-    "8717117c-9c78-4122-868c-bd975e66bf06": {
-      "name_ru": "Сир",
-      "name_en": "Seer",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 210.0
-    },
     "7328a8f1-36bb-4642-b02e-94f5d10220e0": {
       "name_ru": "Лазер",
       "name_en": "Laser",
@@ -488,6 +480,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 103.0
+    },
+    "8717117c-9c78-4122-868c-bd975e66bf06": {
+      "name_ru": "Сир",
+      "name_en": "Seer",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 210.0
     },
     "c5e04e65-5512-45cf-8b8b-1b154c3f56b3": {
       "name_ru": "Магия Санты",
@@ -561,14 +561,6 @@
       "chroma": false,
       "price": 22.63
     },
-    "283aa5bd-27ee-4996-b5f9-b36406fc260e": {
-      "name_ru": "Красный Сир",
-      "name_en": "Red Seer",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 34.7
-    },
     "5d1b70f0-8012-45c7-a1c5-626110d8b3e9": {
       "name_ru": "НЛО",
       "name_en": "UFOs",
@@ -576,6 +568,14 @@
       "rare": "common",
       "chroma": false,
       "price": 100.0
+    },
+    "283aa5bd-27ee-4996-b5f9-b36406fc260e": {
+      "name_ru": "Красный Сир",
+      "name_en": "Red Seer",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 34.7
     },
     "8d90a205-8c41-496f-9710-2397706c4cff": {
       "name_ru": "Призрак",
@@ -617,14 +617,6 @@
       "chroma": false,
       "price": 22.21
     },
-    "a4abced8-78ce-4fd4-854a-57eff9d2dc63": {
-      "name_ru": "Вечная трость",
-      "name_en": "Eternalcane",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 39.99
-    },
     "4afdc419-bda2-4dd7-9d9b-f17e5c9dcd61": {
       "name_ru": "Осколок смерти",
       "name_en": "Deathshard",
@@ -632,6 +624,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 70.0
+    },
+    "a4abced8-78ce-4fd4-854a-57eff9d2dc63": {
+      "name_ru": "Вечная трость",
+      "name_en": "Eternalcane",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 39.99
     },
     "a3720e08-243c-4e57-bfd4-c2ec18799204": {
       "name_ru": "Туманность",
@@ -655,7 +655,7 @@
       "category": "gun",
       "rare": "godly",
       "chroma": false,
-      "price": 75.39
+      "price": 59.99
     },
     "184a2e18-6f04-430d-9752-58e512f83f43": {
       "name_ru": "Логчоппер",
@@ -697,14 +697,6 @@
       "chroma": false,
       "price": 349.0
     },
-    "635ce7a0-49f2-4c56-b4d9-1bf7e4d758c9": {
-      "name_ru": "Искра 1",
-      "name_en": "Sparkle1",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 40.0
-    },
     "42402fe0-339f-47fb-a1e8-013ec6d4fad1": {
       "name_ru": "Свитер",
       "name_en": "Sweater",
@@ -712,6 +704,14 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 23.0
+    },
+    "635ce7a0-49f2-4c56-b4d9-1bf7e4d758c9": {
+      "name_ru": "Искра 1",
+      "name_en": "Sparkle1",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 40.0
     },
     "63ab25be-525c-4483-b1bf-2c2fce0e3e8e": {
       "name_ru": "Фьюжн",
@@ -727,7 +727,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 1444.44
+      "price": 1333.33
     },
     "76dba696-9cda-4707-8afa-dad887a39a54": {
       "name_ru": "Боевой топор 2",
@@ -801,14 +801,6 @@
       "chroma": false,
       "price": 31.0
     },
-    "cc967d28-180f-4014-aa7e-0e0174cc3868": {
-      "name_ru": "Искра 2",
-      "name_en": "Sparkle2",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 34.99
-    },
     "0a3badad-3ef1-4889-8cdf-845d3e317cdf": {
       "name_ru": "Пламя свечи",
       "name_en": "Candleflame",
@@ -816,6 +808,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 86.1
+    },
+    "cc967d28-180f-4014-aa7e-0e0174cc3868": {
+      "name_ru": "Искра 2",
+      "name_en": "Sparkle2",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 34.99
     },
     "3a61a47a-fde2-4740-8de8-c214e8aefca8": {
       "name_ru": "Драгоценный камень",
@@ -985,14 +985,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "8ee57a8c-4753-4da9-b311-8cc2b5e33a40": {
-      "name_ru": "Снежная пушка",
-      "name_en": "Snowcannon",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 2850.0
-    },
     "7b2cd29f-4ee5-4057-831e-cec8243da87e": {
       "name_ru": "Пламя",
       "name_en": "Flames",
@@ -1000,6 +992,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 39.99
+    },
+    "8ee57a8c-4753-4da9-b311-8cc2b5e33a40": {
+      "name_ru": "Снежная пушка",
+      "name_en": "Snowcannon",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 2850.0
     },
     "ebe9a720-2cd5-4b6e-819c-2ca20ed55b8a": {
       "name_ru": "Снежный кинжал",
@@ -1281,14 +1281,6 @@
       "chroma": false,
       "price": 73.99
     },
-    "9264755a-d075-4e2a-9372-4fc5eef5a32f": {
-      "name_ru": "Лезвие Хэллоуина",
-      "name_en": "Hallow's Edge",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 53.0
-    },
     "a916ba96-602e-41f8-b870-bd5c90adead9": {
       "name_ru": "Красный огонь",
       "name_en": "Red Fire",
@@ -1296,6 +1288,14 @@
       "rare": "legendary",
       "chroma": false,
       "price": 40.0
+    },
+    "9264755a-d075-4e2a-9372-4fc5eef5a32f": {
+      "name_ru": "Лезвие Хэллоуина",
+      "name_en": "Hallow's Edge",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 53.0
     },
     "5c2ac30e-ed8c-49d6-b73e-581f94155a7e": {
       "name_ru": "Ведьма",
@@ -1359,7 +1359,7 @@
       "category": "knife",
       "rare": "classic",
       "chroma": false,
-      "price": 54.69
+      "price": 50.0
     },
     "3037845d-da96-467c-8102-65bcaeea06db": {
       "name_ru": "Вечный",
@@ -1457,14 +1457,6 @@
       "chroma": false,
       "price": 35.0
     },
-    "8f428234-b0a0-4f5e-98ed-b1f07aa4ceae": {
-      "name_ru": "Тыквенный король",
-      "name_en": "Pumpking",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 37.0
-    },
     "4fa502f8-1480-4dca-8d3a-5c8590d0fc3a": {
       "name_ru": "Инди",
       "name_en": "Indy",
@@ -1472,6 +1464,14 @@
       "rare": "common",
       "chroma": false,
       "price": 108.0
+    },
+    "8f428234-b0a0-4f5e-98ed-b1f07aa4ceae": {
+      "name_ru": "Тыквенный король",
+      "name_en": "Pumpking",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 37.0
     },
     "bcafbd75-318b-4f88-ae3f-c9b957c9b9b3": {
       "name_ru": "Мумия",
@@ -1527,7 +1527,7 @@
       "category": "gun",
       "rare": "classic",
       "chroma": false,
-      "price": 80.0
+      "price": 70.0
     },
     "6458e5e2-babb-4918-b041-7301fab5fb44": {
       "name_ru": "Принц",
@@ -1705,14 +1705,6 @@
       "chroma": false,
       "price": 145.0
     },
-    "ec27900b-fd7c-4c8c-a495-5596d5482fe6": {
-      "name_ru": "Аквариум",
-      "name_en": "Aquarium",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 2.0
-    },
     "8d58818b-f983-4ae0-90a5-3630151bee70": {
       "name_ru": "Искра 8",
       "name_en": "Sparkle8",
@@ -1720,6 +1712,14 @@
       "rare": "common",
       "chroma": false,
       "price": 122.0
+    },
+    "ec27900b-fd7c-4c8c-a495-5596d5482fe6": {
+      "name_ru": "Аквариум",
+      "name_en": "Aquarium",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 2.0
     },
     "18235216-b5f1-4b57-b5d2-fd2f1ef8132d": {
       "name_ru": "Искра 10",
@@ -1825,14 +1825,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "b0662784-4292-4c08-9f66-69207cfc5376": {
-      "name_ru": "Жара",
-      "name_en": "Heat",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": true,
-      "price": 150.0
-    },
     "48aa58e8-5321-42de-86ff-75ee61bceaf2": {
       "name_ru": "Плавательный круг",
       "name_en": "Floatie",
@@ -1865,13 +1857,13 @@
       "chroma": false,
       "price": 5.19
     },
-    "6bf9a55a-0994-4a1b-85a2-d1cb04741ac7": {
-      "name_ru": "Радуга",
-      "name_en": "Rainbow",
+    "b0662784-4292-4c08-9f66-69207cfc5376": {
+      "name_ru": "Жара",
+      "name_en": "Heat",
       "category": "knife",
       "rare": "godly",
-      "chroma": false,
-      "price": 1850.0
+      "chroma": true,
+      "price": 150.0
     },
     "bd7d598f-3d9b-478b-9735-7b09e1617b21": {
       "name_ru": "Зелёный мрамор",
@@ -1889,11 +1881,27 @@
       "chroma": false,
       "price": 95.0
     },
+    "6bf9a55a-0994-4a1b-85a2-d1cb04741ac7": {
+      "name_ru": "Радуга",
+      "name_en": "Rainbow",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 1850.0
+    },
     "9cf89930-2da5-4263-acf4-ef0d3f146c86": {
       "name_ru": "Фейд",
       "name_en": "Fade",
       "category": "knife",
       "rare": "legendary",
+      "chroma": false,
+      "price": 15.0
+    },
+    "49e37939-a8d6-40c2-b763-a0505240aa56": {
+      "name_ru": "Санта",
+      "name_en": "Santa",
+      "category": "knife",
+      "rare": "common",
       "chroma": false,
       "price": 15.0
     },
@@ -1904,14 +1912,6 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 174.99
-    },
-    "49e37939-a8d6-40c2-b763-a0505240aa56": {
-      "name_ru": "Санта",
-      "name_en": "Santa",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 15.0
     },
     "4e5c3d1b-1a61-4f0d-8c0b-cc76fdf21a03": {
       "name_ru": "Шашечки",
@@ -1969,14 +1969,6 @@
       "chroma": false,
       "price": 17.0
     },
-    "e50f3842-319d-4969-82aa-c299c1fc80c0": {
-      "name_ru": "Неаполитанский",
-      "name_en": "Neopolitan",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
-    },
     "2d1b3234-29a0-406c-a450-59dc0d89afcd": {
       "name_ru": "Имбирный клинок",
       "name_en": "Gingerblade",
@@ -1984,6 +1976,14 @@
       "rare": "godly",
       "chroma": true,
       "price": 65.0
+    },
+    "e50f3842-319d-4969-82aa-c299c1fc80c0": {
+      "name_ru": "Неаполитанский",
+      "name_en": "Neopolitan",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
     },
     "2bc4b700-9961-4f69-8f4e-849d89a7563e": {
       "name_ru": "Дух",
@@ -2113,14 +2113,6 @@
       "chroma": false,
       "price": 800.0
     },
-    "bfd54eb7-5257-443b-9ba9-6ef5d088f117": {
-      "name_ru": "Глитч2",
-      "name_en": "Glitch2",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 190.0
-    },
     "85b5548a-0dc6-4a8c-be80-762c4c766716": {
       "name_ru": "Топор вампира",
       "name_en": "Vampire's Axe",
@@ -2136,6 +2128,14 @@
       "rare": "godly",
       "chroma": true,
       "price": 85.0
+    },
+    "bfd54eb7-5257-443b-9ba9-6ef5d088f117": {
+      "name_ru": "Глитч2",
+      "name_en": "Glitch2",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 190.0
     },
     "0bb54c59-0234-4331-b5cf-5f1d260c1a88": {
       "name_ru": "Уголь",
@@ -2169,14 +2169,6 @@
       "chroma": false,
       "price": 24.0
     },
-    "ec009c07-fe80-4212-ba1d-b0e6f3b5223a": {
-      "name_ru": "Радуга",
-      "name_en": "Rainbow",
-      "category": "knife",
-      "rare": "rare",
-      "chroma": false,
-      "price": 59.0
-    },
     "8266c04a-28da-41dc-8344-514d844fac40": {
       "name_ru": "Звёзды",
       "name_en": "Stars",
@@ -2184,6 +2176,14 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 12.99
+    },
+    "ec009c07-fe80-4212-ba1d-b0e6f3b5223a": {
+      "name_ru": "Радуга",
+      "name_en": "Rainbow",
+      "category": "knife",
+      "rare": "rare",
+      "chroma": false,
+      "price": 59.0
     },
     "7140478a-f0d1-4655-ad6e-077f4933fed8": {
       "name_ru": "Летучие мыши",
@@ -2369,22 +2369,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "952acea0-4832-404a-87d5-c890ee99fed2": {
-      "name_ru": "Акулка",
-      "name_en": "Sharky",
-      "category": "knife",
-      "rare": "rare",
-      "chroma": false,
-      "price": 5.0
-    },
-    "2d003a80-f9b1-47fb-b12a-4d57d3733a9a": {
-      "name_ru": "Вампир",
-      "name_en": "Vampire",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 499.0
-    },
     "9f466995-c071-45e7-9f90-3a7ae3dab620": {
       "name_ru": "Холодный",
       "name_en": "Cold",
@@ -2392,6 +2376,14 @@
       "rare": "common",
       "chroma": false,
       "price": 13.0
+    },
+    "952acea0-4832-404a-87d5-c890ee99fed2": {
+      "name_ru": "Акулка",
+      "name_en": "Sharky",
+      "category": "knife",
+      "rare": "rare",
+      "chroma": false,
+      "price": 5.0
     },
     "36148db7-1a7f-4a87-9706-7fda111700ef": {
       "name_ru": "Проклятый",
@@ -2440,6 +2432,14 @@
       "rare": "legendary",
       "chroma": false,
       "price": 40.0
+    },
+    "2d003a80-f9b1-47fb-b12a-4d57d3733a9a": {
+      "name_ru": "Вампир",
+      "name_en": "Vampire",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 499.0
     },
     "71f95953-6d10-4753-b011-ee69864fc9ba": {
       "name_ru": "Радужный пистолет",
@@ -2737,14 +2737,6 @@
       "chroma": false,
       "price": 75.0
     },
-    "a12eccb4-0a97-43f5-9175-96716cf891b4": {
-      "name_ru": "Ёлка",
-      "name_en": "Tree",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 9.97
-    },
     "9ea006e3-1f70-4f53-987b-441ff2f756f6": {
       "name_ru": "Тыква",
       "name_en": "Pumpkin",
@@ -2768,6 +2760,14 @@
       "rare": "rare",
       "chroma": false,
       "price": 2.0
+    },
+    "a12eccb4-0a97-43f5-9175-96716cf891b4": {
+      "name_ru": "Ёлка",
+      "name_en": "Tree",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 9.97
     },
     "72d92d66-3a96-4256-bc63-b52bc284ecf4": {
       "name_ru": "Солнечный",
@@ -3209,14 +3209,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "18f99796-aadc-478e-a738-e9e62cfb14e1": {
-      "name_ru": "Цветок",
-      "name_en": "Blossom",
-      "category": "gun",
-      "rare": "godly",
-      "chroma": false,
-      "price": 3050.0
-    },
     "aa50facb-0b41-41c6-824b-e233955c94e4": {
       "name_ru": "Бекон",
       "name_en": "Bacon",
@@ -3240,6 +3232,14 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 7.89
+    },
+    "18f99796-aadc-478e-a738-e9e62cfb14e1": {
+      "name_ru": "Цветок",
+      "name_en": "Blossom",
+      "category": "gun",
+      "rare": "godly",
+      "chroma": false,
+      "price": 3050.0
     },
     "e9da460f-2de9-42e1-ae28-af26f25482bb": {
       "name_ru": "Огни",
@@ -3329,6 +3329,14 @@
       "chroma": false,
       "price": 27.99
     },
+    "bfe54e94-c2f7-46ff-b2b7-36c5072d4504": {
+      "name_ru": "Жёлтый",
+      "name_en": "Yellow",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
+    },
     "f02a6d7d-23e4-41f6-a768-ef23112f4df2": {
       "name_ru": "Осторожно",
       "name_en": "Caution",
@@ -3344,14 +3352,6 @@
       "rare": "common",
       "chroma": false,
       "price": 3.0
-    },
-    "bfe54e94-c2f7-46ff-b2b7-36c5072d4504": {
-      "name_ru": "Жёлтый",
-      "name_en": "Yellow",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
     },
     "059de820-a581-413b-9379-b708d9305744": {
       "name_ru": "Скелетный ключ 2018",
@@ -3439,7 +3439,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 4310.0
+      "price": 4250.0
     },
     "db2a92da-84b9-42d6-86c3-13795fe68d4a": {
       "name_ru": "Сода",
@@ -3448,14 +3448,6 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 4.0
-    },
-    "4aaff783-5b55-44c4-9269-5b0d67c5816f": {
-      "name_ru": "Тигр",
-      "name_en": "Tiger",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
     },
     "7bb0bf99-6b65-4615-a004-7fc150a80d4d": {
       "name_ru": "Голограмма",
@@ -3520,6 +3512,14 @@
       "rare": "rare",
       "chroma": false,
       "price": 70.0
+    },
+    "4aaff783-5b55-44c4-9269-5b0d67c5816f": {
+      "name_ru": "Тигр",
+      "name_en": "Tiger",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
     },
     "afb12148-c8af-4a0b-aefa-28433bf135dd": {
       "name_ru": "Адурий",
@@ -3753,14 +3753,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "3f1e3d0a-ffff-4c41-a639-d39d3f1e8488": {
-      "name_ru": "Турция",
-      "name_en": "Turkey",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 4950.0
-    },
     "304e49a9-f2df-4ddb-b58f-53fb1fc652a4": {
       "name_ru": "Расплавленный",
       "name_en": "Molten",
@@ -3776,6 +3768,14 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 2.0
+    },
+    "3f1e3d0a-ffff-4c41-a639-d39d3f1e8488": {
+      "name_ru": "Турция",
+      "name_en": "Turkey",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 4950.0
     },
     "16cdbd8d-8a48-43a6-8297-bd8f39c6c76c": {
       "name_ru": "Призраки",
@@ -3839,7 +3839,7 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 8.95
+      "price": 8.0
     },
     "321e73b1-b591-46db-806b-4076aab3209e": {
       "name_ru": "Кукурузная конфета",
@@ -3929,14 +3929,6 @@
       "chroma": false,
       "price": 18.0
     },
-    "3efc5aff-1c69-40b2-bafa-ee4cb5783fab": {
-      "name_ru": "Слизь",
-      "name_en": "Goo",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.3
-    },
     "67418bbc-eecd-4c3f-8c02-5fa4ecd54f05": {
       "name_ru": "RB нож",
       "name_en": "RB Knife",
@@ -4024,6 +4016,14 @@
       "rare": "uncommon",
       "chroma": false,
       "price": 4.99
+    },
+    "3efc5aff-1c69-40b2-bafa-ee4cb5783fab": {
+      "name_ru": "Слизь",
+      "name_en": "Goo",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.3
     },
     "081e1a49-6ed2-44b3-9510-ad2689e46e7d": {
       "name_ru": "Путешественник",
@@ -4241,14 +4241,6 @@
       "chroma": false,
       "price": 11.99
     },
-    "5d262355-185d-475d-9f23-f9c96e3eb875": {
-      "name_ru": "Камуфляж",
-      "name_en": "Camo",
-      "category": "knife",
-      "rare": "uncommon",
-      "chroma": false,
-      "price": 2.0
-    },
     "7db6f522-4910-400c-a009-e228bf3eb474": {
       "name_ru": "Монстр",
       "name_en": "Monster",
@@ -4303,7 +4295,15 @@
       "category": "knife",
       "rare": "uncommon",
       "chroma": false,
-      "price": 6.59
+      "price": 6.0
+    },
+    "5d262355-185d-475d-9f23-f9c96e3eb875": {
+      "name_ru": "Камуфляж",
+      "name_en": "Camo",
+      "category": "knife",
+      "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
     },
     "e7799ce9-050a-468d-87c6-6083f45a0f8c": {
       "name_ru": "Ретро",
@@ -4585,21 +4585,13 @@
       "chroma": false,
       "price": 54.0
     },
-    "9ce38dc6-9b3c-4aa0-b081-b9cba515fa5d": {
-      "name_ru": "Лазутчик",
-      "name_en": "Infiltrator",
-      "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
     "326c2d7a-305a-49ed-a488-4f3ae3c7eb6e": {
       "name_ru": "Трости",
       "name_en": "Canes",
       "category": "gun",
       "rare": "uncommon",
       "chroma": false,
-      "price": 13.0
+      "price": 10.0
     },
     "06514b4c-181c-4db7-bb91-a97e46297e41": {
       "name_ru": "Резной",
@@ -4670,6 +4662,14 @@
       "name_en": "Soda",
       "category": "gun",
       "rare": "uncommon",
+      "chroma": false,
+      "price": 2.0
+    },
+    "9ce38dc6-9b3c-4aa0-b081-b9cba515fa5d": {
+      "name_ru": "Лазутчик",
+      "name_en": "Infiltrator",
+      "category": "gun",
+      "rare": "common",
       "chroma": false,
       "price": 2.0
     },
