@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Рантайм-данные — теперь их пишет только бот на сервере, версионировать не нужно
+history.json
+price_history.jsonl
+products_meta.json
