@@ -163,13 +163,14 @@ function itemCard(item, onOpen) {
   const changeClass = change == null ? "" : (change < 0 ? "down" : "up");
   const changeText = change == null ? "" : `${change > 0 ? "+" : ""}${change.toFixed(1)}%`;
   const hasDeal = item.cheaper_source === "legacy" && item.legacy_price != null;
+  const mainPrice = item.best_price != null ? item.best_price : item.price;
   card.innerHTML = `
     <img src="${item.image}" loading="lazy" alt="">
     <div class="item-name">${escapeHtml(item.name)}</div>
-    <div class="item-price">${fmtPrice(item.price)}</div>
+    <div class="item-price">${fmtPrice(mainPrice)}</div>
     ${item.prev_price != null ? `<div class="item-prev">было ${fmtPrice(item.prev_price)}</div>` : ""}
     ${changeText ? `<div class="item-change ${changeClass}">${changeText}</div>` : ""}
-    ${hasDeal ? `<div class="item-deal">⚡ в legacy дешевле: ${fmtPrice(item.legacy_price)}</div>` : ""}
+    ${hasDeal ? `<div class="item-deal">⚡ в обычном дороже: ${fmtPrice(item.price)}</div>` : ""}
   `;
   card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
   card.onclick = onOpen;
@@ -242,7 +243,8 @@ async function loadItem(id, backFn) {
   el("#item-image").onerror = function() { this.src = PLACEHOLDER; };
   el("#item-name").textContent = item.name;
   el("#item-sub").textContent = `${item.rare}${item.chroma ? " · chroma" : ""} · ${item.category}`;
-  el("#item-price").textContent = fmtPrice(item.price);
+  const mainPrice = item.best_price != null ? item.best_price : item.price;
+  el("#item-price").textContent = fmtPrice(mainPrice);
   el("#item-prev").textContent = item.prev_price != null ? `было ${fmtPrice(item.prev_price)}` : "";
 
   const dealNote = el("#deal-note");
@@ -254,7 +256,7 @@ async function loadItem(id, backFn) {
 
   if (hasLegacy && legacyCheaper) {
     dealNote.style.display = "block";
-    dealNote.textContent = `⚡ На legacy-маркетплейсе дешевле — ${fmtPrice(item.legacy_price)} против ${fmtPrice(item.price)}`;
+    dealNote.textContent = `⚡ В обычном каталоге дороже — ${fmtPrice(item.price)}`;
   } else {
     dealNote.style.display = "none";
   }
