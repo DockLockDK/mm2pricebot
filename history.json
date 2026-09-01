@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-01T15:32:10.523696+00:00",
+  "timestamp": "2026-09-01T15:34:00.146690+00:00",
   "products": {
     "21f6d769-4358-42ba-9a4e-8d2b8c024cd1": {
       "name_ru": "Ледяное крыло",
@@ -185,14 +185,6 @@
       "chroma": false,
       "price": 88.0
     },
-    "2c0af45a-9134-4c09-9b86-502e81ac758e": {
-      "name_ru": "Сборщик",
-      "name_en": "Harvester",
-      "category": "gun",
-      "rare": "ancient",
-      "chroma": false,
-      "price": 679.0
-    },
     "7cd528ea-3138-4058-869e-42fd79cc756f": {
       "name_ru": "Светоносец",
       "name_en": "Lightbringer",
@@ -200,6 +192,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 90.0
+    },
+    "2c0af45a-9134-4c09-9b86-502e81ac758e": {
+      "name_ru": "Сборщик",
+      "name_en": "Harvester",
+      "category": "gun",
+      "rare": "ancient",
+      "chroma": false,
+      "price": 679.0
     },
     "63a23663-010c-45d4-ad05-3ba9cd343e00": {
       "name_ru": "Оранжевый Сир",
@@ -383,7 +383,7 @@
       "category": "knife",
       "rare": "godly",
       "chroma": false,
-      "price": 150.0
+      "price": 500.0
     },
     "6e98ea75-f0a8-4e7c-af3f-539e93609846": {
       "name_ru": "Зелёный люгер",
@@ -553,14 +553,6 @@
       "chroma": false,
       "price": 73.95
     },
-    "283aa5bd-27ee-4996-b5f9-b36406fc260e": {
-      "name_ru": "Красный Сир",
-      "name_en": "Red Seer",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 34.7
-    },
     "25404648-75f0-42ad-a312-d00f65a27da9": {
       "name_ru": "Фиолетовый Сир",
       "name_en": "Purple Seer",
@@ -568,6 +560,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 22.63
+    },
+    "283aa5bd-27ee-4996-b5f9-b36406fc260e": {
+      "name_ru": "Красный Сир",
+      "name_en": "Red Seer",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 34.7
     },
     "5d1b70f0-8012-45c7-a1c5-626110d8b3e9": {
       "name_ru": "НЛО",
@@ -785,14 +785,6 @@
       "chroma": false,
       "price": 2.0
     },
-    "162b5c73-64ac-4e18-9d13-64f2e94f6f73": {
-      "name_ru": "Имбирный",
-      "name_en": "Ginger",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 31.0
-    },
     "37869b08-13eb-45a8-bb8e-1f1486ba22df": {
       "name_ru": "Аврора",
       "name_en": "Aurora",
@@ -800,6 +792,14 @@
       "rare": "rare",
       "chroma": false,
       "price": 13.89
+    },
+    "162b5c73-64ac-4e18-9d13-64f2e94f6f73": {
+      "name_ru": "Имбирный",
+      "name_en": "Ginger",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 31.0
     },
     "cc967d28-180f-4014-aa7e-0e0174cc3868": {
       "name_ru": "Искра 2",
@@ -929,14 +929,6 @@
       "chroma": false,
       "price": 60.0
     },
-    "27c94d29-f3fc-4c2f-99d3-10231620bf35": {
-      "name_ru": "Призматический",
-      "name_en": "Prismatic",
-      "category": "knife",
-      "rare": "godly",
-      "chroma": false,
-      "price": 49.0
-    },
     "ce15380c-19ac-43e9-b299-ba131859fd30": {
       "name_ru": "Вечный 2",
       "name_en": "Eternal II",
@@ -944,6 +936,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 39.67
+    },
+    "27c94d29-f3fc-4c2f-99d3-10231620bf35": {
+      "name_ru": "Призматический",
+      "name_en": "Prismatic",
+      "category": "knife",
+      "rare": "godly",
+      "chroma": false,
+      "price": 49.0
     },
     "4351b689-f85c-4490-95c9-6d3e1f4dbf27": {
       "name_ru": "Люгеркен",
@@ -1113,14 +1113,6 @@
       "chroma": false,
       "price": 43.49
     },
-    "fa0ec71f-f40a-4428-b718-bc032edae576": {
-      "name_ru": "Подарки 2015",
-      "name_en": "Gifts 2015",
-      "category": "misc",
-      "rare": "christmas",
-      "chroma": false,
-      "price": 4.99
-    },
     "96c294d3-aef0-4337-a223-ff6ef65d973d": {
       "name_ru": "Клык",
       "name_en": "Fang",
@@ -1128,6 +1120,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 55.0
+    },
+    "fa0ec71f-f40a-4428-b718-bc032edae576": {
+      "name_ru": "Подарки 2015",
+      "name_en": "Gifts 2015",
+      "category": "misc",
+      "rare": "christmas",
+      "chroma": false,
+      "price": 4.99
     },
     "776d572d-68f3-43c8-9398-29406831d917": {
       "name_ru": "Водяной пистолет",
@@ -1199,7 +1199,7 @@
       "category": "gun",
       "rare": "godly",
       "chroma": true,
-      "price": 162.0
+      "price": 161.0
     },
     "0761aff5-c199-4d92-9ee8-072cc20686ca": {
       "name_ru": "Тайдс",
@@ -1281,14 +1281,6 @@
       "chroma": false,
       "price": 73.99
     },
-    "a916ba96-602e-41f8-b870-bd5c90adead9": {
-      "name_ru": "Красный огонь",
-      "name_en": "Red Fire",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 40.0
-    },
     "9264755a-d075-4e2a-9372-4fc5eef5a32f": {
       "name_ru": "Лезвие Хэллоуина",
       "name_en": "Hallow's Edge",
@@ -1296,6 +1288,14 @@
       "rare": "godly",
       "chroma": false,
       "price": 53.0
+    },
+    "a916ba96-602e-41f8-b870-bd5c90adead9": {
+      "name_ru": "Красный огонь",
+      "name_en": "Red Fire",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 40.0
     },
     "5c2ac30e-ed8c-49d6-b73e-581f94155a7e": {
       "name_ru": "Ведьма",
@@ -1793,14 +1793,6 @@
       "chroma": false,
       "price": 76.0
     },
-    "9789f311-4b2d-4683-b1b4-4c3df3d39042": {
-      "name_ru": "Клоун",
-      "name_en": "Clown",
-      "category": "gun",
-      "rare": "common",
-      "chroma": false,
-      "price": 2.0
-    },
     "7b053a47-5aeb-4da6-99d2-8e6ae88eb76f": {
       "name_ru": "Корупт",
       "name_en": "Corrupt",
@@ -1808,6 +1800,14 @@
       "rare": "unique",
       "chroma": false,
       "price": 864.0
+    },
+    "9789f311-4b2d-4683-b1b4-4c3df3d39042": {
+      "name_ru": "Клоун",
+      "name_en": "Clown",
+      "category": "gun",
+      "rare": "common",
+      "chroma": false,
+      "price": 2.0
     },
     "bae7b5ad-11a2-47c4-8ba8-8183c92daaea": {
       "name_ru": "Надзиратель",
@@ -2281,6 +2281,14 @@
       "chroma": false,
       "price": 31.99
     },
+    "1c2520f4-5d3b-43d2-873b-bdd9aa8fb51e": {
+      "name_ru": "2015",
+      "name_en": "2015",
+      "category": "knife",
+      "rare": "common",
+      "chroma": false,
+      "price": 19.0
+    },
     "d149b905-9b63-4ab0-b0bf-58db98e5a9bf": {
       "name_ru": "Риппер",
       "name_en": "Ripper",
@@ -2288,14 +2296,6 @@
       "rare": "legendary",
       "chroma": false,
       "price": 17.96
-    },
-    "1c2520f4-5d3b-43d2-873b-bdd9aa8fb51e": {
-      "name_ru": "2015",
-      "name_en": "2015",
-      "category": "knife",
-      "rare": "common",
-      "chroma": false,
-      "price": 9.0
     },
     "78056219-89db-447f-9e4d-fce9053aa16c": {
       "name_ru": "Замороженный",
@@ -2449,14 +2449,6 @@
       "chroma": false,
       "price": 1750.0
     },
-    "3c77ed14-d6b2-4630-b8a3-0c4a65724c4a": {
-      "name_ru": "Скретч",
-      "name_en": "Scratch",
-      "category": "knife",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 20.0
-    },
     "2e4d7b27-d7b3-4ac5-852f-094cf14c88f8": {
       "name_ru": "Корблокс",
       "name_en": "Korblox",
@@ -2464,6 +2456,14 @@
       "rare": "rare",
       "chroma": false,
       "price": 75.0
+    },
+    "3c77ed14-d6b2-4630-b8a3-0c4a65724c4a": {
+      "name_ru": "Скретч",
+      "name_en": "Scratch",
+      "category": "knife",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 20.0
     },
     "30348f60-8769-4f05-97df-281957466ed3": {
       "name_ru": "Призраки",
@@ -2537,14 +2537,6 @@
       "chroma": false,
       "price": 32.99
     },
-    "d6e729c5-be99-4ac1-bcbd-c6809e8d25ac": {
-      "name_ru": "Замороженный",
-      "name_en": "Frozen",
-      "category": "gun",
-      "rare": "legendary",
-      "chroma": false,
-      "price": 42.0
-    },
     "4e2860f6-989a-4e37-8d06-cb6dbe0e10ac": {
       "name_ru": "Коробка ультра упаковочной бумаги",
       "name_en": "Box of Ultra Wrapping Paper",
@@ -2552,6 +2544,14 @@
       "rare": "christmas",
       "chroma": false,
       "price": 59.69
+    },
+    "d6e729c5-be99-4ac1-bcbd-c6809e8d25ac": {
+      "name_ru": "Замороженный",
+      "name_en": "Frozen",
+      "category": "gun",
+      "rare": "legendary",
+      "chroma": false,
+      "price": 42.0
     },
     "00d890ff-e30f-45aa-8943-93dd9a5bea1b": {
       "name_ru": "Поп-арт",
