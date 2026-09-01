@@ -36,13 +36,14 @@ import json
 import logging
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 REPO_DIR = BASE_DIR.parent
 sys.path.insert(0, str(REPO_DIR))  # чтобы видеть mm2_api.py / mm2_price_tracker.py из корня репо
 
+import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -74,6 +75,19 @@ CATEGORY_LABELS = dict(CATEGORIES)
 MOVERS_LIMIT = 20
 CANDLE_BUCKET_SEC = 3600  # часовые свечи
 PRICE_LOG_READ_LIMIT = 20000  # сколько последних строк price_history.jsonl читать за раз
+
+# ---------- Алерты о сильном падении цены (push в Telegram) ----------
+# Шлём push ТОЛЬКО по этим редкостям (Unique — по просьбе пользователя исключён
+# из уведомлений, хотя в мини-приложении остаётся как обычно).
+ALERT_RARITIES = {"godly", "ancient"}
+# На сколько % текущая цена должна быть НИЖЕ средней за AVG_PRICE_WINDOW_DAYS,
+# чтобы это считалось "подешевело в разы" и стоило уведомления. Например,
+# Celestial 7000₽ → 4000₽ — это примерно -43%, чуть выше порога по умолчанию.
+DROP_ALERT_THRESHOLD_PERCENT = float(os.environ.get("DROP_ALERT_THRESHOLD_PERCENT", "35"))
+AVG_PRICE_WINDOW_DAYS = int(os.environ.get("AVG_PRICE_WINDOW_DAYS", "7"))
+# Не считаем "падением", если по предмету накопилось слишком мало точек истории
+# (например, самый первый запуск) — иначе первая же цена окажется "средней".
+ALERT_MIN_HISTORY_SAMPLES = 5
 
 app = FastAPI(title="MM2 Price Bot API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -246,6 +260,104 @@ def build_candles(pid, bucket_sec=CANDLE_BUCKET_SEC):
     ]
 
 
+def _price_history_avg(pid, days=AVG_PRICE_WINDOW_DAYS):
+    """Средняя цена предмета по price_history.jsonl за последние `days` дней
+    (той же серии текущего каталога, что копится при каждой проверке).
+    Возвращает (среднее, число_точек) — вызывающий сам решает, достаточно ли
+    точек, чтобы доверять этому среднему."""
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+    values = []
+    for entry in _read_price_log():
+        try:
+            dt = datetime.fromisoformat(entry["timestamp"])
+        except (KeyError, ValueError):
+            continue
+        if dt < cutoff:
+            continue
+        price = entry.get("prices", {}).get(pid)
+        if price is not None:
+            values.append(price)
+
+    if not values:
+        return None, 0
+    return sum(values) / len(values), len(values)
+
+
+def _build_drop_alerts(new_snapshot, old_snapshot):
+    """Ищет предметы Godly/Ancient, у которых текущая цена упала минимум на
+    DROP_ALERT_THRESHOLD_PERCENT % ниже средней за AVG_PRICE_WINDOW_DAYS дней."""
+    alerts = []
+    for pid, item in new_snapshot.items():
+        if (item.get("rare") or "").lower() not in ALERT_RARITIES:
+            continue
+
+        price = item.get("price")
+        if price is None:
+            continue
+
+        avg_price, samples = _price_history_avg(pid)
+        if avg_price is None or avg_price <= 0 or samples < ALERT_MIN_HISTORY_SAMPLES:
+            continue
+
+        drop_percent = (price - avg_price) / avg_price * 100
+        if drop_percent > -DROP_ALERT_THRESHOLD_PERCENT:
+            continue
+
+        alerts.append({
+            "view": item_view(pid, item, old_snapshot),
+            "avg_price": avg_price,
+            "drop_percent": drop_percent,
+        })
+
+    alerts.sort(key=lambda a: a["drop_percent"])  # сильнее всего подешевевшие — первыми
+    return alerts
+
+
+def _send_drop_alert(alert):
+    """Шлёт одно уведомление о сильном падении цены с кнопкой-ссылкой на лот."""
+    if not tracker.TELEGRAM_BOT_TOKEN or not tracker.TELEGRAM_CHAT_ID:
+        return
+
+    view = alert["view"]
+    avg_price = alert["avg_price"]
+    best_price = view["best_price"]
+    is_legacy = view["cheaper_source"] == "legacy"
+    store_label = "Legacy-каталог" if is_legacy else "Текущий каталог"
+    buy_url = view["legacy_buy_url"] if is_legacy else view["buy_url"]
+
+    community_values = view.get("community_values") or []
+    if community_values:
+        value_text = " · ".join(f"{cv['label']}: {cv['value_raw']}" for cv in community_values)
+    else:
+        value_text = "нет данных"
+
+    text = (
+        f"🔥 <b>{view['name']}</b> ({view['rare']}) сильно подешевело!\n\n"
+        f"Средняя цена (за {AVG_PRICE_WINDOW_DAYS} дн.): {avg_price:.2f}₽\n"
+        f"Сейчас: <b>{best_price:.2f}₽</b> ({alert['drop_percent']:+.1f}%)\n"
+        f"Community value: {value_text}\n"
+        f"Продаётся в: {store_label}"
+    )
+
+    keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
+
+    try:
+        resp = requests.post(
+            tracker.TELEGRAM_API_URL,
+            data={
+                "chat_id": tracker.TELEGRAM_CHAT_ID,
+                "text": text,
+                "parse_mode": "HTML",
+                "reply_markup": json.dumps(keyboard),
+            },
+            timeout=15,
+        )
+        if resp.status_code != 200:
+            log.warning("Telegram API вернул ошибку при отправке алерта: %s %s", resp.status_code, resp.text)
+    except requests.RequestException:
+        log.exception("Не удалось отправить алерт в Telegram")
+
+
 # ---------- API ----------
 
 @app.get("/api/menu")
@@ -325,19 +437,11 @@ def run_price_check_once():
 
     new_snapshot = mm2_api.normalize(products)
     old_data = tracker.load_history()
+    old_snapshot = old_data.get("products", {}) if old_data is not None else {}
 
-    if old_data is not None:
-        old_snapshot = old_data.get("products", {})
-        drops, rises = tracker.compare(old_snapshot, new_snapshot)  # только godly/ancient/unique
-        message = tracker.build_telegram_message(drops, rises)
-        if message:
-            tracker.send_telegram_message(message)
-            log.info("Push отправлен (%d подешевело, %d подорожало)", len(drops), len(rises))
-
-    tracker.save_history(new_snapshot)
-    tracker.append_price_log(new_snapshot)
-    tracker.update_meta(new_snapshot)
-
+    # Сначала обновляем legacy- и community-value индексы — алерты ниже (и
+    # item_view внутри них) должны опираться на свежие данные, а не на
+    # прошлый цикл.
     global _legacy_index
     try:
         legacy_products = mm2_api.fetch_legacy_products()
@@ -369,6 +473,24 @@ def run_price_check_once():
             log.warning("Не удалось получить данные с supremevalues.com.")
     except Exception:
         log.exception("Ошибка при обновлении supremevalues.com")
+
+    # Алерты о сильном падении цены (Godly/Ancient, ниже средней минимум на
+    # DROP_ALERT_THRESHOLD_PERCENT %) — считаем ДО дописывания новой точки в
+    # price_history.jsonl, чтобы "средняя" была за период ДО этого момента,
+    # а не включала саму текущую цену.
+    if old_data is not None:
+        try:
+            alerts = _build_drop_alerts(new_snapshot, old_snapshot)
+            for alert in alerts:
+                _send_drop_alert(alert)
+            if alerts:
+                log.info("Отправлено алертов о падении цены: %d", len(alerts))
+        except Exception:
+            log.exception("Ошибка при формировании алертов о падении цены")
+
+    tracker.save_history(new_snapshot)
+    tracker.append_price_log(new_snapshot)
+    tracker.update_meta(new_snapshot)
 
 
 async def price_check_loop():
