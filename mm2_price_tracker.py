@@ -314,6 +314,9 @@ def build_telegram_message(drops, rises):
             )
 
     return "\n".join(lines)
+
+
+def print_table(items, label):
     print(f"\n{label}: {len(items)}\n")
     if not items:
         return
