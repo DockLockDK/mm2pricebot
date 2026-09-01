@@ -219,10 +219,14 @@ def get_item_history(product_id):
     return result
 
 
+# Показываем изменения только по этим редкостям (значения из API — нижний регистр)
+TARGET_RARITIES = {"godly", "ancient", "unique"}
+
+
 def compare(old_snapshot, new_snapshot):
     """
-    Возвращает (drops, rises) — списки предметов, которые подешевели / подорожали,
-    каждый отсортирован по величине изменения (по убыванию).
+    Возвращает (drops, rises) — списки предметов из TARGET_RARITIES, которые
+    подешевели / подорожали, каждый отсортирован по цене (от большей к меньшей).
     """
     drops = []
     rises = []
@@ -231,6 +235,9 @@ def compare(old_snapshot, new_snapshot):
         old_item = old_snapshot.get(pid)
         if not old_item:
             continue  # новый товар, не с чем сравнивать
+
+        if (new_item.get("rare") or "").lower() not in TARGET_RARITIES:
+            continue
 
         old_price = old_item.get("price")
         new_price = new_item.get("price")
@@ -248,6 +255,7 @@ def compare(old_snapshot, new_snapshot):
 
         entry = {
             "name_ru": new_item["name_ru"],
+            "name_en": new_item["name_en"],
             "rare": new_item["rare"],
             "category": new_item["category"],
             "old_price": old_price,
@@ -260,8 +268,8 @@ def compare(old_snapshot, new_snapshot):
         else:
             rises.append(entry)
 
-    drops.sort(key=lambda x: x["change_percent"])          # самые сильные падения первыми
-    rises.sort(key=lambda x: x["change_percent"], reverse=True)  # самый сильный рост первым
+    drops.sort(key=lambda x: x["new_price"], reverse=True)  # от дорогих к дешёвым
+    rises.sort(key=lambda x: x["new_price"], reverse=True)  # от дорогих к дешёвым
     return drops, rises
 
 
@@ -300,7 +308,7 @@ def build_telegram_message(drops, rises):
         lines.append("📉 <b>Подешевело:</b>")
         for d in drops:
             lines.append(
-                f"• {d['name_ru']} ({d['rare']}): {d['old_price']:.2f}₽ → "
+                f"• {d['name_en']} ({d['rare']}): {d['old_price']:.2f}₽ → "
                 f"<b>{d['new_price']:.2f}₽</b> ({d['change_percent']:+.1f}%)"
             )
         lines.append("")
@@ -309,7 +317,7 @@ def build_telegram_message(drops, rises):
         lines.append("📈 <b>Подорожало:</b>")
         for r in rises:
             lines.append(
-                f"• {r['name_ru']} ({r['rare']}): {r['old_price']:.2f}₽ → "
+                f"• {r['name_en']} ({r['rare']}): {r['old_price']:.2f}₽ → "
                 f"<b>{r['new_price']:.2f}₽</b> ({r['change_percent']:+.1f}%)"
             )
 
@@ -324,7 +332,7 @@ def print_table(items, label):
     print("-" * 70)
     for d in items:
         print(
-            f"{d['name_ru']:<25} {d['rare']:<12} "
+            f"{d['name_en']:<25} {d['rare']:<12} "
             f"{d['old_price']:>9.2f}₽ {d['new_price']:>9.2f}₽ "
             f"{d['change_percent']:>+8.1f}%"
         )
