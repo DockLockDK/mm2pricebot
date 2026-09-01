@@ -16,6 +16,7 @@
     --accent-text: var(--tg-theme-button-text-color, #ffffff);
     --up: #33c266;
     --down: #ef5350;
+    --deal: #ffb020;
   }
   *{ box-sizing:border-box; }
   body{
@@ -64,6 +65,7 @@
   .item-change{ font-size:12px; font-weight:600; }
   .item-change.up{ color:var(--up); }
   .item-change.down{ color:var(--down); }
+  .item-deal{ font-size:11px; font-weight:700; color:var(--deal); }
 
   .empty{ color:var(--hint); font-size:14px; padding:20px 0; text-align:center; }
 
@@ -77,10 +79,14 @@
 
   #chart{ width:100%; border-radius:12px; overflow:hidden; margin-bottom:18px; background:var(--card); }
 
+  .buy-group{ display:flex; flex-direction:column; gap:10px; margin-bottom:8px; }
   .buy-btn{
     display:block; text-align:center; background:var(--accent); color:var(--accent-text);
     text-decoration:none; padding:14px; border-radius:12px; font-size:16px; font-weight:700;
   }
+  .buy-btn.secondary{ background:var(--card); color:var(--text); font-weight:600; font-size:14px; }
+  .buy-btn .tag{ display:block; font-size:11px; font-weight:600; opacity:.85; margin-top:2px; }
+  .deal-note{ text-align:center; color:var(--deal); font-size:12px; font-weight:600; margin:-8px 0 14px; }
 
   .loading{ text-align:center; color:var(--hint); padding:30px 0; }
 </style>
@@ -114,7 +120,8 @@
       <div id="item-prev"></div>
     </div>
     <div id="chart"></div>
-    <a id="buy-link" class="buy-btn" href="#" target="_blank" rel="noopener">Купить на DreamPets</a>
+    <div id="deal-note" class="deal-note" style="display:none;"></div>
+    <div class="buy-group" id="buy-group"></div>
   </section>
 </main>
 
@@ -155,12 +162,14 @@ function itemCard(item, onOpen) {
   const change = item.change_percent;
   const changeClass = change == null ? "" : (change < 0 ? "down" : "up");
   const changeText = change == null ? "" : `${change > 0 ? "+" : ""}${change.toFixed(1)}%`;
+  const hasDeal = item.cheaper_source === "legacy" && item.legacy_price != null;
   card.innerHTML = `
     <img src="${item.image}" loading="lazy" alt="">
     <div class="item-name">${escapeHtml(item.name)}</div>
     <div class="item-price">${fmtPrice(item.price)}</div>
     ${item.prev_price != null ? `<div class="item-prev">было ${fmtPrice(item.prev_price)}</div>` : ""}
     ${changeText ? `<div class="item-change ${changeClass}">${changeText}</div>` : ""}
+    ${hasDeal ? `<div class="item-deal">⚡ в legacy дешевле: ${fmtPrice(item.legacy_price)}</div>` : ""}
   `;
   card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
   card.onclick = onOpen;
@@ -235,7 +244,28 @@ async function loadItem(id, backFn) {
   el("#item-sub").textContent = `${item.rare}${item.chroma ? " · chroma" : ""} · ${item.category}`;
   el("#item-price").textContent = fmtPrice(item.price);
   el("#item-prev").textContent = item.prev_price != null ? `было ${fmtPrice(item.prev_price)}` : "";
-  el("#buy-link").href = item.buy_url;
+
+  const dealNote = el("#deal-note");
+  const buyGroup = el("#buy-group");
+  buyGroup.innerHTML = "";
+
+  const hasLegacy = item.legacy_price != null;
+  const legacyCheaper = item.cheaper_source === "legacy";
+
+  if (hasLegacy && legacyCheaper) {
+    dealNote.style.display = "block";
+    dealNote.textContent = `⚡ На legacy-маркетплейсе дешевле — ${fmtPrice(item.legacy_price)} против ${fmtPrice(item.price)}`;
+  } else {
+    dealNote.style.display = "none";
+  }
+
+  // Кнопка покупки там, где дешевле — первой и выделенной; вторая ссылка — как альтернатива.
+  const currentBtn = `<a class="buy-btn" href="${item.buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.price)}<span class="tag">Текущий каталог</span></a>`;
+  const legacyBtn = hasLegacy
+    ? `<a class="buy-btn secondary" href="${item.legacy_buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.legacy_price)}<span class="tag">Legacy-каталог</span></a>`
+    : "";
+
+  buyGroup.innerHTML = legacyCheaper ? (legacyBtn.replace('secondary', '') + currentBtn.replace('buy-btn', 'buy-btn secondary')) : (currentBtn + legacyBtn);
 
   const chartEl = el("#chart");
   chartEl.innerHTML = "";

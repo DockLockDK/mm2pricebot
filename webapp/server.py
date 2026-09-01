@@ -9,11 +9,13 @@
   2. HTTP API + статика мини-приложения (см. webapp/static/index.html):
      карточки предметов по категориям (Godly/Ancient/Unique), список "сильно
      изменившихся в цене" на главном экране (по всем редкостям), у каждого
-     предмета — фото, текущая/прошлая цена, график цены свечками и ссылка
-     "Купить" на DreamPets.
+     предмета — фото, текущая/прошлая цена, график цены свечками, ссылка
+     "Купить" на DreamPets, а также сравнение с legacy-маркетплейсом
+     (dreampets.gg/mm2-legacy) — если там дешевле, показываем это отдельно.
   3. Фоновая проверка цен (как mm2_price_tracker.py --once, но по циклу) —
      раз в CHECK_INTERVAL_SEC сравнивает каталог с прошлым снапшотом и шлёт
-     push-уведомления в Telegram о godly/ancient/unique (как раньше).
+     push-уведомления в Telegram о godly/ancient/unique (как раньше), а
+     заодно обновляет снапшот legacy-каталога для сравнения цен.
 
 Переменные окружения:
   TELEGRAM_BOT_TOKEN  — токен бота (обязательно для команды /start)
@@ -76,6 +78,11 @@ PRICE_LOG_READ_LIMIT = 20000  # сколько последних строк pri
 app = FastAPI(title="MM2 Price Bot API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
+# Снапшот legacy-каталога (dreampets.gg/mm2-legacy) для сравнения цен, ключ —
+# mm2_api.match_key(name, category, rare, chroma). Обновляется в фоне вместе
+# с основной проверкой цен (см. run_price_check_once).
+_legacy_index = {}
+
 
 # ---------- Чтение накопленных данных ----------
 
@@ -137,7 +144,8 @@ def item_view(pid, item, old_snapshot):
     change_percent = None
     if price is not None and old_price not in (None, 0):
         change_percent = (price - old_price) / old_price * 100
-    return {
+
+    view = {
         "id": pid,
         "name": item.get("name"),
         "rare": item.get("rare"),
@@ -148,7 +156,20 @@ def item_view(pid, item, old_snapshot):
         "change_percent": change_percent,
         "image": mm2_api.image_url(pid),
         "buy_url": mm2_api.buy_url(pid, item.get("name")),
+        "legacy_price": None,
+        "legacy_buy_url": None,
+        "cheaper_source": "current",
     }
+
+    key = mm2_api.match_key(item.get("name"), item.get("category"), item.get("rare"), item.get("chroma"))
+    legacy = _legacy_index.get(key)
+    if legacy and legacy.get("price") is not None:
+        view["legacy_price"] = legacy["price"]
+        view["legacy_buy_url"] = mm2_api.legacy_buy_url(legacy["product_id"], legacy["name"])
+        if price is None or legacy["price"] < price:
+            view["cheaper_source"] = "legacy"
+
+    return view
 
 
 def build_candles(pid, bucket_sec=CANDLE_BUCKET_SEC):
@@ -279,6 +300,17 @@ def run_price_check_once():
     tracker.save_history(new_snapshot)
     tracker.append_price_log(new_snapshot)
     tracker.update_meta(new_snapshot)
+
+    global _legacy_index
+    try:
+        legacy_products = mm2_api.fetch_legacy_products()
+        if legacy_products:
+            _legacy_index = mm2_api.normalize_legacy(legacy_products)
+            log.info("Legacy-каталог обновлён (%d предметов).", len(_legacy_index))
+        else:
+            log.warning("Не удалось получить legacy-каталог — сравнение цен временно недоступно.")
+    except Exception:
+        log.exception("Ошибка при обновлении legacy-каталога")
 
 
 async def price_check_loop():

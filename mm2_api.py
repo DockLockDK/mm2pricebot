@@ -110,3 +110,91 @@ def image_url(product_id):
 
 def buy_url(product_id, name):
     return BUY_URL_TMPL.format(slug=slugify(name), product_id=product_id)
+
+
+# ---------------------------------------------------------------------------
+# Legacy-маркетплейс (mm2-legacy) — второй, более старый каталог на том же
+# сайте. Пространство ID у него не совпадает с основным (через него нельзя
+# построить ни фото, ни ссылку "Купить" на CDN основного каталога), но одни и
+# те же предметы можно сопоставить по (name, category, rare, chroma) — эти
+# поля совпадают в обоих API. Используется только для сравнения цен: если тут
+# дешевле, показываем это как альтернативный вариант покупки.
+LEGACY_API_URL = "https://mm2.dreampets.gg/api/sales/v1/sales/products"
+LEGACY_BUY_URL_TMPL = "https://dreampets.gg/mm2-legacy/product/{slug}/{product_id}"
+LEGACY_FETCH_PER_PAGE = 5000
+
+
+def fetch_legacy_products():
+    """Одним запросом забирает весь legacy-каталог. Возвращает список сырых dict'ов."""
+    params = {
+        "min_price": 0,
+        "max_price": 0,
+        "currency": CURRENCY,
+        "sort": "popularity",
+        "per_page": LEGACY_FETCH_PER_PAGE,
+        "page": 0,
+    }
+    try:
+        resp = requests.get(LEGACY_API_URL, params=params, headers=HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        print(f"[!] Ошибка запроса legacy-каталога: {e}")
+        return []
+
+    try:
+        data = resp.json()
+    except ValueError as e:
+        print(f"[!] Не удалось разобрать ответ legacy-API как JSON: {e}")
+        return []
+
+    return data.get("products", [])
+
+
+def match_key(name, category, rare, chroma):
+    """Ключ сопоставления одного и того же предмета между основным и legacy
+    каталогами — оба API отдают одинаковые name/category/rare/chroma, но разные
+    product_id, так что сравнивать нужно по этой связке."""
+    return ((name or "").strip().lower(), category, rare, bool(chroma))
+
+
+def normalize_legacy(products):
+    """
+    Приводит legacy-каталог к словарю {match_key: {...}}, где match_key —
+    (name.lower(), category, rare, chroma). Если два предмета дают одинаковый
+    ключ (редкий случай дублей), остаётся последний — это приемлемо для задачи
+    сравнения цен.
+    """
+    result = {}
+    for p in products:
+        product = p.get("product") or {}
+        if ONLY_WEAPONS and product.get("type") != "weapon":
+            continue
+
+        pid = p.get("product_id") or product.get("product_id")
+        name = product.get("name")
+        if not pid or not name:
+            continue
+
+        price = p.get("price")
+        try:
+            price = float(price) if price is not None else None
+        except (TypeError, ValueError):
+            price = None
+
+        category = product.get("category")
+        rare = product.get("rare")
+        chroma = bool(product.get("chroma", False))
+
+        result[match_key(name, category, rare, chroma)] = {
+            "product_id": pid,
+            "name": name,
+            "category": category,
+            "rare": rare,
+            "chroma": chroma,
+            "price": price,
+        }
+    return result
+
+
+def legacy_buy_url(product_id, name):
+    return LEGACY_BUY_URL_TMPL.format(slug=slugify(name), product_id=product_id)
