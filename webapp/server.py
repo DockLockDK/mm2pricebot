@@ -88,6 +88,11 @@ AVG_PRICE_WINDOW_DAYS = int(os.environ.get("AVG_PRICE_WINDOW_DAYS", "7"))
 # Не считаем "падением", если по предмету накопилось слишком мало точек истории
 # (например, самый первый запуск) — иначе первая же цена окажется "средней".
 ALERT_MIN_HISTORY_SAMPLES = 5
+# Куда сохраняем, по какой цене последний раз алертили каждый предмет — чтобы
+# не слать одно и то же уведомление заново на каждом цикле, пока цена стоит на
+# месте (баг: без этого бот спамил один и тот же алерт каждые 5 минут, пока
+# цена не отрастёт обратно). Не версионируем — рантайм-состояние.
+ALERTED_STATE_FILE = str(REPO_DIR / "alerted_drops.json")
 
 app = FastAPI(title="MM2 Price Bot API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -272,9 +277,32 @@ def _price_history_avg(pid, days=AVG_PRICE_WINDOW_DAYS):
     return sum(values) / len(values), len(values)
 
 
-def _build_drop_alerts(new_snapshot, old_snapshot):
+def _load_alerted_state():
+    """{pid: цена, по которой мы последний раз алертили этот предмет}."""
+    if not os.path.exists(ALERTED_STATE_FILE):
+        return {}
+    try:
+        with open(ALERTED_STATE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def _save_alerted_state(state):
+    try:
+        with open(ALERTED_STATE_FILE, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=2)
+    except OSError:
+        log.exception("Не удалось сохранить alerted_drops.json")
+
+
+def _build_drop_alerts(new_snapshot, old_snapshot, alerted_state):
     """Ищет предметы Godly/Ancient, у которых текущая цена упала минимум на
-    DROP_ALERT_THRESHOLD_PERCENT % ниже средней за AVG_PRICE_WINDOW_DAYS дней."""
+    DROP_ALERT_THRESHOLD_PERCENT % ниже средней за AVG_PRICE_WINDOW_DAYS дней.
+    Пропускает предмет, если мы уже слали алерт именно по этой цене (иначе
+    бот шлёт одно и то же уведомление на каждом цикле, пока цена стоит на
+    месте) — алерт повторится только когда цена изменится (упадёт ещё ниже
+    или сначала отрастёт обратно и упадёт заново)."""
     alerts = []
     for pid, item in new_snapshot.items():
         if (item.get("rare") or "").lower() not in ALERT_RARITIES:
@@ -282,6 +310,9 @@ def _build_drop_alerts(new_snapshot, old_snapshot):
 
         price = item.get("price")
         if price is None:
+            continue
+
+        if alerted_state.get(pid) == price:
             continue
 
         avg_price, samples = _price_history_avg(pid)
@@ -293,6 +324,8 @@ def _build_drop_alerts(new_snapshot, old_snapshot):
             continue
 
         alerts.append({
+            "pid": pid,
+            "price": price,
             "view": item_view(pid, item, old_snapshot),
             "avg_price": avg_price,
             "drop_percent": drop_percent,
@@ -459,10 +492,13 @@ def run_price_check_once():
     # а не включала саму текущую цену.
     if old_data is not None:
         try:
-            alerts = _build_drop_alerts(new_snapshot, old_snapshot)
+            alerted_state = _load_alerted_state()
+            alerts = _build_drop_alerts(new_snapshot, old_snapshot, alerted_state)
             for alert in alerts:
                 _send_drop_alert(alert)
+                alerted_state[alert["pid"]] = alert["price"]
             if alerts:
+                _save_alerted_state(alerted_state)
                 log.info("Отправлено алертов о падении цены: %d", len(alerts))
         except Exception:
             log.exception("Ошибка при формировании алертов о падении цены")

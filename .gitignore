@@ -7,3 +7,4 @@ venv/
 history.json
 price_history.jsonl
 products_meta.json
+alerted_drops.json
