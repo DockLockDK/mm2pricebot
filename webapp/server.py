@@ -327,7 +327,7 @@ async def price_check_loop():
 ptb_app = None
 
 if BOT_TOKEN:
-    from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, WebAppInfo
+    from telegram import InlineKeyboardButton, InlineKeyboardMarkup, MenuButtonWebApp, Update, WebAppInfo
     from telegram.ext import Application, CommandHandler, ContextTypes
 
     async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -358,6 +358,14 @@ async def on_startup():
         await ptb_app.start()
         await ptb_app.updater.start_polling(allowed_updates=["message"])
         log.info("Telegram-бот запущен (long polling).")
+        if WEBAPP_URL:
+            try:
+                await ptb_app.bot.set_chat_menu_button(
+                    menu_button=MenuButtonWebApp(text="🛒 Каталог", web_app=WebAppInfo(url=WEBAPP_URL))
+                )
+                log.info("Постоянная кнопка меню (Menu Button) установлена — /start больше не нужен.")
+            except Exception:
+                log.exception("Не удалось установить кнопку меню")
     if not WEBAPP_URL:
         log.warning("WEBAPP_URL не задан — кнопка 'Открыть каталог' работать не будет.")
 
