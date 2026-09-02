@@ -118,7 +118,7 @@ def api_menu(window: str = price_history.DEFAULT_WINDOW):
     for key, label in CATEGORIES:
         count = sum(
             1 for it in snapshot.values()
-            if (it.get("rare") or "").lower() == key and it.get("price") is not None
+            if (it.get("rare") or "").lower() == key and price_history.has_any_price(it)
         )
         categories.append({"key": key, "label": label, "count": count})
 
@@ -143,9 +143,9 @@ def api_category(rarity: str, window: str = price_history.DEFAULT_WINDOW):
     items = [
         price_history.item_view(pid, item, old_snapshot, legacy_old)
         for pid, item in snapshot.items()
-        if (item.get("rare") or "").lower() == rarity and item.get("price") is not None
+        if (item.get("rare") or "").lower() == rarity and price_history.has_any_price(item)
     ]
-    items.sort(key=lambda x: x["price"], reverse=True)
+    items.sort(key=lambda x: x["best_price"], reverse=True)
 
     resolved_window = window if window in price_history.WINDOW_SECONDS else price_history.DEFAULT_WINDOW
     return {

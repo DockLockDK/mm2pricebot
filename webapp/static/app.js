@@ -182,7 +182,8 @@ function itemCard(item, onOpen) {
   const card = document.createElement("div");
   card.className = "item-card";
   const change = item.change_percent;
-  const hasDeal = item.cheaper_source === "legacy" && item.legacy_price != null;
+  const isLegacyOnly = item.cheaper_source === "legacy" && item.legacy_price != null && item.price == null;
+  const hasDeal = item.cheaper_source === "legacy" && item.legacy_price != null && item.price != null;
   const mainPrice = item.best_price != null ? item.best_price : item.price;
   const meta = rareMeta(item.rare);
   const shortLabel = { mm2values: "MM2V" };
@@ -200,6 +201,7 @@ function itemCard(item, onOpen) {
       ${changePill(change)}
     </div>
     ${hasDeal ? `<div class="item-deal">⚡ в обычном дороже: ${fmtPrice(item.price)}</div>` : ""}
+    ${isLegacyOnly ? `<div class="item-deal">⚡ только в Legacy-каталоге</div>` : ""}
     ${valuesLine ? `<div class="item-values"><span class="dot"></span>${escapeHtml(valuesLine)}</div>` : ""}
   `;
   card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
@@ -703,18 +705,29 @@ async function loadItem(id, backFn) {
   const buyGroup = el("#buy-group");
   buyGroup.innerHTML = "";
 
+  const hasCurrent = item.price != null;
   const hasLegacy = item.legacy_price != null;
   const legacyCheaper = item.cheaper_source === "legacy";
 
-  if (hasLegacy && legacyCheaper) {
+  // Предмет мог сейчас быть распродан в текущем каталоге, но всё ещё
+  // продаваться в Legacy (см. price_history.has_any_price) — тогда сравнивать
+  // "дороже/дешевле" не с чем, просто уточняем, где именно есть в наличии.
+  if (hasLegacy && legacyCheaper && hasCurrent) {
     dealNote.style.display = "flex";
     el("#deal-note-text").innerHTML = `<b>В обычном каталоге дороже</b> — ${fmtPrice(item.price)} там же`;
+  } else if (hasLegacy && !hasCurrent) {
+    dealNote.style.display = "flex";
+    el("#deal-note-text").innerHTML = `<b>Сейчас есть только в Legacy-каталоге</b> — в текущем распродано`;
   } else {
     dealNote.style.display = "none";
   }
 
   // Кнопка покупки там, где дешевле — первой и выделенной; вторая ссылка — как альтернатива.
-  const currentBtn = `<a class="buy-btn" href="${item.buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.price)}<span class="tag">Текущий каталог</span></a>`;
+  // Если предмета сейчас нет в одном из каталогов вообще — кнопки для него нет,
+  // а не "Купить за —" в никуда.
+  const currentBtn = hasCurrent
+    ? `<a class="buy-btn" href="${item.buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.price)}<span class="tag">Текущий каталог</span></a>`
+    : "";
   const legacyBtn = hasLegacy
     ? `<a class="buy-btn secondary" href="${item.legacy_buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.legacy_price)}<span class="tag">Legacy-каталог</span></a>`
     : "";

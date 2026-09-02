@@ -274,6 +274,22 @@ def legacy_snapshot_at(window_seconds):
     return pricedb.legacy_snapshot_at(cutoff_ts)
 
 
+def has_any_price(item):
+    """Есть ли у предмета цена ХОТЬ В ОДНОМ каталоге — текущем или legacy.
+    Используется вместо простого item.get("price") is not None при отборе
+    предметов для списка категории/подсчёта — иначе предмет, распроданный
+    прямо сейчас в текущем каталоге, но всё ещё продающийся в Legacy,
+    полностью пропадал бы из категории, хотя купить его всё ещё можно (баг,
+    найденный пользователем: "не все скины показываются, которые есть на
+    сайтах"). Дешевле полного item_view() — без обращений к БД, только для
+    быстрого да/нет при фильтрации списков."""
+    if item.get("price") is not None:
+        return True
+    key = mm2_api.match_key(item.get("name"), item.get("category"), item.get("rare"), item.get("chroma"))
+    legacy = _legacy_index.get(key)
+    return bool(legacy and legacy.get("price") is not None)
+
+
 def item_view(pid, item, old_snapshot, legacy_old=None):
     legacy_old = legacy_old or {}
     old_item = old_snapshot.get(pid) or {}
