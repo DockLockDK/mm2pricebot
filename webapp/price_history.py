@@ -245,10 +245,17 @@ def item_view(pid, item, old_snapshot, legacy_old=None):
 
     # Community value (mm2values.com) — НЕ цена покупки, справочный ориентир
     # комьюнити. Никогда не влияет на best_price/cheaper_source.
+    # mm2values.com отдаёт данные ТОЛЬКО по годным/ancient/unique категориям
+    # (см. mm2_api.MM2VALUES_CATEGORIES), а сопоставление идёт просто по
+    # нормализованному имени без учёта редкости — при совпадении имени с
+    # предметом другой редкости (например, "Ornament" есть и как Common Knife,
+    # и как Godly Knife) дешёвому common-предмету иначе подставился бы
+    # community value от чужого godly-тёзки. Поэтому подставляем значение,
+    # только если у самого предмета редкость вообще входит в покрытие сайта.
     name_key = mm2_api.normalize_name(item.get("name"))
     community_values = []
     mm2v = _mm2values_index.get(name_key)
-    if mm2v and mm2v.get("value_raw"):
+    if mm2v and mm2v.get("value_raw") and (item.get("rare") or "").lower() in mm2_api.MM2VALUES_CATEGORIES:
         cv_entry = {
             "source": "mm2values",
             "label": "MM2Values",

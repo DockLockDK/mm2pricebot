@@ -231,9 +231,9 @@ def run_price_check_once():
     except Exception:
         log.exception("Ошибка при обновлении mm2values.com")
 
-    # Алерты о сильном падении цены — считаем ДО дописывания новой точки в
-    # price_history.jsonl, чтобы "средняя" была за период ДО этого момента,
-    # а не включала саму текущую цену.
+    # Алерты о сильном падении цены — считаем ДО append_price_points() ниже,
+    # чтобы "средняя за N дней" была за период ДО этого момента, а не включала
+    # саму текущую (уже упавшую) цену.
     if old_data is not None:
         try:
             alerted_state = alerts.load_alerted_state()

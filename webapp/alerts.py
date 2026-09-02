@@ -108,7 +108,6 @@ def send_drop_alert(alert):
     avg_price = alert["avg_price"]
     best_price = view["best_price"]
     is_legacy = view["cheaper_source"] == "legacy"
-    store_label = "Legacy-каталог" if is_legacy else "Текущий каталог"
     buy_url = view["legacy_buy_url"] if is_legacy else view["buy_url"]
 
     community_values = view.get("community_values") or []
@@ -117,13 +116,19 @@ def send_drop_alert(alert):
     else:
         value_text = "нет данных"
 
+    # Средняя и % всегда относятся к ЦЕНЕ ТЕКУЩЕГО КАТАЛОГА (alert['price']) —
+    # именно её падение и обнаружил алерт (см. build_drop_alerts). best_price
+    # может оказаться дешевле (legacy) прямо сейчас — это отдельная строка и
+    # кнопка "Купить", а не тот же процент: иначе цифры не сходились бы (% и
+    # цена из разных источников).
     text = (
         f"🔥 <b>{view['name']}</b> ({view['rare']}) сильно подешевело!\n\n"
         f"Средняя цена (за {AVG_PRICE_WINDOW_DAYS} дн.): {avg_price:.2f}₽\n"
-        f"Сейчас: <b>{best_price:.2f}₽</b> ({alert['drop_percent']:+.1f}%)\n"
-        f"Community value: {value_text}\n"
-        f"Продаётся в: {store_label}"
+        f"Сейчас в текущем каталоге: <b>{alert['price']:.2f}₽</b> ({alert['drop_percent']:+.1f}%)\n"
     )
+    if is_legacy:
+        text += f"Дешевле всего сейчас: <b>{best_price:.2f}₽</b> в Legacy-каталоге\n"
+    text += f"Community value: {value_text}"
 
     keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
     image_url = view.get("image")
