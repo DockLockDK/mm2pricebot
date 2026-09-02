@@ -291,26 +291,6 @@ async function loadCategory(key) {
   renderCategoryGrid(key);
 }
 
-function withMinCandleBody(candles) {
-  // Свечи без изменения цены (open === close) иначе рисуются нулевой высоты —
-  // на глаз это невидимая тонкая полоска ("посошек"), а не прямоугольник.
-  // Растягиваем тело таких свечей до минимальной заметной высоты — только
-  // для отрисовки; реальная цена (текст над графиком, бейдж %) не трогается.
-  let min = Infinity, max = -Infinity;
-  for (const c of candles) {
-    if (c.low < min) min = c.low;
-    if (c.high > max) max = c.high;
-  }
-  const range = (max - min) || Math.abs(candles[0].open) * 0.02 || 1;
-  const minBody = range * 0.035;
-  return candles.map(c => {
-    if (Math.abs(c.close - c.open) >= minBody) return c;
-    const up = c.close >= c.open;
-    const close = up ? c.open + minBody : c.open - minBody;
-    return { time: c.time, open: c.open, close, high: Math.max(c.high, close), low: Math.min(c.low, close) };
-  });
-}
-
 function renderPriceChart(candles) {
   const chartEl = el("#chart");
   chartEl.innerHTML = "";
@@ -325,18 +305,16 @@ function renderPriceChart(candles) {
     grid: { vertLines: { visible: false }, horzLines: { color: "rgba(255,255,255,0.06)" } },
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
-    crosshair: { vertLine: { color: "rgba(255,255,255,0.18)", labelBackgroundColor: "#242832" }, horzLine: { color: "rgba(255,255,255,0.18)", labelBackgroundColor: "#242832" } },
+    crosshair: { vertLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" }, horzLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" } },
     localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: 0 }) + "₽" },
   });
-  const series = priceChart.addCandlestickSeries({
-    upColor: "#33c266", downColor: "#ef5350",
-    borderVisible: false, wickUpColor: "#33c266", wickDownColor: "#ef5350",
+  const series = priceChart.addAreaSeries({
+    lineColor: "#4f8cff", topColor: "rgba(79,140,255,0.28)", bottomColor: "rgba(79,140,255,0)",
+    lineWidth: 2,
     priceLineVisible: false,
-    // Точную последнюю цену и так крупно показывает текст над графиком — а
-    // тут после "растяжки" плоских свечей цифра была бы чуть неточной.
-    lastValueVisible: false,
+    lastValueVisible: candles.length > 1,
   });
-  series.setData(withMinCandleBody(candles));
+  series.setData(candles.map(c => ({ time: c.time, value: c.close })));
   priceChart.timeScale().fitContent();
 }
 
