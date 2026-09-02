@@ -438,6 +438,26 @@ async function loadCategory(key) {
   renderCategoryGrid(key);
 }
 
+function withMinCandleBody(candles) {
+  // Свечи без изменения цены (open === close) иначе рисуются нулевой высоты —
+  // на глаз это невидимая тонкая полоска ("посошек"), а не прямоугольник.
+  // Растягиваем тело таких свечей до минимальной заметной высоты — только
+  // для отрисовки; реальная цена (текст над графиком, бейдж %) не трогается.
+  let min = Infinity, max = -Infinity;
+  for (const c of candles) {
+    if (c.low < min) min = c.low;
+    if (c.high > max) max = c.high;
+  }
+  const range = (max - min) || Math.abs(candles[0].open) * 0.02 || 1;
+  const minBody = range * 0.035;
+  return candles.map(c => {
+    if (Math.abs(c.close - c.open) >= minBody) return c;
+    const up = c.close >= c.open;
+    const close = up ? c.open + minBody : c.open - minBody;
+    return { time: c.time, open: c.open, close, high: Math.max(c.high, close), low: Math.min(c.low, close) };
+  });
+}
+
 function renderPriceChart(candles) {
   const chartEl = el("#chart");
   chartEl.innerHTML = "";
@@ -459,9 +479,11 @@ function renderPriceChart(candles) {
     upColor: "#33c266", downColor: "#ef5350",
     borderVisible: false, wickUpColor: "#33c266", wickDownColor: "#ef5350",
     priceLineVisible: false,
-    lastValueVisible: candles.length > 1,
+    // Точную последнюю цену и так крупно показывает текст над графиком — а
+    // тут после "растяжки" плоских свечей цифра была бы чуть неточной.
+    lastValueVisible: false,
   });
-  series.setData(candles);
+  series.setData(withMinCandleBody(candles));
   priceChart.timeScale().fitContent();
 }
 
