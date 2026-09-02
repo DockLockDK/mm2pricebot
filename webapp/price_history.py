@@ -111,6 +111,7 @@ def resolve_window(window):
 _legacy_index = {}
 _mm2values_index = {}
 _roblox_game_info = {}
+_mm2_news = {}
 
 
 def update_legacy(legacy_index):
@@ -148,6 +149,25 @@ def update_roblox_game_info(info):
 
 def roblox_game_info():
     return _roblox_game_info or None
+
+
+def update_mm2_news(colbe, mmoexp):
+    """Обновляет живой снапшот 'что нового в MM2' — сторонние источники
+    (см. mm2_api.fetch_colbe_latest_video/fetch_mmoexp_latest), т.к. сам
+    Nikilis/официальный Discord недоступны без браузера или платного API.
+    Каждый источник обновляется независимо — сбой одного не должен стирать
+    последний известный результат другого."""
+    global _mm2_news
+    updated = dict(_mm2_news)
+    if colbe:
+        updated["colbe"] = colbe
+    if mmoexp:
+        updated["mmoexp"] = mmoexp
+    _mm2_news = updated
+
+
+def mm2_news():
+    return _mm2_news or None
 
 
 def append_price_points(snapshot):

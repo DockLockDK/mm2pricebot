@@ -126,6 +126,7 @@ def api_menu(window: str = price_history.DEFAULT_WINDOW):
         "movers": movers_view,
         "window": resolved_window,
         "game_update": price_history.roblox_game_info(),
+        "news": price_history.mm2_news(),
     }
 
 
@@ -244,6 +245,13 @@ def run_price_check_once():
             log.warning("Не удалось получить данные о MM2 из Roblox Games API.")
     except Exception:
         log.exception("Ошибка при обновлении данных Roblox Games API")
+
+    try:
+        colbe = mm2_api.fetch_colbe_latest_video()
+        mmoexp = mm2_api.fetch_mmoexp_latest()
+        price_history.update_mm2_news(colbe, mmoexp)
+    except Exception:
+        log.exception("Ошибка при обновлении новостей MM2 (Colbe/mmoexp)")
 
     # Алерты о сильном падении цены — считаем ДО append_price_points() ниже,
     # чтобы "средняя за N дней" была за период ДО этого момента, а не включала

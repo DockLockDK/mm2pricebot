@@ -320,4 +320,91 @@ def fetch_roblox_game_info():
         return None
 
 
+# ---------------------------------------------------------------------------
+# "Что нового в MM2" — Nikilis и официальный Discord недоступны без
+# headless-браузера или платного API (сознательно решили не тащить ни то,
+# ни другое ради этого). Вместо прямого источника — два открытых сторонних,
+# ни один не защищён анти-ботом:
+#   1. YouTube-канал Colbe ("MM2 hype man", делает видео именно про
+#      обновления MM2) — через штатный RSS-эндпоинт YouTube-канала. Это НЕ
+#      сам youtube.com (тот отдаёт капчу автоматическим запросам) — фид для
+#      читалок открыт для всех без ограничений.
+#   2. mmoexp.com/News — игровой новостной сайт, обычная статья без
+#      Cloudflare, категория Murder Mystery 2 обновляется почти по каждому
+#      патчу.
+# Оба — мнение сторонних авторов о патче, а не патчноуты от самого Nikilis.
+import xml.etree.ElementTree as ET
+from datetime import datetime
+
+COLBE_CHANNEL_ID = "UCikJUzKJUkgJoylgKmb_R7w"
+COLBE_RSS_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={COLBE_CHANNEL_ID}"
+_ATOM_NS = "{http://www.w3.org/2005/Atom}"
+_MEDIA_NS = "{http://search.yahoo.com/mrss/}"
+
+
+def fetch_colbe_latest_video():
+    """Последнее видео Colbe — {'title', 'url', 'published', 'description'}
+    или None при сбое."""
+    try:
+        resp = requests.get(COLBE_RSS_URL, headers=VALUE_SITE_HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+        root = ET.fromstring(resp.content)
+        entry = root.find(f"{_ATOM_NS}entry")
+        if entry is None:
+            return None
+        link_el = entry.find(f"{_ATOM_NS}link")
+        media_group = entry.find(f"{_MEDIA_NS}group")
+        description = media_group.findtext(f"{_MEDIA_NS}description") if media_group is not None else None
+        return {
+            "title": entry.findtext(f"{_ATOM_NS}title"),
+            "url": link_el.get("href") if link_el is not None else None,
+            "published": entry.findtext(f"{_ATOM_NS}published"),
+            "description": (description or "").strip(),
+        }
+    except (requests.RequestException, ET.ParseError) as e:
+        print(f"[!] Ошибка запроса YouTube RSS (Colbe): {e}")
+        return None
+
+
+MMOEXP_CATEGORY_URL = "https://www.mmoexp.com/News/category/murder-mystery-2.html"
+_MMOEXP_ITEM_RE = re.compile(
+    r'<a class="imgbox" href="(?P<href>/News/[^"]+\.html)" title="(?P<title>[^"]*)">.*?'
+    r'<div class="text">Summary(?P<summary>.*?)</div>.*?'
+    r'<span class="time">(?P<date>[^<]+)</span>',
+    re.S,
+)
+
+
+def fetch_mmoexp_latest():
+    """Самая свежая статья по MM2 в разделе News сайта mmoexp.com —
+    {'title', 'url', 'summary', 'published'} или None. Листинг категории не
+    гарантированно отсортирован по дате, поэтому сортируем сами по
+    распарсенной дате вместо первой попавшейся записи в HTML."""
+    try:
+        resp = requests.get(MMOEXP_CATEGORY_URL, headers=VALUE_SITE_HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        print(f"[!] Ошибка запроса mmoexp.com: {e}")
+        return None
+
+    best, best_date = None, None
+    for m in _MMOEXP_ITEM_RE.finditer(resp.text):
+        date_str = m.group("date").replace("PST", "").replace("PDT", "").strip()
+        try:
+            date = datetime.strptime(date_str, "%b-%d-%Y")
+        except ValueError:
+            continue
+        if best_date is None or date > best_date:
+            best_date, best = date, m
+
+    if best is None:
+        return None
+    return {
+        "title": best.group("title").strip(),
+        "url": "https://www.mmoexp.com" + best.group("href"),
+        "summary": re.sub(r"\s+", " ", best.group("summary")).strip(),
+        "published": best_date.strftime("%Y-%m-%d"),
+    }
+
+
 

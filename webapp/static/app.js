@@ -52,6 +52,46 @@ function renderGameUpdate(gameUpdate) {
   box.innerHTML = `<span class="dot"></span>MM2 в Roblox обновлялась: <b>${ago}</b>`;
 }
 
+function escapeHtml(s) {
+  return (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function truncate(s, n) {
+  s = s || "";
+  return s.length > n ? s.slice(0, n).trim() + "…" : s;
+}
+
+// Новости о самой игре MM2 (не о ценах) — сторонние источники (см. mm2_api.py:
+// Nikilis/официальный Discord недоступны без браузера или платного API),
+// поэтому подписываем каждую карточку именем источника, а не выдаём за
+// официальные патчноуты.
+function renderMm2News(news) {
+  const box = el("#mm2-news");
+  if (!news || (!news.colbe && !news.mmoexp)) {
+    box.innerHTML = "";
+    return;
+  }
+  let html = "";
+  if (news.colbe && news.colbe.url) {
+    const ago = timeAgoRu(news.colbe.published);
+    html += `
+      <a class="news-card" href="${news.colbe.url}" target="_blank" rel="noopener">
+        <span class="news-src">▶ Colbe · YouTube${ago ? " · " + ago : ""}</span>
+        <span class="news-title">${escapeHtml(news.colbe.title)}</span>
+        <span class="news-body">${escapeHtml(truncate(news.colbe.description, 200))}</span>
+      </a>`;
+  }
+  if (news.mmoexp && news.mmoexp.url) {
+    html += `
+      <a class="news-card" href="${news.mmoexp.url}" target="_blank" rel="noopener">
+        <span class="news-src">📰 MMOexp.com${news.mmoexp.published ? " · " + news.mmoexp.published : ""}</span>
+        <span class="news-title">${escapeHtml(news.mmoexp.title)}</span>
+        <span class="news-body">${escapeHtml(truncate(news.mmoexp.summary, 200))}</span>
+      </a>`;
+  }
+  box.innerHTML = html;
+}
+
 const RARE_META = {
   godly: { label: "Godly", cls: "rare-godly", tint: "rgba(242,201,76,0.16)" },
   ancient: { label: "Ancient", cls: "rare-ancient", tint: "rgba(79,140,255,0.16)" },
@@ -173,6 +213,7 @@ async function loadHome() {
   const data = await res.json();
 
   renderGameUpdate(data.game_update);
+  renderMm2News(data.news);
 
   const catWrap = el("#categories");
   catWrap.innerHTML = "";
