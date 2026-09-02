@@ -78,6 +78,8 @@ CATEGORY_LABELS = dict(CATEGORIES)
 
 MOVERS_LIMIT = 20
 
+price_history.init()  # создаёт SQLite-таблицы и переносит старые .jsonl-логи, если ещё не перенесены
+
 app = FastAPI(title="MM2 Price Bot API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
@@ -232,8 +234,9 @@ def run_price_check_once():
             log.exception("Ошибка при формировании алертов о падении цены")
 
     tracker.save_history(new_snapshot)
-    tracker.append_price_log(new_snapshot)
+    price_history.append_price_points(new_snapshot)
     tracker.update_meta(new_snapshot)
+    price_history.maybe_compact()
 
 
 async def price_check_loop():
