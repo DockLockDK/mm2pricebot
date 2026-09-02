@@ -293,6 +293,7 @@ def item_view(pid, item, old_snapshot, legacy_old=None):
         cv_entry = {
             "source": "mm2values",
             "label": "MM2Values",
+            "value": mm2v.get("value"),
             "value_raw": mm2v["value_raw"],
             "demand": mm2v.get("demand"),
             "rarity": mm2v.get("rarity"),
@@ -301,6 +302,16 @@ def item_view(pid, item, old_snapshot, legacy_old=None):
         }
         community_values.append(cv_entry)
     view["community_values"] = community_values
+
+    # Исторический минимум/максимум — из ТОЙ ЖЕ серии, что и текущая
+    # best_price/график (см. cheaper_source выше): иначе "рекорд" был бы по
+    # чужому каталогу, который сейчас вообще не тот, что показан крупно.
+    if view["cheaper_source"] == "legacy":
+        hist_min, hist_max = pricedb.legacy_price_min_max(legacy_key_str(key))
+    else:
+        hist_min, hist_max = pricedb.price_min_max(pid)
+    view["hist_min"] = hist_min
+    view["hist_max"] = hist_max
 
     return view
 

@@ -146,9 +146,6 @@ function renderWindowRow(containerSel, onChange) {
 }
 
 function el(sel) { return document.querySelector(sel); }
-function escapeHtml(s) {
-  return (s || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-}
 function fmtPrice(p) { return p != null ? p.toFixed(2) + "₽" : "—"; }
 function changePill(change) {
   if (change == null) return "";
@@ -206,6 +203,9 @@ async function loadHome() {
   showScreen("home");
   el("#header-title").textContent = "MM2 Каталог";
   backAction = null;
+
+  el("#open-inventory-btn").onclick = loadInventory;
+  el("#open-trade-btn").onclick = loadTrade;
 
   renderWindowRow("#home-win-row", () => loadHome());
 
@@ -332,6 +332,30 @@ async function loadCategory(key) {
   renderCategoryGrid(key);
 }
 
+function renderHistBadge(item) {
+  const badge = el("#item-hist-badge");
+  const price = item.best_price;
+  // hist_max === hist_min значит, что по предмету пока только одна точка
+  // истории (только начали отслеживать) — сравнивать не с чем, значок не
+  // показываем, чтобы не выдавать это за настоящий рекорд.
+  if (price == null || item.hist_min == null || item.hist_max == null || item.hist_max <= item.hist_min) {
+    badge.style.display = "none";
+    return;
+  }
+  const EPS = 0.001;
+  if (price >= item.hist_max * (1 - EPS)) {
+    badge.style.display = "flex";
+    badge.className = "hist-badge high";
+    badge.textContent = "🔺 Дороже, чем когда-либо за всё время наблюдений";
+  } else if (price <= item.hist_min * (1 + EPS)) {
+    badge.style.display = "flex";
+    badge.className = "hist-badge low";
+    badge.textContent = "🔻 Дешевле, чем когда-либо за всё время наблюдений";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
 function renderPriceChart(candles) {
   const chartEl = el("#chart");
   chartEl.innerHTML = "";
@@ -396,6 +420,241 @@ window.addEventListener("resize", () => {
   if (valueChart && valueChartEl) valueChart.applyOptions({ width: valueChartEl.clientWidth });
 });
 
+// ---------- Общий пикер предмета (для инвентаря и калькулятора трейда) ----------
+
+let pickerCallback = null;
+let pickerDebounce = null;
+
+function openPicker(onSelect) {
+  pickerCallback = onSelect;
+  el("#picker-modal").style.display = "flex";
+  const input = el("#picker-search");
+  input.value = "";
+  el("#picker-results").innerHTML = '<div class="empty">Начните вводить название…</div>';
+  input.focus();
+}
+
+function closePicker() {
+  el("#picker-modal").style.display = "none";
+  pickerCallback = null;
+}
+
+el("#picker-close").onclick = closePicker;
+el("#picker-modal").onclick = (e) => { if (e.target.id === "picker-modal") closePicker(); };
+
+el("#picker-search").oninput = () => {
+  const q = el("#picker-search").value.trim();
+  clearTimeout(pickerDebounce);
+  if (q.length < 2) {
+    el("#picker-results").innerHTML = '<div class="empty">Начните вводить название…</div>';
+    return;
+  }
+  pickerDebounce = setTimeout(async () => {
+    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+    const data = await res.json();
+    renderPickerResults(data.items);
+  }, 250);
+};
+
+function renderPickerResults(items) {
+  const wrap = el("#picker-results");
+  if (!items.length) {
+    wrap.innerHTML = '<div class="empty">Ничего не найдено.</div>';
+    return;
+  }
+  wrap.innerHTML = "";
+  for (const item of items) {
+    const row = document.createElement("div");
+    row.className = "picker-row";
+    row.innerHTML = `
+      <img src="${item.image}" loading="lazy" alt="">
+      <div class="picker-row-info">
+        <div class="picker-row-name">${escapeHtml(item.name)}</div>
+        <div class="picker-row-meta">${escapeHtml(item.rare || "")} · ${fmtPrice(item.best_price)}</div>
+      </div>
+    `;
+    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    row.onclick = () => {
+      const cb = pickerCallback;
+      closePicker();
+      if (cb) cb(item);
+    };
+    wrap.appendChild(row);
+  }
+}
+
+// ---------- Мой инвентарь ----------
+
+let inventoryItems = [];
+
+async function setInventoryQuantity(pid, quantity) {
+  await fetch(`/api/inventory/${pid}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ quantity: Math.max(0, quantity) }),
+  });
+}
+
+async function loadInventory() {
+  showScreen("inventory");
+  el("#header-title").textContent = "Мой инвентарь";
+  backAction = loadHome;
+
+  el("#inventory-add-btn").onclick = () => openPicker(async (item) => {
+    const existing = inventoryItems.find(x => x.id === item.id);
+    await setInventoryQuantity(item.id, (existing ? existing.quantity : 0) + 1);
+    loadInventory();
+  });
+
+  el("#inventory-list").innerHTML = '<div class="loading">Загрузка…</div>';
+  const res = await fetch("/api/inventory");
+  const data = await res.json();
+  inventoryItems = data.items;
+  renderInventoryList(data.items, data.total);
+}
+
+function renderInventoryList(items, total) {
+  el("#inventory-total").textContent = fmtPrice(total);
+  const list = el("#inventory-list");
+  if (!items.length) {
+    list.innerHTML = '<div class="empty">Пока пусто — добавьте предметы, которые у вас есть.</div>';
+    return;
+  }
+  list.innerHTML = "";
+  for (const item of items) {
+    const row = document.createElement("div");
+    row.className = "inv-row";
+    row.innerHTML = `
+      <img src="${item.image}" loading="lazy" alt="">
+      <div class="inv-row-info">
+        <div class="inv-row-name">${escapeHtml(item.name)}</div>
+        <div class="inv-row-meta">${fmtPrice(item.best_price)} × ${item.quantity} = <b>${fmtPrice(item.subtotal)}</b></div>
+      </div>
+      <div class="inv-stepper">
+        <button class="inv-stepper-btn" data-act="minus">−</button>
+        <span class="num">${item.quantity}</span>
+        <button class="inv-stepper-btn" data-act="plus">+</button>
+      </div>
+    `;
+    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    row.querySelector('[data-act="minus"]').onclick = async () => {
+      await setInventoryQuantity(item.id, item.quantity - 1);
+      loadInventory();
+    };
+    row.querySelector('[data-act="plus"]').onclick = async () => {
+      await setInventoryQuantity(item.id, item.quantity + 1);
+      loadInventory();
+    };
+    list.appendChild(row);
+  }
+}
+
+// ---------- Калькулятор трейда ----------
+// Живёт только в памяти вкладки (не сохраняется на сервере) — это быстрая
+// прикидка "честный ли обмен", а не постоянные данные вроде инвентаря.
+
+const trade = { a: [], b: [] };
+
+function loadTrade() {
+  showScreen("trade");
+  el("#header-title").textContent = "Калькулятор трейда";
+  backAction = loadHome;
+
+  el("#trade-add-a").onclick = () => openPicker(item => { trade.a.push({ ...item, quantity: 1 }); renderTrade(); });
+  el("#trade-add-b").onclick = () => openPicker(item => { trade.b.push({ ...item, quantity: 1 }); renderTrade(); });
+
+  renderTrade();
+}
+
+function renderTradeSide(side, containerSel) {
+  const wrap = el(containerSel);
+  if (!side.length) {
+    wrap.innerHTML = '<div class="empty">Пусто</div>';
+    return;
+  }
+  wrap.innerHTML = "";
+  side.forEach((item, idx) => {
+    const row = document.createElement("div");
+    row.className = "trade-row";
+    row.innerHTML = `
+      <div class="trade-row-top">
+        <img src="${item.image}" loading="lazy" alt="">
+        <div class="trade-row-info">
+          <div class="trade-row-name">${escapeHtml(item.name)}</div>
+          <div class="trade-row-meta">${fmtPrice(item.best_price)} × ${item.quantity}</div>
+        </div>
+      </div>
+      <div class="trade-row-bottom">
+        <div class="inv-stepper">
+          <button class="inv-stepper-btn" data-act="minus">−</button>
+          <span class="num">${item.quantity}</span>
+          <button class="inv-stepper-btn" data-act="plus">+</button>
+        </div>
+        <button class="trade-remove" aria-label="Убрать">✕</button>
+      </div>
+    `;
+    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    row.querySelector('[data-act="minus"]').onclick = () => { item.quantity = Math.max(1, item.quantity - 1); renderTrade(); };
+    row.querySelector('[data-act="plus"]').onclick = () => { item.quantity += 1; renderTrade(); };
+    row.querySelector(".trade-remove").onclick = () => { side.splice(idx, 1); renderTrade(); };
+    wrap.appendChild(row);
+  });
+}
+
+function tradeSideTotals(side) {
+  let priceSum = 0, valueSum = 0, valueCount = 0;
+  for (const it of side) {
+    priceSum += (it.best_price || 0) * it.quantity;
+    const cv = (it.community_values || []).find(c => c.source === "mm2values");
+    if (cv && cv.value != null) {
+      valueSum += cv.value * it.quantity;
+      valueCount++;
+    }
+  }
+  return { priceSum, valueSum, valueCount };
+}
+
+function renderTrade() {
+  renderTradeSide(trade.a, "#trade-list-a");
+  renderTradeSide(trade.b, "#trade-list-b");
+
+  const a = tradeSideTotals(trade.a);
+  const b = tradeSideTotals(trade.b);
+  el("#trade-a-total").textContent = fmtPrice(a.priceSum);
+  el("#trade-b-total").textContent = fmtPrice(b.priceSum);
+
+  const verdictEl = el("#trade-verdict");
+  if (!trade.a.length && !trade.b.length) {
+    verdictEl.innerHTML = "";
+    return;
+  }
+
+  // Честность трейда обычно смотрят по Community Value, а не по цене
+  // каталога (обмен ведь идёт не за деньги) — но Value есть не у всех
+  // предметов (mm2values покрывает только Godly/Ancient/Unique), поэтому
+  // сравниваем по Value, только если она известна для предметов ОБЕИХ сторон.
+  const useValue = a.valueCount === trade.a.length && b.valueCount === trade.b.length && trade.a.length && trade.b.length;
+  const sumA = useValue ? a.valueSum : a.priceSum;
+  const sumB = useValue ? b.valueSum : b.priceSum;
+  const basisLabel = useValue ? "Community Value" : "цене каталога";
+  const diff = sumA - sumB;
+  const bigger = Math.max(sumA, sumB) || 1;
+  const diffPercent = Math.abs(diff) / bigger * 100;
+
+  let verdictText;
+  if (diffPercent < 5) {
+    verdictText = `⚖️ Обмен примерно честный по ${basisLabel} (разница ${diffPercent.toFixed(0)}%)`;
+  } else if (diff > 0) {
+    verdictText = `📈 Ваша сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен невыгоден вам`;
+  } else {
+    verdictText = `📉 Их сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен выгоден вам`;
+  }
+  const note = !useValue && (a.valueCount > 0 || b.valueCount > 0)
+    ? '<div class="trade-verdict-note">Не у всех предметов есть Community Value — сравниваем по цене каталога.</div>'
+    : "";
+  verdictEl.innerHTML = `<div class="trade-verdict-text">${verdictText}</div>${note}`;
+}
+
 async function loadItem(id, backFn) {
   showScreen("item");
   backAction = backFn || loadHome;
@@ -424,6 +683,21 @@ async function loadItem(id, backFn) {
   el("#item-price").textContent = fmtPrice(mainPrice);
   el("#item-prev").textContent = item.prev_price != null ? fmtPrice(item.prev_price) : "";
   el("#item-change").innerHTML = changePill(item.change_percent);
+  renderHistBadge(item);
+
+  const invQtyEl = el("#item-inv-qty");
+  let invQty = item.inventory_quantity || 0;
+  invQtyEl.textContent = invQty;
+  el("#item-inv-minus").onclick = async () => {
+    invQty = Math.max(0, invQty - 1);
+    invQtyEl.textContent = invQty;
+    await setInventoryQuantity(item.id, invQty);
+  };
+  el("#item-inv-plus").onclick = async () => {
+    invQty += 1;
+    invQtyEl.textContent = invQty;
+    await setInventoryQuantity(item.id, invQty);
+  };
 
   const dealNote = el("#deal-note");
   const buyGroup = el("#buy-group");

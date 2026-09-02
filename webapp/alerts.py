@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """
-Алерты о сильном падении цены (push в Telegram) — только Godly/Ancient
-(по просьбе пользователя Unique исключён из уведомлений, хотя в
-мини-приложении остаётся как обычно). Порог и окно среднего берутся из
-переменных окружения DROP_ALERT_THRESHOLD_PERCENT/AVG_PRICE_WINDOW_DAYS.
+Алерты (push в Telegram) — только Godly/Ancient (по просьбе пользователя
+Unique исключён из уведомлений, хотя в мини-приложении остаётся как обычно).
+Два независимых вида:
+  1. Сильное падение цены относительно своей же истории (build_drop_alerts) —
+     порог и окно среднего: DROP_ALERT_THRESHOLD_PERCENT/AVG_PRICE_WINDOW_DAYS.
+  2. Цена заметно ниже Community Value с mm2values.com (build_undervalue_alerts)
+     — порог: UNDERVALUE_ALERT_THRESHOLD_PERCENT. Предмет может попасть под оба
+     условия одновременно или только под одно — состояния дедупа раздельные.
 """
 
 import json
@@ -39,25 +43,45 @@ ALERT_MIN_HISTORY_SAMPLES = 5
 # месте (баг: без этого бот спамил один и тот же алерт каждые 5 минут, пока
 # цена не отрастёт обратно). Не версионируем — рантайм-состояние.
 ALERTED_STATE_FILE = str(_REPO_DIR / "alerted_drops.json")
+# То же самое, но для алертов "дешевле своей Community Value" ниже — отдельный
+# файл и состояние, потому что это независимое условие (предмет может упасть
+# в цене и одновременно оказаться ниже Value, или только одно из двух).
+ALERTED_UNDERVALUE_STATE_FILE = str(_REPO_DIR / "alerted_undervalue.json")
 
 
-def load_alerted_state():
-    """{pid: цена, по которой мы последний раз алертили этот предмет}."""
-    if not os.path.exists(ALERTED_STATE_FILE):
+def _load_json_state(path):
+    if not os.path.exists(path):
         return {}
     try:
-        with open(ALERTED_STATE_FILE, "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     except (json.JSONDecodeError, OSError):
         return {}
 
 
-def save_alerted_state(state):
+def _save_json_state(path, state):
     try:
-        with open(ALERTED_STATE_FILE, "w", encoding="utf-8") as f:
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(state, f, ensure_ascii=False, indent=2)
     except OSError:
-        log.exception("Не удалось сохранить alerted_drops.json")
+        log.exception("Не удалось сохранить %s", path)
+
+
+def load_alerted_state():
+    """{pid: цена, по которой мы последний раз алертили этот предмет}."""
+    return _load_json_state(ALERTED_STATE_FILE)
+
+
+def save_alerted_state(state):
+    _save_json_state(ALERTED_STATE_FILE, state)
+
+
+def load_alerted_undervalue_state():
+    return _load_json_state(ALERTED_UNDERVALUE_STATE_FILE)
+
+
+def save_alerted_undervalue_state(state):
+    _save_json_state(ALERTED_UNDERVALUE_STATE_FILE, state)
 
 
 def build_drop_alerts(new_snapshot, old_snapshot, alerted_state):
@@ -99,44 +123,14 @@ def build_drop_alerts(new_snapshot, old_snapshot, alerted_state):
     return found
 
 
-def send_drop_alert(alert):
-    """Шлёт одно уведомление о сильном падении цены с кнопкой-ссылкой на лот."""
+def _send_telegram_alert(text, keyboard, image_url):
+    """Общая отправка для всех видов алертов — с картинкой предмета
+    (sendPhoto, подпись = текст), а если картинки нет или Telegram не смог её
+    загрузить (CDN недоступен/нет фото у предмета), откатываемся на обычное
+    текстовое sendMessage, чтобы алерт в любом случае дошёл."""
     if not tracker.TELEGRAM_BOT_TOKEN or not tracker.TELEGRAM_CHAT_ID:
         return
 
-    view = alert["view"]
-    avg_price = alert["avg_price"]
-    best_price = view["best_price"]
-    is_legacy = view["cheaper_source"] == "legacy"
-    buy_url = view["legacy_buy_url"] if is_legacy else view["buy_url"]
-
-    community_values = view.get("community_values") or []
-    if community_values:
-        value_text = " · ".join(f"{cv['label']}: {cv['value_raw']}" for cv in community_values)
-    else:
-        value_text = "нет данных"
-
-    # Средняя и % всегда относятся к ЦЕНЕ ТЕКУЩЕГО КАТАЛОГА (alert['price']) —
-    # именно её падение и обнаружил алерт (см. build_drop_alerts). best_price
-    # может оказаться дешевле (legacy) прямо сейчас — это отдельная строка и
-    # кнопка "Купить", а не тот же процент: иначе цифры не сходились бы (% и
-    # цена из разных источников).
-    text = (
-        f"🔥 <b>{view['name']}</b> ({view['rare']}) сильно подешевело!\n\n"
-        f"Средняя цена (за {AVG_PRICE_WINDOW_DAYS} дн.): {avg_price:.2f}₽\n"
-        f"Сейчас в текущем каталоге: <b>{alert['price']:.2f}₽</b> ({alert['drop_percent']:+.1f}%)\n"
-    )
-    if is_legacy:
-        text += f"Дешевле всего сейчас: <b>{best_price:.2f}₽</b> в Legacy-каталоге\n"
-    text += f"Community value: {value_text}"
-
-    keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
-    image_url = view.get("image")
-
-    # С картинкой предмета (sendPhoto, подпись = тот же текст) — если картинки
-    # нет или Telegram не смог её загрузить (CDN недоступен/нет фото у
-    # предмета), откатываемся на обычное текстовое sendMessage, чтобы алерт
-    # в любом случае дошёл.
     if image_url:
         try:
             resp = requests.post(
@@ -174,3 +168,94 @@ def send_drop_alert(alert):
             log.warning("Telegram API вернул ошибку при отправке алерта: %s %s", resp.status_code, resp.text)
     except requests.RequestException:
         log.exception("Не удалось отправить алерт в Telegram")
+
+
+def send_drop_alert(alert):
+    """Шлёт одно уведомление о сильном падении цены с кнопкой-ссылкой на лот."""
+    view = alert["view"]
+    avg_price = alert["avg_price"]
+    best_price = view["best_price"]
+    is_legacy = view["cheaper_source"] == "legacy"
+    buy_url = view["legacy_buy_url"] if is_legacy else view["buy_url"]
+
+    community_values = view.get("community_values") or []
+    if community_values:
+        value_text = " · ".join(f"{cv['label']}: {cv['value_raw']}" for cv in community_values)
+    else:
+        value_text = "нет данных"
+
+    # Средняя и % всегда относятся к ЦЕНЕ ТЕКУЩЕГО КАТАЛОГА (alert['price']) —
+    # именно её падение и обнаружил алерт (см. build_drop_alerts). best_price
+    # может оказаться дешевле (legacy) прямо сейчас — это отдельная строка и
+    # кнопка "Купить", а не тот же процент: иначе цифры не сходились бы (% и
+    # цена из разных источников).
+    text = (
+        f"🔥 <b>{view['name']}</b> ({view['rare']}) сильно подешевело!\n\n"
+        f"Средняя цена (за {AVG_PRICE_WINDOW_DAYS} дн.): {avg_price:.2f}₽\n"
+        f"Сейчас в текущем каталоге: <b>{alert['price']:.2f}₽</b> ({alert['drop_percent']:+.1f}%)\n"
+    )
+    if is_legacy:
+        text += f"Дешевле всего сейчас: <b>{best_price:.2f}₽</b> в Legacy-каталоге\n"
+    text += f"Community value: {value_text}"
+
+    keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
+    _send_telegram_alert(text, keyboard, view.get("image"))
+
+
+# На сколько % best_price должен быть НИЖЕ Community Value (mm2values.com),
+# чтобы это считалось выгодной сделкой, а не обычным разбросом цен лотов.
+UNDERVALUE_ALERT_THRESHOLD_PERCENT = float(os.environ.get("UNDERVALUE_ALERT_THRESHOLD_PERCENT", "30"))
+
+
+def build_undervalue_alerts(new_snapshot, old_snapshot, alerted_state):
+    """Ищет предметы Godly/Ancient, которые прямо сейчас продаются минимум на
+    UNDERVALUE_ALERT_THRESHOLD_PERCENT % дешевле своей Community Value
+    (mm2values.com) — то есть потенциально выгодную сделку, а не падение
+    относительно собственной истории (см. build_drop_alerts — это отдельное,
+    независимое условие). Тот же дедуп-приём: не повторяем алерт, пока
+    best_price не изменится."""
+    found = []
+    for pid, item in new_snapshot.items():
+        if (item.get("rare") or "").lower() not in ALERT_RARITIES:
+            continue
+
+        view = price_history.item_view(pid, item, old_snapshot)
+        best_price = view["best_price"]
+        if best_price is None:
+            continue
+
+        cv = next((c for c in view["community_values"] if c["source"] == "mm2values"), None)
+        if not cv or cv.get("value") is None or cv["value"] <= 0:
+            continue
+        value = cv["value"]
+
+        if alerted_state.get(pid) == best_price:
+            continue
+
+        discount_percent = (best_price - value) / value * 100
+        if discount_percent > -UNDERVALUE_ALERT_THRESHOLD_PERCENT:
+            continue
+
+        found.append({"pid": pid, "view": view, "value": value, "discount_percent": discount_percent})
+
+    found.sort(key=lambda a: a["discount_percent"])  # сильнее всего недооценённые — первыми
+    return found
+
+
+def send_undervalue_alert(alert):
+    """Шлёт одно уведомление о предмете, который продаётся заметно дешевле
+    своей Community Value."""
+    view = alert["view"]
+    value = alert["value"]
+    best_price = view["best_price"]
+    is_legacy = view["cheaper_source"] == "legacy"
+    buy_url = view["legacy_buy_url"] if is_legacy else view["buy_url"]
+
+    text = (
+        f"💎 <b>{view['name']}</b> ({view['rare']}) продаётся дешевле своей Community Value!\n\n"
+        f"Цена сейчас: <b>{best_price:.2f}₽</b>{' (Legacy-каталог)' if is_legacy else ''}\n"
+        f"Community Value: {value:,.0f}\n"
+        f"Дешевле на {abs(alert['discount_percent']):.0f}%"
+    )
+    keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
+    _send_telegram_alert(text, keyboard, view.get("image"))

@@ -184,3 +184,80 @@
     background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%238b8f9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat:no-repeat; background-position:right 10px center; }
   .sort-select:focus{ outline:none; border-color:var(--accent); }
+
+  /* ---------- Инструменты на главном экране ---------- */
+  .tool-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px; }
+  .tool-btn{ display:flex; flex-direction:column; align-items:center; gap:6px; background:var(--card);
+    border:1px solid var(--line); border-radius:16px; padding:14px 8px; color:var(--text); cursor:pointer; }
+  .tool-icon{ font-size:20px; }
+  .tool-label{ font-size:12.5px; font-weight:700; text-align:center; }
+
+  /* ---------- Исторический мин/макс на карточке предмета ---------- */
+  .hist-badge{ display:none; align-items:center; justify-content:center; gap:6px; font-size:12px; font-weight:700;
+    border-radius:14px; padding:9px 12px; margin:0 0 14px; text-align:center; }
+  .hist-badge.low{ color:var(--up); background:rgba(51,194,102,0.12); }
+  .hist-badge.high{ color:var(--down); background:rgba(239,83,80,0.12); }
+
+  /* ---------- Степпер количества (инвентарь на карточке предмета и списках) ---------- */
+  .inv-stepper{ display:flex; align-items:center; justify-content:center; gap:12px; background:var(--card);
+    border:1px solid var(--line); border-radius:14px; padding:8px 14px; margin-bottom:14px; }
+  .inv-stepper-label{ font-size:12.5px; color:var(--hint); font-weight:600; margin-right:2px; }
+  .inv-stepper-btn{ width:28px; height:28px; border-radius:9px; background:rgba(255,255,255,0.06); border:none;
+    color:var(--text); font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+  .inv-stepper-btn:active{ background:rgba(255,255,255,0.12); }
+  #item-inv-qty{ min-width:20px; text-align:center; font-size:14px; font-weight:700; }
+
+  /* ---------- Мой инвентарь ---------- */
+  .inv-summary{ background:var(--card); border:1px solid var(--line); border-radius:18px; padding:16px;
+    text-align:center; margin-bottom:14px; }
+  .inv-total-label{ font-size:12px; color:var(--hint); font-weight:600; margin-bottom:4px; }
+  .inv-total{ font-size:26px; font-weight:800; }
+  .add-item-btn{ width:100%; background:var(--accent); color:var(--accent-text); border:none; border-radius:14px;
+    padding:12px; font-size:14px; font-weight:700; cursor:pointer; margin-bottom:14px; }
+  .inv-list, .trade-list{ display:flex; flex-direction:column; gap:8px; }
+  .inv-row{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:9px 10px; }
+  .inv-row img{ width:44px; height:44px; object-fit:contain; border-radius:10px; background:rgba(255,255,255,0.04); flex:none; }
+  .inv-row-info{ flex:1; min-width:0; }
+  .inv-row-name{ font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .inv-row-meta{ font-size:11.5px; color:var(--hint); margin-top:2px; }
+  .inv-row .inv-stepper{ margin:0; padding:5px 8px; gap:8px; }
+
+  /* ---------- Калькулятор трейда ---------- */
+  .trade-cols{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
+  .trade-col{ min-width:0; }
+  .trade-col-head{ display:flex; justify-content:space-between; align-items:baseline; font-size:12px;
+    font-weight:700; color:var(--hint); margin-bottom:8px; }
+  .trade-col-total{ font-size:13px; color:var(--text); }
+  .trade-row{ display:flex; flex-direction:column; gap:6px; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:8px; }
+  .trade-row-top{ display:flex; align-items:center; gap:6px; min-width:0; }
+  .trade-row img{ width:28px; height:28px; object-fit:contain; border-radius:7px; background:rgba(255,255,255,0.04); flex:none; }
+  .trade-row-info{ flex:1; min-width:0; }
+  .trade-row-name{ font-size:11px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .trade-row-meta{ font-size:10px; color:var(--hint); margin-top:1px; }
+  .trade-row-bottom{ display:flex; align-items:center; justify-content:space-between; gap:4px; }
+  .trade-row .inv-stepper{ margin:0; padding:3px 6px; gap:4px; }
+  .trade-row .inv-stepper-btn{ width:20px; height:20px; font-size:12px; border-radius:6px; }
+  .trade-remove{ background:none; border:none; color:var(--hint); font-size:13px; cursor:pointer; flex:none; padding:4px; }
+  .trade-verdict{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; text-align:center; }
+  .trade-verdict-text{ font-size:13.5px; font-weight:700; line-height:1.4; }
+  .trade-verdict-note{ font-size:11px; color:var(--hint); margin-top:6px; }
+
+  /* ---------- Пикер предмета (модалка поиска) ---------- */
+  .picker-modal{ position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; display:flex;
+    align-items:flex-end; justify-content:center; }
+  .picker-sheet{ width:100%; max-width:520px; max-height:78vh; background:var(--bg); border-radius:22px 22px 0 0;
+    border:1px solid var(--line); border-bottom:none; padding:16px 18px; display:flex; flex-direction:column; }
+  .picker-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .picker-head .search-row{ flex:1; margin-bottom:0; }
+  .picker-close{ width:36px; height:36px; border-radius:11px; background:var(--card); border:1px solid var(--line);
+    color:var(--text); font-size:14px; cursor:pointer; flex:none; }
+  .picker-results{ overflow-y:auto; display:flex; flex-direction:column; gap:6px;
+    padding-bottom:max(8px, var(--tg-safe-area-inset-bottom, 0px), env(safe-area-inset-bottom, 0px)); }
+  .picker-row{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:8px 10px; cursor:pointer; }
+  .picker-row img{ width:40px; height:40px; object-fit:contain; border-radius:10px; background:rgba(255,255,255,0.04); flex:none; }
+  .picker-row-info{ flex:1; min-width:0; }
+  .picker-row-name{ font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .picker-row-meta{ font-size:11px; color:var(--hint); margin-top:2px; }

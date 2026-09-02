@@ -24,6 +24,18 @@
   <section id="screen-home" class="screen active">
     <div id="game-update-info" class="game-update"></div>
     <div id="mm2-news" class="mm2-news"></div>
+
+    <div class="tool-row">
+      <button class="tool-btn" id="open-inventory-btn">
+        <span class="tool-icon">📦</span>
+        <span class="tool-label">Мой инвентарь</span>
+      </button>
+      <button class="tool-btn" id="open-trade-btn">
+        <span class="tool-icon">⚖️</span>
+        <span class="tool-label">Калькулятор трейда</span>
+      </button>
+    </div>
+
     <h2 class="section-title"><span>Категории</span></h2>
     <div id="categories" class="cat-row"><div class="loading">Загрузка…</div></div>
 
@@ -66,7 +78,15 @@
       <div id="item-prev" class="num"></div>
     </div>
     <div class="change-center"><div id="item-change"></div></div>
+    <div id="item-hist-badge" class="hist-badge" style="display:none;"></div>
     <div id="item-win-row" class="win-row"></div>
+
+    <div class="inv-stepper" id="item-inv-stepper">
+      <span class="inv-stepper-label">В инвентаре:</span>
+      <button id="item-inv-minus" class="inv-stepper-btn">−</button>
+      <span id="item-inv-qty" class="num">0</span>
+      <button id="item-inv-plus" class="inv-stepper-btn">+</button>
+    </div>
 
     <div id="deal-note" class="deal-note" style="display:none;">
       <div class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#ffb020"/></svg></div>
@@ -87,7 +107,51 @@
       <div id="value-chart"></div>
     </div>
   </section>
+
+  <section id="screen-inventory" class="screen">
+    <div class="inv-summary">
+      <div class="inv-total-label">Итого стоимость инвентаря</div>
+      <div class="inv-total num" id="inventory-total">—</div>
+    </div>
+    <button class="add-item-btn" id="inventory-add-btn">+ Добавить предмет</button>
+    <div id="inventory-list" class="inv-list"></div>
+  </section>
+
+  <section id="screen-trade" class="screen">
+    <div class="trade-cols">
+      <div class="trade-col">
+        <div class="trade-col-head">
+          <span>Моя сторона</span>
+          <span class="trade-col-total num" id="trade-a-total">0₽</span>
+        </div>
+        <button class="add-item-btn" id="trade-add-a">+ Добавить</button>
+        <div id="trade-list-a" class="trade-list"></div>
+      </div>
+      <div class="trade-col">
+        <div class="trade-col-head">
+          <span>Их сторона</span>
+          <span class="trade-col-total num" id="trade-b-total">0₽</span>
+        </div>
+        <button class="add-item-btn" id="trade-add-b">+ Добавить</button>
+        <div id="trade-list-b" class="trade-list"></div>
+      </div>
+    </div>
+    <div class="trade-verdict" id="trade-verdict"></div>
+  </section>
 </main>
+
+<div id="picker-modal" class="picker-modal" style="display:none;">
+  <div class="picker-sheet">
+    <div class="picker-head">
+      <div class="search-row">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#8b8f9a" stroke-width="1.8"/><path d="M21 21l-4.3-4.3" stroke="#8b8f9a" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="text" id="picker-search" class="search-input" placeholder="Поиск предмета… (любая редкость)">
+      </div>
+      <button id="picker-close" class="picker-close" aria-label="Закрыть">✕</button>
+    </div>
+    <div id="picker-results" class="picker-results"></div>
+  </div>
+</div>
 
 <script src="/static/app.js"></script>
 </body>

@@ -47,7 +47,7 @@ for _p in (str(REPO_DIR), str(BASE_DIR)):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Body, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -56,6 +56,7 @@ import mm2_api
 import mm2_price_tracker as tracker
 
 import alerts
+import inventory
 import price_history
 import telegram_bot
 
@@ -188,7 +189,80 @@ def api_item(pid: str, window: str = price_history.DEFAULT_WINDOW):
             name_key = mm2_api.normalize_name(item.get("name"))
             cv["history"] = price_history.build_value_series(name_key, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
     view["window"] = resolved_window
+    view["inventory_quantity"] = inventory.load().get(pid, 0)
     return view
+
+
+SEARCH_LIMIT = 30
+
+
+@app.get("/api/search")
+def api_search(q: str = ""):
+    """Поиск предмета по названию среди ВСЕГО каталога (любая редкость, не
+    только Godly/Ancient/Unique) — общий пикер для инвентаря и калькулятора
+    трейда, которым может быть нужен любой предмет, а не только отслеживаемые
+    на основных экранах категории."""
+    query = q.strip().lower()
+    if len(query) < 2:
+        return {"items": []}
+
+    snapshot = price_history.current_snapshot()
+    results = []
+    for pid, item in snapshot.items():
+        if item.get("price") is None:
+            continue
+        if query not in (item.get("name") or "").lower():
+            continue
+        view = price_history.item_view(pid, item, {})
+        results.append({
+            "id": pid,
+            "name": view["name"],
+            "rare": view["rare"],
+            "category": view["category"],
+            "image": view["image"],
+            "best_price": view["best_price"],
+            "community_values": view["community_values"],
+        })
+        if len(results) >= SEARCH_LIMIT:
+            break
+    return {"items": results}
+
+
+@app.get("/api/inventory")
+def api_inventory():
+    """Личный инвентарь — {pid: количество} из inventory.py, дополненный
+    текущей ценой на момент запроса (не хранится статично, потому что цена
+    двигается каждый цикл проверки)."""
+    data = inventory.load()
+    snapshot = price_history.current_snapshot()
+    items = []
+    total = 0.0
+    for pid, quantity in data.items():
+        item = snapshot.get(pid)
+        if not item or item.get("price") is None:
+            continue
+        view = price_history.item_view(pid, item, {})
+        subtotal = view["best_price"] * quantity
+        total += subtotal
+        items.append({
+            "id": pid,
+            "name": view["name"],
+            "rare": view["rare"],
+            "category": view["category"],
+            "image": view["image"],
+            "best_price": view["best_price"],
+            "quantity": quantity,
+            "subtotal": subtotal,
+        })
+    items.sort(key=lambda x: -x["subtotal"])
+    return {"items": items, "total": total}
+
+
+@app.post("/api/inventory/{pid}")
+def api_inventory_set(pid: str, payload: dict = Body(...)):
+    quantity = int(payload.get("quantity", 0))
+    inventory.set_quantity(pid, quantity)
+    return {"ok": True}
 
 
 # ---------- Статика мини-приложения ----------
@@ -268,6 +342,18 @@ def run_price_check_once():
                 log.info("Отправлено алертов о падении цены: %d", len(drop_alerts))
         except Exception:
             log.exception("Ошибка при формировании алертов о падении цены")
+
+        try:
+            underval_state = alerts.load_alerted_undervalue_state()
+            underval_alerts = alerts.build_undervalue_alerts(new_snapshot, old_snapshot, underval_state)
+            for alert in underval_alerts:
+                alerts.send_undervalue_alert(alert)
+                underval_state[alert["pid"]] = alert["view"]["best_price"]
+            if underval_alerts:
+                alerts.save_alerted_undervalue_state(underval_state)
+                log.info("Отправлено алертов о цене ниже Community Value: %d", len(underval_alerts))
+        except Exception:
+            log.exception("Ошибка при формировании алертов о цене ниже Community Value")
 
     tracker.save_history(new_snapshot)
     price_history.append_price_points(new_snapshot)

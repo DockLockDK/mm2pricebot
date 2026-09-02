@@ -13,3 +13,5 @@ legacy_price_history.jsonl
 price_history.db
 price_history.db-wal
 price_history.db-shm
+inventory.json
+alerted_undervalue.json

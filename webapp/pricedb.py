@@ -224,6 +224,27 @@ def price_avg(product_id, since_ts):
     return (avg, count or 0)
 
 
+def price_min_max(product_id):
+    """(мин, макс) цены предмета за всю накопленную историю. (None, None),
+    если точек нет. Внимание: после compact() старые точки — это средние по
+    часу/дню, а не честные min/max внутри бакета, так что для очень старой
+    истории это приближение, а не абсолютно точный исторический экстремум."""
+    conn = get_conn()
+    row = conn.execute(
+        "SELECT MIN(price), MAX(price) FROM price_points WHERE product_id = ?", (product_id,)
+    ).fetchone()
+    return (row[0], row[1]) if row else (None, None)
+
+
+def legacy_price_min_max(match_key):
+    """То же самое, но по истории legacy-каталога."""
+    conn = get_conn()
+    row = conn.execute(
+        "SELECT MIN(price), MAX(price) FROM legacy_price_points WHERE match_key = ?", (match_key,)
+    ).fetchone()
+    return (row[0], row[1]) if row else (None, None)
+
+
 # ---------- уплотнение старых данных ----------
 
 def maybe_compact(now_ts, min_interval_sec=6 * 3600):
