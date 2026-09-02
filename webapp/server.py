@@ -162,11 +162,16 @@ def api_item(pid: str, window: str = price_history.DEFAULT_WINDOW):
 
     resolved_window = window if window in price_history.WINDOW_SECONDS else price_history.DEFAULT_WINDOW
     bucket_sec = price_history.CHART_BUCKET_SECONDS.get(resolved_window, price_history.CANDLE_BUCKET_SEC)
-    view["candles"] = price_history.build_candles(pid, bucket_sec=bucket_sec, window_seconds=window_sec)
+    # Графики намеренно смотрят дальше, чем сам выбранный период сравнения
+    # (см. CHART_WINDOW_SECONDS) — иначе на "5 мин"/"1 час" график почти всегда
+    # пуст, даже если "было/стало" в шапке честно показывает сильное падение,
+    # случившееся чуть раньше выбранного окна.
+    chart_window_sec = price_history.resolve_chart_window(resolved_window)
+    view["candles"] = price_history.build_candles(pid, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
     for cv in view["community_values"]:
         if cv["source"] == "mm2values":
             name_key = mm2_api.normalize_name(item.get("name"))
-            cv["history"] = price_history.build_value_series(name_key, bucket_sec=bucket_sec, window_seconds=window_sec)
+            cv["history"] = price_history.build_value_series(name_key, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
     view["window"] = resolved_window
     return view
 
