@@ -261,3 +261,45 @@
   .picker-row-info{ flex:1; min-width:0; }
   .picker-row-name{ font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .picker-row-meta{ font-size:11px; color:var(--hint); margin-top:2px; }
+
+  /* ---------- Десктоп/широкий экран (тот же сайт открыт не в Telegram, а в
+     обычном браузере на ПК) — та же вёрстка, что и в мобильном Mini App,
+     просто с ограничением ширины контента и большим числом колонок в
+     сетках, вместо растягивания карточек во весь экран. ---------- */
+  @media (min-width: 720px) {
+    main{ max-width:1100px; margin:0 auto; padding:24px 32px 32px; }
+    /* Фон шапки совпадает с фоном страницы (var(--bg) у обоих), поэтому
+       можно центрировать и её содержимое в те же 1100px без видимого шва. */
+    header{ max-width:1100px; margin:0 auto; padding-left:32px; padding-right:32px; box-sizing:border-box; }
+
+    .game-update, .mm2-news, .tool-row, .cat-row,
+    .search-row, .sort-select, .filter-row, .win-row{
+      max-width:720px; margin-left:auto; margin-right:auto;
+    }
+    .cat-row{ margin-bottom:32px; }
+    .search-row{ margin-bottom:10px; }
+
+    .grid{ grid-template-columns:repeat(4, 1fr); gap:18px; }
+
+    #screen-item{ max-width:620px; margin:0 auto; }
+    #screen-inventory{ max-width:680px; margin:0 auto; }
+    #screen-trade{ max-width:900px; margin:0 auto; }
+
+    .picker-modal{ align-items:center; }
+    .picker-sheet{ border-radius:22px; max-height:70vh; }
+  }
+
+  /* Наведение мышью — только на устройствах, где оно вообще есть (не
+     тачскрин), чтобы на телефоне/планшете не оставались "залипшие" hover. */
+  @media (hover:hover){
+    .cat-btn, .item-card, .tool-btn, .news-card, .picker-row, .inv-row, .trade-row{
+      transition:border-color .15s, transform .15s;
+    }
+    .cat-btn:hover, .item-card:hover, .tool-btn:hover, .news-card:hover, .picker-row:hover{
+      border-color:var(--accent); transform:translateY(-1px);
+    }
+    .win-chip:not(.active):hover, .filter-chip:not(.active):hover{ border-color:var(--accent); color:var(--text); }
+    .buy-btn:hover, .add-item-btn:hover{ filter:brightness(1.08); }
+    .inv-stepper-btn:hover{ background:rgba(255,255,255,0.12); }
+    #back-btn:hover, .picker-close:hover{ border-color:var(--accent); }
+  }
