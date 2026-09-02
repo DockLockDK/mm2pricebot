@@ -194,6 +194,14 @@ def api_item(pid: str, window: str = price_history.DEFAULT_WINDOW):
     return view
 
 
+@app.get("/api/dreampets_fees")
+def api_dreampets_fees():
+    """Способы пополнения/вывода DreamPets со своими комиссиями (реальные,
+    тем же публичным API, что и сам сайт) — калькулятор покупки/продажи в
+    мини-приложении считает по ним на фронтенде, без лишнего round-trip."""
+    return price_history.dreampets_fees()
+
+
 SEARCH_LIMIT = 30
 
 
@@ -351,6 +359,13 @@ def run_price_check_once():
         log.info("FunPay: сопоставлено %d предметов (из %d лотов 'Предметы').", count, len(funpay_listings))
     except Exception:
         log.exception("Ошибка при обновлении цен FunPay")
+
+    try:
+        topup_methods = mm2_api.fetch_dreampets_topup_methods()
+        withdrawal_methods = mm2_api.fetch_dreampets_withdrawal_methods()
+        price_history.update_dreampets_fees(topup_methods, withdrawal_methods)
+    except Exception:
+        log.exception("Ошибка при обновлении комиссий DreamPets")
 
     # Алерты о сильном падении цены — считаем ДО append_price_points() ниже,
     # чтобы "средняя за N дней" была за период ДО этого момента, а не включала

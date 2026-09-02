@@ -216,6 +216,7 @@ async function loadHome() {
 
   el("#open-inventory-btn").onclick = loadInventory;
   el("#open-trade-btn").onclick = loadTrade;
+  el("#open-fees-btn").onclick = loadFees;
 
   renderWindowRow("#home-win-row", () => loadHome());
 
@@ -655,6 +656,104 @@ function renderTrade() {
     ? '<div class="trade-verdict-note">Не у всех предметов есть Community Value — сравниваем по цене каталога.</div>'
     : "";
   verdictEl.innerHTML = `<div class="trade-verdict-text">${verdictText}</div>${note}`;
+}
+
+// ---------- Калькулятор комиссий DreamPets (пополнение/вывод) ----------
+// Комиссии — реальные, из открытого API самого DreamPets (см.
+// /api/dreampets_fees на бэкенде), а не выдуманные проценты. Направление
+// расчёта — стандартная для платёжных агрегаторов модель "комиссия берётся
+// от суммы платежа/вывода" (см. заметку под калькулятором в разметке) —
+// если точный процент на сайте будет отличаться, поправим формулу.
+
+let dreampetsFees = null;
+
+function methodLabel(m) {
+  const parts = [m.system];
+  if (m.method) parts.push(m.method);
+  return parts.join(" · ");
+}
+
+function calcTopupTotal(price, method) {
+  const rate = (method.commission_rate || 0) / 100;
+  return price / (1 - rate);
+}
+
+function calcWithdrawalNet(price, method) {
+  const rate = (method.commission_rate || 0) / 100;
+  return price * (1 - rate) - (method.fixed_commission || 0);
+}
+
+function populateFeesSelect(selectEl, methods) {
+  selectEl.innerHTML = methods.map((m, i) => {
+    const extra = m.fixed_commission ? ` +${m.fixed_commission}₽` : "";
+    return `<option value="${i}">${escapeHtml(methodLabel(m))} — ${m.commission_rate}%${extra}</option>`;
+  }).join("");
+}
+
+function renderFeesBuyResult() {
+  const price = parseFloat(el("#fees-buy-price").value);
+  const methods = dreampetsFees.topup_methods;
+  const resultEl = el("#fees-buy-result");
+  if (!price || price <= 0 || !methods.length) { resultEl.innerHTML = ""; return; }
+  const method = methods[Number(el("#fees-buy-method").value)];
+  const total = calcTopupTotal(price, method);
+  const feeAmount = total - price;
+  resultEl.innerHTML = `
+    <div class="fees-result-main">К оплате: <b>${fmtPrice(total)}</b></div>
+    <div class="fees-result-sub">Из них комиссия за пополнение: ${fmtPrice(feeAmount)} (${method.commission_rate}%)</div>
+  `;
+}
+
+function renderFeesSellResult() {
+  const price = parseFloat(el("#fees-sell-price").value);
+  const methods = dreampetsFees.withdrawal_methods;
+  const resultEl = el("#fees-sell-result");
+  if (!price || price <= 0 || !methods.length) { resultEl.innerHTML = ""; return; }
+  const method = methods[Number(el("#fees-sell-method").value)];
+  const net = Math.max(0, calcWithdrawalNet(price, method));
+  const feeAmount = price - net;
+  resultEl.innerHTML = `
+    <div class="fees-result-main">Получите на карту: <b>${fmtPrice(net)}</b></div>
+    <div class="fees-result-sub">Комиссия за вывод: ${fmtPrice(feeAmount)} (${method.commission_rate}%${method.fixed_commission ? ` + ${method.fixed_commission}₽` : ""})</div>
+  `;
+}
+
+async function loadFees() {
+  showScreen("fees");
+  el("#header-title").textContent = "Комиссии DreamPets";
+  backAction = loadHome;
+
+  if (!dreampetsFees) {
+    const res = await fetch("/api/dreampets_fees");
+    dreampetsFees = await res.json();
+  }
+  populateFeesSelect(el("#fees-buy-method"), dreampetsFees.topup_methods);
+  populateFeesSelect(el("#fees-sell-method"), dreampetsFees.withdrawal_methods);
+
+  el("#fees-buy-price").oninput = renderFeesBuyResult;
+  el("#fees-buy-method").onchange = renderFeesBuyResult;
+  el("#fees-sell-price").oninput = renderFeesSellResult;
+  el("#fees-sell-method").onchange = renderFeesSellResult;
+
+  el("#fees-buy-pick").onclick = () => openPicker(item => {
+    el("#fees-buy-price").value = item.best_price != null ? item.best_price.toFixed(2) : "";
+    renderFeesBuyResult();
+  });
+  el("#fees-sell-pick").onclick = () => openPicker(item => {
+    el("#fees-sell-price").value = item.best_price != null ? item.best_price.toFixed(2) : "";
+    renderFeesSellResult();
+  });
+
+  el(".fees-tabs").querySelectorAll(".fees-tab").forEach(btn => {
+    btn.onclick = () => {
+      el(".fees-tabs").querySelectorAll(".fees-tab").forEach(b => b.classList.toggle("active", b === btn));
+      el("#fees-buy").style.display = btn.dataset.tab === "buy" ? "block" : "none";
+      el("#fees-sell").style.display = btn.dataset.tab === "sell" ? "block" : "none";
+    };
+  });
+
+  renderFeesBuyResult();
+  renderFeesSellResult();
 }
 
 async function loadItem(id, backFn) {

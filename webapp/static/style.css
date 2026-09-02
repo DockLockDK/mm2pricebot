@@ -187,11 +187,11 @@
   .sort-select:focus{ outline:none; border-color:var(--accent); }
 
   /* ---------- Инструменты на главном экране ---------- */
-  .tool-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px; }
+  .tool-row{ display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:22px; }
   .tool-btn{ display:flex; flex-direction:column; align-items:center; gap:6px; background:var(--card);
-    border:1px solid var(--line); border-radius:16px; padding:14px 8px; color:var(--text); cursor:pointer; }
-  .tool-icon{ font-size:20px; }
-  .tool-label{ font-size:12.5px; font-weight:700; text-align:center; }
+    border:1px solid var(--line); border-radius:16px; padding:12px 6px; color:var(--text); cursor:pointer; }
+  .tool-icon{ font-size:18px; }
+  .tool-label{ font-size:11px; font-weight:700; text-align:center; line-height:1.25; }
 
   /* ---------- Исторический мин/макс на карточке предмета ---------- */
   .hist-badge{ display:none; align-items:center; justify-content:center; gap:6px; font-size:12px; font-weight:700;
@@ -249,6 +249,31 @@
   .trade-verdict-text{ font-size:13.5px; font-weight:700; line-height:1.4; }
   .trade-verdict-note{ font-size:11px; color:var(--hint); margin-top:6px; }
 
+  /* ---------- Калькулятор комиссий DreamPets ---------- */
+  .fees-tabs{ display:flex; gap:8px; margin-bottom:16px; }
+  .fees-tab{ flex:1; background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:11px; font-size:13.5px; font-weight:700; color:var(--hint); cursor:pointer; }
+  .fees-tab.active{ color:var(--accent-text); background:var(--accent); border-color:transparent; }
+  .fees-label{ font-size:12px; color:var(--hint); font-weight:600; margin:0 0 6px; }
+  .fees-price-row{ display:flex; gap:8px; margin-bottom:14px; }
+  .fees-input{ flex:1; min-width:0; background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:11px 12px; font-size:14px; color:var(--text); font-family:inherit; }
+  .fees-input:focus{ outline:none; border-color:var(--accent); }
+  .fees-pick-btn{ flex:none; background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:11px 14px; font-size:12.5px; font-weight:700; color:var(--text); cursor:pointer; white-space:nowrap; }
+  .fees-select{ width:100%; background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:11px 34px 11px 14px; font-size:13.5px; font-weight:600; color:var(--text); font-family:inherit;
+    margin-bottom:14px; appearance:none; -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%238b8f9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 10px center; }
+  .fees-select:focus{ outline:none; border-color:var(--accent); }
+  .fees-result{ min-height:1px; }
+  .fees-result:empty{ display:none; }
+  .fees-result-main{ background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:16px; text-align:center; font-size:16px; font-weight:700; margin-bottom:6px; }
+  .fees-result-sub{ font-size:11.5px; color:var(--hint); text-align:center; }
+  .fees-note{ font-size:11px; color:var(--hint); line-height:1.5; margin-top:18px; text-align:center; }
+
   /* ---------- Пикер предмета (модалка поиска) ---------- */
   .picker-modal{ position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:100; display:flex;
     align-items:flex-end; justify-content:center; }
@@ -289,6 +314,7 @@
     #screen-item{ max-width:620px; margin:0 auto; }
     #screen-inventory{ max-width:680px; margin:0 auto; }
     #screen-trade{ max-width:900px; margin:0 auto; }
+    #screen-fees{ max-width:520px; margin:0 auto; }
 
     .picker-modal{ align-items:center; }
     .picker-sheet{ border-radius:22px; max-height:70vh; }

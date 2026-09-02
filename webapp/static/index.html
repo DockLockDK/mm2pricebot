@@ -34,6 +34,10 @@
         <span class="tool-icon">⚖️</span>
         <span class="tool-label">Калькулятор трейда</span>
       </button>
+      <button class="tool-btn" id="open-fees-btn">
+        <span class="tool-icon">💰</span>
+        <span class="tool-label">Комиссии DreamPets</span>
+      </button>
     </div>
 
     <h2 class="section-title"><span>Категории</span></h2>
@@ -135,6 +139,37 @@
       </div>
     </div>
     <div class="trade-verdict" id="trade-verdict"></div>
+  </section>
+
+  <section id="screen-fees" class="screen">
+    <div class="fees-tabs">
+      <button class="fees-tab active" data-tab="buy">Купить</button>
+      <button class="fees-tab" data-tab="sell">Продать</button>
+    </div>
+
+    <div id="fees-buy" class="fees-panel">
+      <div class="fees-label">Цена предмета, ₽</div>
+      <div class="fees-price-row">
+        <input type="number" id="fees-buy-price" class="fees-input" placeholder="Например, 500" min="0">
+        <button class="fees-pick-btn" id="fees-buy-pick">Выбрать предмет</button>
+      </div>
+      <div class="fees-label">Способ оплаты</div>
+      <select id="fees-buy-method" class="fees-select"></select>
+      <div class="fees-result" id="fees-buy-result"></div>
+    </div>
+
+    <div id="fees-sell" class="fees-panel" style="display:none;">
+      <div class="fees-label">Цена продажи, ₽</div>
+      <div class="fees-price-row">
+        <input type="number" id="fees-sell-price" class="fees-input" placeholder="Например, 500" min="0">
+        <button class="fees-pick-btn" id="fees-sell-pick">Выбрать предмет</button>
+      </div>
+      <div class="fees-label">Способ вывода</div>
+      <select id="fees-sell-method" class="fees-select"></select>
+      <div class="fees-result" id="fees-sell-result"></div>
+    </div>
+
+    <div class="fees-note">Комиссии — реальные, из открытого API самого DreamPets, обновляются вместе с ценами. Расчёт по стандартной для платёжных агрегаторов модели: комиссия берётся от суммы платежа/вывода. Если итоговые цифры на сайте будут отличаться — напишите точный пример, поправим формулу.</div>
   </section>
 </main>
 

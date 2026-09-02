@@ -113,6 +113,7 @@ _mm2values_index = {}
 _roblox_game_info = {}
 _mm2_news = {}
 _funpay_index = {}
+_dreampets_fees = {"topup_methods": [], "withdrawal_methods": []}
 
 
 def update_legacy(legacy_index):
@@ -178,6 +179,22 @@ def update_funpay(funpay_listings, snapshot):
     now_ts = int(time.time())
     pricedb.insert_funpay_points(now_ts, {key: v["price"] for key, v in new_index.items()})
     return len(new_index)
+
+
+def update_dreampets_fees(topup_methods, withdrawal_methods):
+    """Обновляет живой снапшот способов пополнения/вывода DreamPets со своими
+    комиссиями (см. mm2_api.fetch_dreampets_topup_methods/withdrawal_methods)
+    — используется калькулятором пополнения/продажи в мини-приложении.
+    Каждый список обновляется независимо — пустой ответ по одному не должен
+    стирать последний известный результат по другому."""
+    if topup_methods:
+        _dreampets_fees["topup_methods"] = topup_methods
+    if withdrawal_methods:
+        _dreampets_fees["withdrawal_methods"] = withdrawal_methods
+
+
+def dreampets_fees():
+    return _dreampets_fees
 
 
 def update_roblox_game_info(info):

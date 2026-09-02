@@ -468,4 +468,37 @@ def fetch_funpay_listings():
     return _parse_funpay_html(resp.text)
 
 
+# ---------------------------------------------------------------------------
+# Комиссии DreamPets на пополнение (чтобы купить) и вывод (чтобы продать) —
+# тот же публичный API, которым пользуется сам сайт (найден в их
+# JS-бандле — window.config.API.paymentsUrl), без авторизации.
+DREAMPETS_TOPUP_METHODS_URL = "https://dreampets.gg/api/payments/v1/topup_methods/enable/"
+DREAMPETS_WITHDRAWAL_METHODS_URL = "https://dreampets.gg/api/payments/v1/withdrawal_methods/enable/"
+
+
+def fetch_dreampets_topup_methods():
+    """Способы пополнения баланса DreamPets с их комиссией — список сырых
+    dict'ов от API (system, method, min_amount, max_amount, commission_rate,
+    currency, ...) или [] при сбое."""
+    try:
+        resp = requests.get(DREAMPETS_TOPUP_METHODS_URL, headers=HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+        return resp.json().get("topup_methods") or []
+    except (requests.RequestException, ValueError) as e:
+        print(f"[!] Ошибка запроса способов пополнения DreamPets: {e}")
+        return []
+
+
+def fetch_dreampets_withdrawal_methods():
+    """Способы вывода средств DreamPets с их комиссией (commission_rate% +
+    fixed_commission) — список сырых dict'ов от API или [] при сбое."""
+    try:
+        resp = requests.get(DREAMPETS_WITHDRAWAL_METHODS_URL, headers=HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+        return resp.json().get("withdrawal_methods") or []
+    except (requests.RequestException, ValueError) as e:
+        print(f"[!] Ошибка запроса способов вывода DreamPets: {e}")
+        return []
+
+
 
