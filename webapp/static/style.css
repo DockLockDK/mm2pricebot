@@ -212,17 +212,6 @@
     text-align:center; margin-bottom:14px; }
   .inv-total-label{ font-size:12px; color:var(--hint); font-weight:600; margin-bottom:4px; }
   .inv-total{ font-size:26px; font-weight:800; }
-  .add-item-btn{ width:100%; background:var(--accent); color:var(--accent-text); border:none; border-radius:14px;
-    padding:12px; font-size:14px; font-weight:700; cursor:pointer; margin-bottom:14px; }
-  .inv-list, .trade-list{ display:flex; flex-direction:column; gap:8px; }
-  .inv-row{ display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line);
-    border-radius:14px; padding:9px 10px; }
-  .inv-row img{ width:44px; height:44px; object-fit:contain; border-radius:10px; background:rgba(255,255,255,0.04); flex:none; }
-  .inv-row-info{ flex:1; min-width:0; }
-  .inv-row-name{ font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .inv-row-meta{ font-size:11.5px; color:var(--hint); margin-top:2px; }
-  .inv-row-value{ font-size:11px; color:var(--value); margin-top:2px; font-weight:600; }
-  .inv-row .inv-stepper{ margin:0; padding:5px 8px; gap:8px; }
 
   /* ---------- Калькулятор трейда ---------- */
   .trade-cols{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; }
@@ -230,18 +219,31 @@
   .trade-col-head{ display:flex; justify-content:space-between; align-items:baseline; font-size:12px;
     font-weight:700; color:var(--hint); margin-bottom:8px; }
   .trade-col-total{ font-size:13px; color:var(--text); }
-  .trade-row{ display:flex; flex-direction:column; gap:6px; background:var(--card); border:1px solid var(--line);
-    border-radius:12px; padding:8px; }
-  .trade-row-top{ display:flex; align-items:center; gap:6px; min-width:0; }
-  .trade-row img{ width:28px; height:28px; object-fit:contain; border-radius:7px; background:rgba(255,255,255,0.04); flex:none; }
-  .trade-row-info{ flex:1; min-width:0; }
-  .trade-row-name{ font-size:11px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .trade-row-meta{ font-size:10px; color:var(--hint); margin-top:1px; }
-  .trade-row-value{ font-size:10px; color:var(--value); margin-top:1px; font-weight:600; }
-  .trade-row-bottom{ display:flex; align-items:center; justify-content:space-between; gap:4px; }
-  .trade-row .inv-stepper{ margin:0; padding:3px 6px; gap:4px; }
-  .trade-row .inv-stepper-btn{ width:20px; height:20px; font-size:12px; border-radius:6px; }
-  .trade-remove{ background:none; border:none; color:var(--hint); font-size:13px; cursor:pointer; flex:none; padding:4px; }
+
+  /* ---------- Сетка слотов-иконок (общая для инвентаря и калькулятора
+     трейда) — пустой слот с "+" открывает пикер, заполненный показывает
+     иконку/цену/Value и свой степпер количества. auto-fill сам подбирает
+     число колонок под ширину контейнера — одна и та же вёрстка работает и
+     в узкой половине трейда, и в широком инвентаре. ---------- */
+  .slot-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(72px, 1fr)); gap:8px; }
+  .slot-tile{ display:flex; flex-direction:column; gap:4px; }
+  .slot{ position:relative; aspect-ratio:1/1; border-radius:14px; background:var(--card);
+    border:1px solid var(--line); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .slot img{ width:72%; height:72%; object-fit:contain; }
+  .slot-add{ cursor:pointer; border-style:dashed; color:var(--hint); font-size:24px; font-weight:300; }
+  .slot-add-label{ text-align:center; font-size:10px; color:var(--hint); }
+  .slot-remove{ position:absolute; top:3px; right:3px; width:18px; height:18px; border-radius:6px;
+    background:rgba(0,0,0,0.6); border:none; color:#fff; font-size:10px; cursor:pointer; padding:0;
+    display:flex; align-items:center; justify-content:center; }
+  .slot-meta{ text-align:center; }
+  .slot-price{ font-size:10.5px; font-weight:700; }
+  .slot-value{ font-size:9.5px; color:var(--value); font-weight:600; }
+  .slot-stepper{ display:flex; align-items:center; justify-content:center; gap:4px; margin-top:2px; }
+  .slot-stepper-btn{ width:18px; height:18px; border-radius:6px; background:rgba(255,255,255,0.06); border:none;
+    color:var(--text); font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center;
+    justify-content:center; padding:0; }
+  .slot-stepper-btn:active{ background:rgba(255,255,255,0.12); }
+  .slot-stepper .num{ min-width:14px; text-align:center; font-size:11px; font-weight:700; }
   .trade-verdict{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; text-align:center; }
   .trade-verdict-text{ font-size:13.5px; font-weight:700; line-height:1.4; }
   .trade-verdict-note{ font-size:11px; color:var(--hint); margin-top:6px; }
@@ -294,14 +296,15 @@
   /* Наведение мышью — только на устройствах, где оно вообще есть (не
      тачскрин), чтобы на телефоне/планшете не оставались "залипшие" hover. */
   @media (hover:hover){
-    .cat-btn, .item-card, .tool-btn, .news-card, .picker-row, .inv-row, .trade-row{
+    .cat-btn, .item-card, .tool-btn, .news-card, .picker-row, .slot{
       transition:border-color .15s, transform .15s;
     }
     .cat-btn:hover, .item-card:hover, .tool-btn:hover, .news-card:hover, .picker-row:hover{
       border-color:var(--accent); transform:translateY(-1px);
     }
+    .slot-add:hover{ border-color:var(--accent); color:var(--accent); }
     .win-chip:not(.active):hover, .filter-chip:not(.active):hover{ border-color:var(--accent); color:var(--text); }
-    .buy-btn:hover, .add-item-btn:hover{ filter:brightness(1.08); }
-    .inv-stepper-btn:hover{ background:rgba(255,255,255,0.12); }
-    #back-btn:hover, .picker-close:hover{ border-color:var(--accent); }
+    .buy-btn:hover{ filter:brightness(1.08); }
+    .inv-stepper-btn:hover, .slot-stepper-btn:hover{ background:rgba(255,255,255,0.12); }
+    #back-btn:hover, .picker-close:hover, .slot-remove:hover{ border-color:var(--accent); }
   }

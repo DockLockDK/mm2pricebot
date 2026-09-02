@@ -429,6 +429,8 @@ window.addEventListener("resize", () => {
 });
 
 // ---------- Общий пикер предмета (для инвентаря и калькулятора трейда) ----------
+// Пустой запрос сразу показывает список для "пролистать" (самые дорогие
+// сначала) — не обязательно печатать название, можно просто проскроллить.
 
 let pickerCallback = null;
 let pickerDebounce = null;
@@ -438,7 +440,8 @@ function openPicker(onSelect) {
   el("#picker-modal").style.display = "flex";
   const input = el("#picker-search");
   input.value = "";
-  el("#picker-results").innerHTML = '<div class="empty">Начните вводить название…</div>';
+  el("#picker-results").innerHTML = '<div class="loading">Загрузка…</div>';
+  loadPickerResults("");
   input.focus();
 }
 
@@ -451,18 +454,15 @@ el("#picker-close").onclick = closePicker;
 el("#picker-modal").onclick = (e) => { if (e.target.id === "picker-modal") closePicker(); };
 
 el("#picker-search").oninput = () => {
-  const q = el("#picker-search").value.trim();
   clearTimeout(pickerDebounce);
-  if (q.length < 2) {
-    el("#picker-results").innerHTML = '<div class="empty">Начните вводить название…</div>';
-    return;
-  }
-  pickerDebounce = setTimeout(async () => {
-    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    renderPickerResults(data.items);
-  }, 250);
+  pickerDebounce = setTimeout(() => loadPickerResults(el("#picker-search").value.trim()), 250);
 };
+
+async function loadPickerResults(q) {
+  const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+  const data = await res.json();
+  renderPickerResults(data.items);
+}
 
 function renderPickerResults(items) {
   const wrap = el("#picker-results");
@@ -491,6 +491,46 @@ function renderPickerResults(items) {
   }
 }
 
+// ---------- Сетка слотов-иконок (общая для инвентаря и калькулятора трейда) ----------
+// Пустой слот с "+" открывает пикер; заполненный — иконка, цена, Value и
+// свой степпер количества. Отдельная кнопка "Добавить" не нужна — сам слот
+// ей и служит.
+
+function renderSlotGrid(containerSel, items, { onAdd, onIncrement, onDecrement, onRemove }) {
+  const wrap = el(containerSel);
+  wrap.innerHTML = "";
+  for (const item of items) {
+    const tile = document.createElement("div");
+    tile.className = "slot-tile";
+    tile.innerHTML = `
+      <div class="slot slot-filled">
+        <img src="${item.image}" loading="lazy" alt="">
+        <button class="slot-remove" aria-label="Убрать">✕</button>
+      </div>
+      <div class="slot-meta">
+        <div class="slot-price">${fmtPrice(item.best_price)}</div>
+        ${valueText(item) ? `<div class="slot-value">${valueText(item)}</div>` : ""}
+        <div class="slot-stepper">
+          <button class="slot-stepper-btn" data-act="minus">−</button>
+          <span class="num">${item.quantity}</span>
+          <button class="slot-stepper-btn" data-act="plus">+</button>
+        </div>
+      </div>
+    `;
+    tile.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    tile.querySelector(".slot-remove").onclick = () => onRemove(item);
+    tile.querySelector('[data-act="minus"]').onclick = () => onDecrement(item);
+    tile.querySelector('[data-act="plus"]').onclick = () => onIncrement(item);
+    wrap.appendChild(tile);
+  }
+
+  const addTile = document.createElement("div");
+  addTile.className = "slot-tile";
+  addTile.innerHTML = `<div class="slot slot-add">+</div><div class="slot-meta slot-add-label">Добавить</div>`;
+  addTile.querySelector(".slot-add").onclick = onAdd;
+  wrap.appendChild(addTile);
+}
+
 // ---------- Мой инвентарь ----------
 
 let inventoryItems = [];
@@ -508,12 +548,6 @@ async function loadInventory() {
   el("#header-title").textContent = "Мой инвентарь";
   backAction = loadHome;
 
-  el("#inventory-add-btn").onclick = () => openPicker(async (item) => {
-    const existing = inventoryItems.find(x => x.id === item.id);
-    await setInventoryQuantity(item.id, (existing ? existing.quantity : 0) + 1);
-    loadInventory();
-  });
-
   el("#inventory-list").innerHTML = '<div class="loading">Загрузка…</div>';
   const res = await fetch("/api/inventory");
   const data = await res.json();
@@ -523,39 +557,16 @@ async function loadInventory() {
 
 function renderInventoryList(items, total) {
   el("#inventory-total").textContent = fmtPrice(total);
-  const list = el("#inventory-list");
-  if (!items.length) {
-    list.innerHTML = '<div class="empty">Пока пусто — добавьте предметы, которые у вас есть.</div>';
-    return;
-  }
-  list.innerHTML = "";
-  for (const item of items) {
-    const row = document.createElement("div");
-    row.className = "inv-row";
-    row.innerHTML = `
-      <img src="${item.image}" loading="lazy" alt="">
-      <div class="inv-row-info">
-        <div class="inv-row-name">${escapeHtml(item.name)}</div>
-        <div class="inv-row-meta">${fmtPrice(item.best_price)} × ${item.quantity} = <b>${fmtPrice(item.subtotal)}</b></div>
-        ${valueText(item) ? `<div class="inv-row-value">${valueText(item)}</div>` : ""}
-      </div>
-      <div class="inv-stepper">
-        <button class="inv-stepper-btn" data-act="minus">−</button>
-        <span class="num">${item.quantity}</span>
-        <button class="inv-stepper-btn" data-act="plus">+</button>
-      </div>
-    `;
-    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
-    row.querySelector('[data-act="minus"]').onclick = async () => {
-      await setInventoryQuantity(item.id, item.quantity - 1);
+  renderSlotGrid("#inventory-list", items, {
+    onAdd: () => openPicker(async (item) => {
+      const existing = inventoryItems.find(x => x.id === item.id);
+      await setInventoryQuantity(item.id, (existing ? existing.quantity : 0) + 1);
       loadInventory();
-    };
-    row.querySelector('[data-act="plus"]').onclick = async () => {
-      await setInventoryQuantity(item.id, item.quantity + 1);
-      loadInventory();
-    };
-    list.appendChild(row);
-  }
+    }),
+    onIncrement: async (item) => { await setInventoryQuantity(item.id, item.quantity + 1); loadInventory(); },
+    onDecrement: async (item) => { await setInventoryQuantity(item.id, item.quantity - 1); loadInventory(); },
+    onRemove: async (item) => { await setInventoryQuantity(item.id, 0); loadInventory(); },
+  });
 }
 
 // ---------- Калькулятор трейда ----------
@@ -568,46 +579,25 @@ function loadTrade() {
   showScreen("trade");
   el("#header-title").textContent = "Калькулятор трейда";
   backAction = loadHome;
-
-  el("#trade-add-a").onclick = () => openPicker(item => { trade.a.push({ ...item, quantity: 1 }); renderTrade(); });
-  el("#trade-add-b").onclick = () => openPicker(item => { trade.b.push({ ...item, quantity: 1 }); renderTrade(); });
-
   renderTrade();
 }
 
+function addToTradeSide(side, item) {
+  const existing = side.find(x => x.id === item.id);
+  if (existing) existing.quantity += 1;
+  else side.push({ ...item, quantity: 1 });
+}
+
 function renderTradeSide(side, containerSel) {
-  const wrap = el(containerSel);
-  if (!side.length) {
-    wrap.innerHTML = '<div class="empty">Пусто</div>';
-    return;
-  }
-  wrap.innerHTML = "";
-  side.forEach((item, idx) => {
-    const row = document.createElement("div");
-    row.className = "trade-row";
-    row.innerHTML = `
-      <div class="trade-row-top">
-        <img src="${item.image}" loading="lazy" alt="">
-        <div class="trade-row-info">
-          <div class="trade-row-name">${escapeHtml(item.name)}</div>
-          <div class="trade-row-meta">${fmtPrice(item.best_price)} × ${item.quantity}</div>
-          ${valueText(item) ? `<div class="trade-row-value">${valueText(item)}</div>` : ""}
-        </div>
-      </div>
-      <div class="trade-row-bottom">
-        <div class="inv-stepper">
-          <button class="inv-stepper-btn" data-act="minus">−</button>
-          <span class="num">${item.quantity}</span>
-          <button class="inv-stepper-btn" data-act="plus">+</button>
-        </div>
-        <button class="trade-remove" aria-label="Убрать">✕</button>
-      </div>
-    `;
-    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
-    row.querySelector('[data-act="minus"]').onclick = () => { item.quantity = Math.max(1, item.quantity - 1); renderTrade(); };
-    row.querySelector('[data-act="plus"]').onclick = () => { item.quantity += 1; renderTrade(); };
-    row.querySelector(".trade-remove").onclick = () => { side.splice(idx, 1); renderTrade(); };
-    wrap.appendChild(row);
+  renderSlotGrid(containerSel, side, {
+    onAdd: () => openPicker(item => { addToTradeSide(side, item); renderTrade(); }),
+    onIncrement: (item) => { item.quantity += 1; renderTrade(); },
+    onDecrement: (item) => { item.quantity = Math.max(1, item.quantity - 1); renderTrade(); },
+    onRemove: (item) => {
+      const idx = side.findIndex(x => x.id === item.id);
+      if (idx >= 0) side.splice(idx, 1);
+      renderTrade();
+    },
   });
 }
 

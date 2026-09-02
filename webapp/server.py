@@ -201,18 +201,18 @@ def api_search(q: str = ""):
     """Поиск предмета по названию среди ВСЕГО каталога (любая редкость, не
     только Godly/Ancient/Unique) — общий пикер для инвентаря и калькулятора
     трейда, которым может быть нужен любой предмет, а не только отслеживаемые
-    на основных экранах категории."""
+    на основных экранах категории. Пустой запрос — не пустой список, а
+    список для "пролистать" (самые дорогие сначала), чтобы предмет можно
+    было выбрать просто скроллом, не вводя название целиком."""
     query = q.strip().lower()
-    if len(query) < 2:
-        return {"items": []}
-
     snapshot = price_history.current_snapshot()
+    candidates = [(pid, item) for pid, item in snapshot.items() if item.get("price") is not None]
+    if query:
+        candidates = [(pid, item) for pid, item in candidates if query in (item.get("name") or "").lower()]
+    candidates.sort(key=lambda pair: pair[1]["price"], reverse=True)
+
     results = []
-    for pid, item in snapshot.items():
-        if item.get("price") is None:
-            continue
-        if query not in (item.get("name") or "").lower():
-            continue
+    for pid, item in candidates[:SEARCH_LIMIT]:
         view = price_history.item_view(pid, item, {})
         results.append({
             "id": pid,
@@ -223,8 +223,6 @@ def api_search(q: str = ""):
             "best_price": view["best_price"],
             "community_values": view["community_values"],
         })
-        if len(results) >= SEARCH_LIMIT:
-            break
     return {"items": results}
 
 
