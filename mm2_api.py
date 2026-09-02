@@ -278,4 +278,46 @@ def fetch_mm2values():
     return result
 
 
+# ---------------------------------------------------------------------------
+# Время последнего обновления самой игры MM2 в Roblox (не каталога dreampets) —
+# публичный Games API, без авторизации. ROBLOX_PLACE_ID — корневой Place ID
+# "Murder Mystery 2" (roblox.com/games/142823291), сначала резолвим в
+# universeId (нужен именно он для /v1/games), затем берём поле "updated".
+ROBLOX_PLACE_ID = 142823291
+ROBLOX_UNIVERSE_URL_TMPL = "https://apis.roblox.com/universes/v1/places/{place_id}/universe"
+ROBLOX_GAME_INFO_URL = "https://games.roblox.com/v1/games"
+
+
+def fetch_roblox_game_info():
+    """{'updated': ISO-строка, 'playing': int, 'visits': int} по официальным
+    данным Roblox, или None при сбое запроса. updated — это дата последнего
+    релиза/патча самой игры (Studio-публикация), а не изменения каталога
+    dreampets — то, о чём отдельно просил пользователь."""
+    try:
+        resp = requests.get(
+            ROBLOX_UNIVERSE_URL_TMPL.format(place_id=ROBLOX_PLACE_ID), timeout=REQUEST_TIMEOUT
+        )
+        resp.raise_for_status()
+        universe_id = resp.json().get("universeId")
+        if not universe_id:
+            return None
+
+        resp = requests.get(
+            ROBLOX_GAME_INFO_URL, params={"universeIds": universe_id}, timeout=REQUEST_TIMEOUT
+        )
+        resp.raise_for_status()
+        data = resp.json().get("data") or []
+        if not data:
+            return None
+        game = data[0]
+        return {
+            "updated": game.get("updated"),
+            "playing": game.get("playing"),
+            "visits": game.get("visits"),
+        }
+    except (requests.RequestException, ValueError, KeyError) as e:
+        print(f"[!] Ошибка запроса Roblox Games API: {e}")
+        return None
+
+
 

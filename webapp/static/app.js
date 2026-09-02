@@ -18,6 +18,40 @@ const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
   '<text x="50" y="55" font-size="12" fill="#666" text-anchor="middle">нет фото</text></svg>'
 );
 
+function timeAgoRu(isoString) {
+  const then = new Date(isoString).getTime();
+  if (isNaN(then)) return null;
+  const diffSec = Math.max(0, Math.floor((Date.now() - then) / 1000));
+  const units = [
+    [31536000, "год", "года", "лет"],
+    [2592000, "месяц", "месяца", "месяцев"],
+    [86400, "день", "дня", "дней"],
+    [3600, "час", "часа", "часов"],
+    [60, "минуту", "минуты", "минут"],
+  ];
+  for (const [sec, one, few, many] of units) {
+    const n = Math.floor(diffSec / sec);
+    if (n >= 1) {
+      const mod10 = n % 10, mod100 = n % 100;
+      let word = many;
+      if (mod10 === 1 && mod100 !== 11) word = one;
+      else if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) word = few;
+      return `${n} ${word} назад`;
+    }
+  }
+  return "только что";
+}
+
+function renderGameUpdate(gameUpdate) {
+  const box = el("#game-update-info");
+  if (!gameUpdate || !gameUpdate.updated) {
+    box.innerHTML = "";
+    return;
+  }
+  const ago = timeAgoRu(gameUpdate.updated);
+  box.innerHTML = `<span class="dot"></span>MM2 в Roblox обновлялась: <b>${ago}</b>`;
+}
+
 const RARE_META = {
   godly: { label: "Godly", cls: "rare-godly", tint: "rgba(242,201,76,0.16)" },
   ancient: { label: "Ancient", cls: "rare-ancient", tint: "rgba(79,140,255,0.16)" },
@@ -137,6 +171,8 @@ async function loadHome() {
 
   const res = await fetch(`/api/menu?window=${currentWindow}`);
   const data = await res.json();
+
+  renderGameUpdate(data.game_update);
 
   const catWrap = el("#categories");
   catWrap.innerHTML = "";

@@ -121,7 +121,12 @@ def api_menu(window: str = price_history.DEFAULT_WINDOW):
         categories.append({"key": key, "label": label, "count": count})
 
     resolved_window = window if window in price_history.WINDOW_SECONDS else price_history.DEFAULT_WINDOW
-    return {"categories": categories, "movers": movers_view, "window": resolved_window}
+    return {
+        "categories": categories,
+        "movers": movers_view,
+        "window": resolved_window,
+        "game_update": price_history.roblox_game_info(),
+    }
 
 
 @app.get("/api/category/{rarity}")
@@ -230,6 +235,15 @@ def run_price_check_once():
             log.warning("Не удалось получить данные с mm2values.com.")
     except Exception:
         log.exception("Ошибка при обновлении mm2values.com")
+
+    try:
+        game_info = mm2_api.fetch_roblox_game_info()
+        if game_info:
+            price_history.update_roblox_game_info(game_info)
+        else:
+            log.warning("Не удалось получить данные о MM2 из Roblox Games API.")
+    except Exception:
+        log.exception("Ошибка при обновлении данных Roblox Games API")
 
     # Алерты о сильном падении цены — считаем ДО append_price_points() ниже,
     # чтобы "средняя за N дней" была за период ДО этого момента, а не включала

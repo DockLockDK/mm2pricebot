@@ -110,6 +110,7 @@ def resolve_window(window):
 # обновляются вызовом update_legacy()/update_mm2values() ниже.
 _legacy_index = {}
 _mm2values_index = {}
+_roblox_game_info = {}
 
 
 def update_legacy(legacy_index):
@@ -134,6 +135,19 @@ def update_mm2values(mm2values_index):
     values = {key: v["value"] for key, v in mm2values_index.items() if v.get("value") is not None}
     pricedb.insert_value_points(now_ts, values)
     return len(mm2values_index)
+
+
+def update_roblox_game_info(info):
+    """Обновляет живой снапшот 'когда MM2 последний раз обновлялась в Roblox'
+    (см. mm2_api.fetch_roblox_game_info) — время патча самой игры, а не
+    изменения каталога dreampets."""
+    global _roblox_game_info
+    if info:
+        _roblox_game_info = info
+
+
+def roblox_game_info():
+    return _roblox_game_info or None
 
 
 def append_price_points(snapshot):

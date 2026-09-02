@@ -90,6 +90,13 @@
 
   .empty{ color:var(--hint); font-size:14px; padding:20px 0; text-align:center; }
 
+  .game-update{ display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600;
+    color:var(--hint); background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:10px 14px; margin-bottom:14px; }
+  .game-update .dot{ width:7px; height:7px; border-radius:50%; background:var(--value); flex:none; }
+  .game-update b{ color:var(--text); font-weight:700; }
+  .game-update:empty{ display:none; }
+
   .hero-wrap{ display:flex; justify-content:center; margin-bottom:16px; }
   #item-image{ width:176px; height:176px; object-fit:contain; border-radius:26px; display:block; }
   #item-name{ font-size:21px; font-weight:700; text-align:center; margin-bottom:8px; letter-spacing:-0.01em; }
