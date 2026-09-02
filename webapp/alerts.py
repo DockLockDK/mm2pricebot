@@ -126,6 +126,33 @@ def send_drop_alert(alert):
     )
 
     keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
+    image_url = view.get("image")
+
+    # С картинкой предмета (sendPhoto, подпись = тот же текст) — если картинки
+    # нет или Telegram не смог её загрузить (CDN недоступен/нет фото у
+    # предмета), откатываемся на обычное текстовое sendMessage, чтобы алерт
+    # в любом случае дошёл.
+    if image_url:
+        try:
+            resp = requests.post(
+                tracker.TELEGRAM_PHOTO_API_URL,
+                data={
+                    "chat_id": tracker.TELEGRAM_CHAT_ID,
+                    "photo": image_url,
+                    "caption": text,
+                    "parse_mode": "HTML",
+                    "reply_markup": json.dumps(keyboard),
+                },
+                timeout=15,
+            )
+            if resp.status_code == 200:
+                return
+            log.warning(
+                "Telegram sendPhoto вернул ошибку, шлю текстом без картинки: %s %s",
+                resp.status_code, resp.text,
+            )
+        except requests.RequestException:
+            log.exception("Не удалось отправить алерт с картинкой в Telegram, шлю текстом")
 
     try:
         resp = requests.post(
