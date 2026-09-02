@@ -416,7 +416,12 @@ async function loadItem(id, backFn) {
     cvWrap.innerHTML = "";
   }
 
-  el("#chart-bucket-hint").textContent = CHART_BUCKET_LABELS[item.window] || "";
+  // Уточняем, из какого каталога история цены на графике — она берётся из
+  // того же источника, что и крупная цена/% над ним (см. cheaper_source),
+  // а не всегда из "текущего", чтобы цифры и линия на графике не расходились.
+  const chartSourceLabel = legacyCheaper ? "Legacy" : "Текущий";
+  const bucketLabel = CHART_BUCKET_LABELS[item.window] || "";
+  el("#chart-bucket-hint").textContent = bucketLabel ? `${bucketLabel} · ${chartSourceLabel}` : chartSourceLabel;
   renderPriceChart(item.candles);
 
   const firstWithHistory = communityValues.find(v => v.history && v.history.length);

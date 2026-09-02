@@ -181,6 +181,22 @@ def price_series(product_id, since_ts=None):
     return cur.fetchall()
 
 
+def legacy_price_series(match_key, since_ts=None):
+    """[(ts, price), ...] по возрастанию времени для одного предмета в legacy-каталоге."""
+    conn = get_conn()
+    if since_ts is not None:
+        cur = conn.execute(
+            "SELECT ts, price FROM legacy_price_points WHERE match_key = ? AND ts >= ? ORDER BY ts",
+            (match_key, since_ts),
+        )
+    else:
+        cur = conn.execute(
+            "SELECT ts, price FROM legacy_price_points WHERE match_key = ? ORDER BY ts",
+            (match_key,),
+        )
+    return cur.fetchall()
+
+
 def value_series(name_key, since_ts=None):
     """[(ts, value), ...] по возрастанию времени для одного предмета (community value)."""
     conn = get_conn()

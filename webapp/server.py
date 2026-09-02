@@ -167,7 +167,16 @@ def api_item(pid: str, window: str = price_history.DEFAULT_WINDOW):
     # пуст, даже если "было/стало" в шапке честно показывает сильное падение,
     # случившееся чуть раньше выбранного окна.
     chart_window_sec = price_history.resolve_chart_window(resolved_window)
-    view["candles"] = price_history.build_candles(pid, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
+    if view["cheaper_source"] == "legacy":
+        # Крупная цена и % над графиком сейчас — из legacy-каталога (он дешевле),
+        # значит и график должен показывать ЕГО историю, а не текущего каталога
+        # (который мог вообще не двигаться, пока дешевле был legacy) — иначе
+        # цифры сверху и линия на графике визуально не совпадают.
+        key = mm2_api.match_key(item.get("name"), item.get("category"), item.get("rare"), item.get("chroma"))
+        match_key_str = price_history.legacy_key_str(key)
+        view["candles"] = price_history.build_legacy_candles(match_key_str, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
+    else:
+        view["candles"] = price_history.build_candles(pid, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
     for cv in view["community_values"]:
         if cv["source"] == "mm2values":
             name_key = mm2_api.normalize_name(item.get("name"))

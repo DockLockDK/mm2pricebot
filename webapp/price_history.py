@@ -303,6 +303,16 @@ def build_candles(pid, bucket_sec=CANDLE_BUCKET_SEC, window_seconds=None):
     return _bucket(rows, bucket_sec, kind="candle")
 
 
+def build_legacy_candles(match_key_str, bucket_sec=CANDLE_BUCKET_SEC, window_seconds=None):
+    """То же самое, но по истории legacy-каталога — используется вместо
+    build_candles(), когда legacy сейчас дешевле (см. item_view/cheaper_source):
+    иначе график показывал бы историю текущего каталога, а крупная цена и %
+    над ним — legacy, разные серии выглядели бы как рассинхрон."""
+    since_ts = int(time.time()) - window_seconds if window_seconds else None
+    rows = pricedb.legacy_price_series(match_key_str, since_ts=since_ts)
+    return _bucket(rows, bucket_sec, kind="candle")
+
+
 def build_value_series(name_key, bucket_sec=None, window_seconds=None):
     """История Community value (mm2values) для графика: [{time, value}, ...] по
     возрастанию времени. window_seconds ограничивает глубину историей выбранного
