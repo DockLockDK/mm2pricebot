@@ -96,6 +96,22 @@ WINDOW_OPTIONS = [
 WINDOW_SECONDS = {key: sec for key, sec, _ in WINDOW_OPTIONS}
 DEFAULT_WINDOW = "5m"
 
+# Тот же выбор периода задаёт и то, что показывают графики на карточке предмета:
+# отрезаем историю на глубину окна и укрупняем свечи/точки, чтобы на "1 год" не
+# пытаться нарисовать десятки тысяч 5-минутных точек, а на "1 час" не схлопывать
+# всё в одну часовую свечу.
+CHART_BUCKET_SECONDS = {
+    "1m": 60,
+    "5m": 60,
+    "1h": 300,
+    "3h": 900,
+    "1d": 3600,
+    "1w": 4 * 3600,
+    "1mo": 24 * 3600,
+    "1q": 24 * 3600,
+    "1y": 7 * 24 * 3600,
+}
+
 
 def _resolve_window(window):
     return WINDOW_SECONDS.get(window, WINDOW_SECONDS[DEFAULT_WINDOW])
@@ -264,7 +280,7 @@ def _legacy_snapshot_at(window_seconds):
     return entry.get("prices", {}) if entry else {}
 
 
-def item_view(pid, item, old_snapshot, legacy_old=None, include_value_history=False):
+def item_view(pid, item, old_snapshot, legacy_old=None):
     legacy_old = legacy_old or {}
     old_item = old_snapshot.get(pid) or {}
     old_price = old_item.get("price")
@@ -324,15 +340,16 @@ def item_view(pid, item, old_snapshot, legacy_old=None, include_value_history=Fa
             "stability": mm2v.get("stability"),
             "url": mm2v["url"],
         }
-        if include_value_history:
-            cv_entry["history"] = build_value_series(name_key)
         community_values.append(cv_entry)
     view["community_values"] = community_values
 
     return view
 
 
-def build_candles(pid, bucket_sec=CANDLE_BUCKET_SEC):
+def build_candles(pid, bucket_sec=CANDLE_BUCKET_SEC, window_seconds=None):
+    """window_seconds ограничивает историю глубиной выбранного периода (None —
+    вся накопленная история, как раньше)."""
+    cutoff = datetime.now(timezone.utc) - timedelta(seconds=window_seconds) if window_seconds else None
     log_lines = _read_price_log()
     points = []
     for entry in log_lines:
@@ -342,6 +359,8 @@ def build_candles(pid, bucket_sec=CANDLE_BUCKET_SEC):
         try:
             dt = datetime.fromisoformat(entry["timestamp"])
         except (KeyError, ValueError):
+            continue
+        if cutoff is not None and dt < cutoff:
             continue
         points.append((dt, price))
 
@@ -402,9 +421,13 @@ def _append_value_log(mm2values_index):
         log.exception("Не удалось дописать value_history.jsonl")
 
 
-def build_value_series(name_key):
+def build_value_series(name_key, bucket_sec=None, window_seconds=None):
     """История Community value (mm2values) для графика: [{time, value}, ...] по
-    возрастанию времени. Пусто, если истории ещё нет или предмет не отслеживался."""
+    возрастанию времени. window_seconds ограничивает глубину историей выбранного
+    периода (None — вся история); bucket_sec укрупняет точки тем же способом,
+    что и build_candles (последняя точка бакета), чтобы длинные периоды не
+    отправляли в браузер десятки тысяч сырых 5-минутных значений."""
+    cutoff = datetime.now(timezone.utc) - timedelta(seconds=window_seconds) if window_seconds else None
     points = []
     for entry in _read_value_log():
         value = entry.get("values", {}).get(name_key)
@@ -414,9 +437,26 @@ def build_value_series(name_key):
             dt = datetime.fromisoformat(entry["timestamp"])
         except (KeyError, ValueError):
             continue
-        points.append({"time": int(dt.timestamp()), "value": value})
-    points.sort(key=lambda p: p["time"])
-    return points
+        if cutoff is not None and dt < cutoff:
+            continue
+        points.append((dt, value))
+    points.sort(key=lambda p: p[0])
+
+    if not points:
+        return []
+
+    if not bucket_sec:
+        return [{"time": int(dt.timestamp()), "value": v} for dt, v in points]
+
+    buckets = {}
+    order = []
+    for dt, v in points:
+        bucket_ts = int(dt.timestamp() // bucket_sec) * bucket_sec
+        if bucket_ts not in buckets:
+            order.append(bucket_ts)
+        buckets[bucket_ts] = v  # последнее значение в бакете
+
+    return [{"time": ts, "value": buckets[ts]} for ts in order]
 
 
 def _price_history_avg(pid, days=AVG_PRICE_WINDOW_DAYS):
@@ -614,9 +654,16 @@ def api_item(pid: str, window: str = DEFAULT_WINDOW):
 
     old_snapshot = _snapshot_at(window_sec)
     legacy_old = _legacy_snapshot_at(window_sec)
-    view = item_view(pid, item, old_snapshot, legacy_old, include_value_history=True)
-    view["candles"] = build_candles(pid)
-    view["window"] = window if window in WINDOW_SECONDS else DEFAULT_WINDOW
+    view = item_view(pid, item, old_snapshot, legacy_old)
+
+    resolved_window = window if window in WINDOW_SECONDS else DEFAULT_WINDOW
+    bucket_sec = CHART_BUCKET_SECONDS.get(resolved_window, CANDLE_BUCKET_SEC)
+    view["candles"] = build_candles(pid, bucket_sec=bucket_sec, window_seconds=window_sec)
+    for cv in view["community_values"]:
+        if cv["source"] == "mm2values":
+            name_key = mm2_api.normalize_name(item.get("name"))
+            cv["history"] = build_value_series(name_key, bucket_sec=bucket_sec, window_seconds=window_sec)
+    view["window"] = resolved_window
     return view
 
 

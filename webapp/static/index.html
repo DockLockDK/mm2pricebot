@@ -220,7 +220,7 @@
     <div class="community-values" id="community-values"></div>
 
     <div class="chart-block">
-      <h2 class="section-title"><span>История цены</span><span class="hint">часовые свечи</span></h2>
+      <h2 class="section-title"><span>История цены</span><span class="hint" id="chart-bucket-hint"></span></h2>
       <div id="chart"></div>
     </div>
 
@@ -267,6 +267,11 @@ const WINDOW_OPTIONS = [
   ["1d", "Сутки"], ["1w", "Неделя"], ["1mo", "Месяц"], ["1q", "Квартал"], ["1y", "Год"],
 ];
 let currentWindow = "5m";
+const CHART_BUCKET_LABELS = {
+  "1m": "1-мин точки", "5m": "1-мин точки", "1h": "5-мин свечи", "3h": "15-мин свечи",
+  "1d": "часовые свечи", "1w": "4-часовые свечи", "1mo": "дневные свечи",
+  "1q": "дневные свечи", "1y": "недельные свечи",
+};
 
 function renderWindowRow(containerSel, onChange) {
   const container = el(containerSel);
@@ -572,6 +577,7 @@ async function loadItem(id, backFn) {
     cvWrap.innerHTML = "";
   }
 
+  el("#chart-bucket-hint").textContent = CHART_BUCKET_LABELS[item.window] || "";
   renderPriceChart(item.candles);
 
   const firstWithHistory = communityValues.find(v => v.history && v.history.length);
