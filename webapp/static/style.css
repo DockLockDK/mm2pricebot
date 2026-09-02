@@ -84,6 +84,9 @@
   .pill.down{ color:var(--down); background:rgba(239,83,80,0.14); }
   .pill svg{ display:block; }
   .item-deal{ font-size:11px; font-weight:700; color:var(--deal); }
+  .item-chroma{ font-size:10.5px; font-weight:800; margin:-4px 0 2px;
+    background-image:linear-gradient(90deg, #ff5f6d, #ffc371, #47cf73, #2dd4bf, #4f8cff, #9b7cf5);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
   .item-values{ display:flex; align-items:center; gap:6px; font-size:10.5px; color:var(--hint);
     padding-top:6px; border-top:1px solid var(--line); }
   .item-values .dot{ width:5px; height:5px; border-radius:50%; background:var(--value); flex:none; }
@@ -114,6 +117,9 @@
   .chip.rare-godly{ color:var(--godly); background:rgba(242,201,76,0.12); }
   .chip.rare-ancient{ color:var(--ancient); background:rgba(79,140,255,0.12); }
   .chip.rare-unique{ color:var(--unique); background:rgba(155,124,245,0.12); }
+  .chip.chroma{ background-color:transparent;
+    background-image:linear-gradient(90deg, #ff5f6d, #ffc371, #47cf73, #2dd4bf, #4f8cff, #9b7cf5);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
 
   .price-row{ display:flex; justify-content:center; align-items:baseline; gap:10px; margin-bottom:8px; }
   #item-price{ font-size:30px; font-weight:800; }

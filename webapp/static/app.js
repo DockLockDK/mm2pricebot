@@ -195,6 +195,7 @@ function itemCard(item, onOpen) {
       <img src="${item.image}" loading="lazy" alt="">
     </div>
     <div class="item-name">${escapeHtml(item.name)}</div>
+    ${item.chroma ? '<div class="item-chroma">🌈 Разноцветная хрома</div>' : ""}
     <div class="price-line"><div class="item-price num">${fmtPrice(mainPrice)}</div></div>
     <div class="change-row">
       ${item.prev_price != null ? `<div class="item-prev num">${fmtPrice(item.prev_price)}</div>` : ""}
@@ -778,7 +779,7 @@ async function loadItem(id, backFn) {
   el("#item-sub").innerHTML = `
     <span class="chip ${meta.cls}">${meta.label}</span>
     <span class="chip">${escapeHtml(item.category || "")}</span>
-    ${item.chroma ? '<span class="chip">Chroma</span>' : ""}
+    ${item.chroma ? '<span class="chip chroma">🌈 Разноцветная хрома</span>' : ""}
   `;
   const mainPrice = item.best_price != null ? item.best_price : item.price;
   el("#item-price").textContent = fmtPrice(mainPrice);
