@@ -150,6 +150,19 @@
     border:1px solid var(--line); border-radius:20px; padding:6px 13px; cursor:pointer; white-space:nowrap; }
   .win-chip.active{ color:var(--accent-text); background:var(--accent); border-color:transparent; }
 
+  .filter-row{ display:flex; align-items:center; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .filter-chips{ display:flex; gap:6px; }
+  .filter-chip{ display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:700; color:var(--hint);
+    background:var(--card); border:1px solid var(--line); border-radius:20px; padding:6px 13px; cursor:pointer; white-space:nowrap; }
+  .filter-chip svg{ display:block; }
+  .filter-chip.up.active{ color:var(--up); background:rgba(51,194,102,0.14); border-color:rgba(51,194,102,0.4); }
+  .filter-chip.down.active{ color:var(--down); background:rgba(239,83,80,0.14); border-color:rgba(239,83,80,0.4); }
+  .filter-chip.all.active{ color:var(--accent-text); background:var(--accent); border-color:transparent; }
+  .threshold-box{ display:flex; align-items:center; gap:5px; font-size:12px; color:var(--hint); }
+  .threshold-input{ width:46px; background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:6px 4px; font-size:13px; color:var(--text); font-family:inherit; text-align:center; }
+  .threshold-input:focus{ outline:none; border-color:var(--accent); }
+
   .search-row{ position:relative; margin-bottom:10px; }
   .search-row svg{ position:absolute; left:13px; top:50%; transform:translateY(-50%); pointer-events:none; }
   .search-input{ width:100%; background:var(--card); border:1px solid var(--line); border-radius:14px;
@@ -195,6 +208,16 @@
       <option value="change_desc">Изменение: сначала рост</option>
       <option value="change_asc">Изменение: сначала падение</option>
     </select>
+    <div class="filter-row">
+      <div class="filter-chips" id="category-change-filter">
+        <button class="filter-chip all active" data-filter="all">Все</button>
+        <button class="filter-chip up" data-filter="up"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M12 20V4M12 4l-6 6M12 4l6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Выросли</button>
+        <button class="filter-chip down" data-filter="down"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Упали</button>
+      </div>
+      <div class="threshold-box" id="category-threshold-box" style="display:none;">
+        от <input type="number" id="category-threshold" class="threshold-input" value="10" min="0" step="1">%
+      </div>
+    </div>
     <div id="category-win-row" class="win-row"></div>
     <div id="category-grid" class="grid"><div class="loading">Загрузка…</div></div>
   </section>
@@ -386,6 +409,8 @@ let categoryItems = [];
 let categorySearch = "";
 let categorySort = "price_desc";
 let categoryKeyLoaded = null;
+let categoryChangeFilter = "all"; // "all" | "up" | "down"
+let categoryThreshold = 10;
 
 const SORTERS = {
   price_desc: (a, b) => (b.best_price ?? b.price ?? 0) - (a.best_price ?? a.price ?? 0),
@@ -398,11 +423,24 @@ function renderCategoryGrid(key) {
   const grid = el("#category-grid");
   grid.innerHTML = "";
   const query = categorySearch.trim().toLowerCase();
-  const filtered = query ? categoryItems.filter(it => (it.name || "").toLowerCase().includes(query)) : categoryItems.slice();
+  let filtered = query ? categoryItems.filter(it => (it.name || "").toLowerCase().includes(query)) : categoryItems.slice();
+
+  if (categoryChangeFilter !== "all") {
+    filtered = filtered.filter(it => {
+      if (it.change_percent == null) return false;
+      return categoryChangeFilter === "up"
+        ? it.change_percent >= categoryThreshold
+        : it.change_percent <= -categoryThreshold;
+    });
+  }
+
   filtered.sort(SORTERS[categorySort] || SORTERS.price_desc);
 
   if (!filtered.length) {
-    grid.innerHTML = `<div class="empty">${query ? "Ничего не найдено по запросу «" + escapeHtml(categorySearch) + "»." : "Нет предметов с активными лотами в этой категории."}</div>`;
+    let msg = "Нет предметов с активными лотами в этой категории.";
+    if (query) msg = `Ничего не найдено по запросу «${escapeHtml(categorySearch)}».`;
+    else if (categoryChangeFilter !== "all") msg = `Нет предметов, которые ${categoryChangeFilter === "up" ? "выросли" : "упали"} на ${categoryThreshold}% и больше за выбранный период.`;
+    grid.innerHTML = `<div class="empty">${msg}</div>`;
     return;
   }
   for (const item of filtered) {
@@ -415,7 +453,7 @@ async function loadCategory(key) {
   el("#header-title").textContent = key;
   backAction = loadHome;
 
-  if (categoryKeyLoaded !== key) { categorySearch = ""; }
+  if (categoryKeyLoaded !== key) { categorySearch = ""; categoryChangeFilter = "all"; }
   categoryKeyLoaded = key;
 
   renderWindowRow("#category-win-row", () => loadCategory(key));
@@ -427,6 +465,26 @@ async function loadCategory(key) {
   const sortSelect = el("#category-sort");
   sortSelect.value = categorySort;
   sortSelect.onchange = () => { categorySort = sortSelect.value; renderCategoryGrid(key); };
+
+  const thresholdBox = el("#category-threshold-box");
+  const thresholdInput = el("#category-threshold");
+  thresholdInput.value = categoryThreshold;
+  thresholdBox.style.display = categoryChangeFilter === "all" ? "none" : "flex";
+  thresholdInput.oninput = () => {
+    categoryThreshold = Math.max(0, Number(thresholdInput.value) || 0);
+    renderCategoryGrid(key);
+  };
+
+  const filterChips = el("#category-change-filter");
+  filterChips.querySelectorAll(".filter-chip").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.filter === categoryChangeFilter);
+    btn.onclick = () => {
+      categoryChangeFilter = btn.dataset.filter;
+      filterChips.querySelectorAll(".filter-chip").forEach(b => b.classList.toggle("active", b.dataset.filter === categoryChangeFilter));
+      thresholdBox.style.display = categoryChangeFilter === "all" ? "none" : "flex";
+      renderCategoryGrid(key);
+    };
+  });
 
   const grid = el("#category-grid");
   grid.innerHTML = '<div class="loading">Загрузка…</div>';
