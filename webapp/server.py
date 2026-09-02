@@ -77,6 +77,29 @@ CANDLE_BUCKET_SEC = 3600  # часовые свечи
 PRICE_LOG_READ_LIMIT = 20000  # сколько последних строк price_history.jsonl читать за раз
 VALUE_LOG_READ_LIMIT = 20000  # то же самое для value_history.jsonl (community value)
 
+# ---------- Период сравнения "было -> стало" (выбирается в интерфейсе) ----------
+# Раньше "было" всегда значило "на прошлом цикле проверки" — теперь это
+# настоящее временное окно: ищем в истории последнюю точку не позже, чем
+# (сейчас − окно), и сравниваем текущую цену с ней. Работает одинаково для
+# движений на главном экране, сетки категории и карточки предмета.
+WINDOW_OPTIONS = [
+    ("1m", 60, "1 мин"),
+    ("5m", 300, "5 мин"),
+    ("1h", 3600, "1 час"),
+    ("3h", 3 * 3600, "3 часа"),
+    ("1d", 24 * 3600, "Сутки"),
+    ("1w", 7 * 24 * 3600, "Неделя"),
+    ("1mo", 30 * 24 * 3600, "Месяц"),
+    ("1q", 91 * 24 * 3600, "Квартал"),
+    ("1y", 365 * 24 * 3600, "Год"),
+]
+WINDOW_SECONDS = {key: sec for key, sec, _ in WINDOW_OPTIONS}
+DEFAULT_WINDOW = "5m"
+
+
+def _resolve_window(window):
+    return WINDOW_SECONDS.get(window, WINDOW_SECONDS[DEFAULT_WINDOW])
+
 # ---------- Алерты о сильном падении цены (push в Telegram) ----------
 # Шлём push ТОЛЬКО по этим редкостям (Unique — по просьбе пользователя исключён
 # из уведомлений, хотя в мини-приложении остаётся как обычно).
@@ -94,6 +117,15 @@ ALERT_MIN_HISTORY_SAMPLES = 5
 # месте (баг: без этого бот спамил один и тот же алерт каждые 5 минут, пока
 # цена не отрастёт обратно). Не версионируем — рантайм-состояние.
 ALERTED_STATE_FILE = str(REPO_DIR / "alerted_drops.json")
+
+# История legacy-цен по времени — тот же принцип, что и price_history.jsonl,
+# но ключ не product_id (у legacy-каталога своё, несовпадающее пространство ID),
+# а строка от mm2_api.match_key(...) (см. _legacy_key_str). Нужна, чтобы когда
+# legacy дешевле текущего каталога, "было"/% изменения считались по ЕГО
+# собственной истории, а не по истории текущего каталога (который мог вообще
+# не двигаться) — иначе на карточке дешёвая legacy-цена показывалась бы рядом
+# с "было" и "%" от другого, не относящегося к ней источника.
+LEGACY_PRICE_LOG_FILE = str(REPO_DIR / "legacy_price_history.jsonl")
 
 # Куда копим историю Community value (mm2values.com) по времени — отдельный лог,
 # формат как у price_history.jsonl, но по ключу normalize_name(имя) вместо
@@ -150,15 +182,32 @@ def _current_snapshot():
     return (tracker.load_history() or {}).get("products", {})
 
 
-def _previous_snapshot():
-    """Снапшот на один цикл проверки раньше текущего — используется для 'было'/движения цен."""
-    log_lines = _read_price_log()
-    if len(log_lines) < 2:
+def _find_entry_at_or_before(log_lines, cutoff):
+    """Последняя запись лога с timestamp <= cutoff, идя с конца (обычно рядом
+    с концом списка — так дешевле для окон вроде '5 мин'/'1 час'). None, если
+    во всей истории нет ни одной точки настолько старой (значит окно длиннее,
+    чем накопленная история)."""
+    for entry in reversed(log_lines):
+        try:
+            dt = datetime.fromisoformat(entry["timestamp"])
+        except (KeyError, ValueError):
+            continue
+        if dt <= cutoff:
+            return entry
+    return None
+
+
+def _snapshot_at(window_seconds):
+    """Снапшот цен текущего каталога на момент 'window_seconds секунд назад'.
+    Пусто, если такой точки в истории ещё нет (окно длиннее накопленной
+    истории) — вызывающий код в этом случае просто не покажет 'было'/%."""
+    cutoff = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
+    entry = _find_entry_at_or_before(_read_price_log(), cutoff)
+    if entry is None:
         return {}
-    prev_prices = log_lines[-2].get("prices", {})
     meta = _load_meta()
     snap = {}
-    for pid, price in prev_prices.items():
+    for pid, price in entry.get("prices", {}).items():
         m = meta.get(pid, {})
         snap[pid] = {
             "name": m.get("name", "?"),
@@ -170,7 +219,53 @@ def _previous_snapshot():
     return snap
 
 
-def item_view(pid, item, old_snapshot, include_value_history=False):
+def _legacy_key_str(key):
+    """JSON-строка от match_key(...) — стабильный ключ словаря для файлового лога."""
+    return json.dumps(list(key), ensure_ascii=False)
+
+
+def _read_legacy_price_log(limit_lines=PRICE_LOG_READ_LIMIT):
+    if not os.path.exists(LEGACY_PRICE_LOG_FILE):
+        return []
+    with open(LEGACY_PRICE_LOG_FILE, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    out = []
+    for line in lines[-limit_lines:]:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return out
+
+
+def _append_legacy_price_log(legacy_index):
+    """Дописывает одну строку в legacy_price_history.jsonl: {match_key_str: price}."""
+    prices = {
+        _legacy_key_str(key): v["price"]
+        for key, v in legacy_index.items() if v.get("price") is not None
+    }
+    if not prices:
+        return
+    line = {"timestamp": datetime.now(timezone.utc).isoformat(), "prices": prices}
+    try:
+        with open(LEGACY_PRICE_LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(line, ensure_ascii=False) + "\n")
+    except OSError:
+        log.exception("Не удалось дописать legacy_price_history.jsonl")
+
+
+def _legacy_snapshot_at(window_seconds):
+    """{match_key_str: цена} на момент 'window_seconds секунд назад' по legacy-каталогу."""
+    cutoff = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
+    entry = _find_entry_at_or_before(_read_legacy_price_log(), cutoff)
+    return entry.get("prices", {}) if entry else {}
+
+
+def item_view(pid, item, old_snapshot, legacy_old=None, include_value_history=False):
+    legacy_old = legacy_old or {}
     old_item = old_snapshot.get(pid) or {}
     old_price = old_item.get("price")
     price = item.get("price")
@@ -202,8 +297,17 @@ def item_view(pid, item, old_snapshot, include_value_history=False):
         view["legacy_buy_url"] = mm2_api.legacy_buy_url(legacy["product_id"], legacy["name"])
         if price is None or legacy["price"] < price:
             view["cheaper_source"] = "legacy"
-            # Крупный ценник всегда показывает самый дешёвый вариант из двух каталогов.
+            # Крупный ценник всегда показывает самый дешёвый вариант из двух каталогов —
+            # значит и "было"/% должны быть от ЭТОЙ же цены, а не от текущего каталога
+            # (который мог вообще не двигаться, пока дешевле был legacy).
             view["best_price"] = legacy["price"]
+            old_legacy_price = legacy_old.get(_legacy_key_str(key))
+            if old_legacy_price not in (None, 0):
+                view["prev_price"] = old_legacy_price
+                view["change_percent"] = (legacy["price"] - old_legacy_price) / old_legacy_price * 100
+            else:
+                view["prev_price"] = None
+                view["change_percent"] = None
 
     # Community value (mm2values.com) — НЕ цена покупки, справочный ориентир
     # комьюнити. Никогда не влияет на best_price/cheaper_source.
@@ -443,10 +547,17 @@ def _send_drop_alert(alert):
 
 # ---------- API ----------
 
+@app.get("/api/windows")
+def api_windows():
+    return {"options": [{"key": k, "label": l} for k, _, l in WINDOW_OPTIONS], "default": DEFAULT_WINDOW}
+
+
 @app.get("/api/menu")
-def api_menu():
+def api_menu(window: str = DEFAULT_WINDOW):
+    window_sec = _resolve_window(window)
     snapshot = _current_snapshot()
-    old_snapshot = _previous_snapshot()
+    old_snapshot = _snapshot_at(window_sec)
+    legacy_old = _legacy_snapshot_at(window_sec)
 
     drops, rises = tracker.compare(old_snapshot, snapshot, rarities=None)
     movers = drops + rises
@@ -457,7 +568,7 @@ def api_menu():
     for m in movers:
         item = snapshot.get(m["product_id"])
         if item:
-            movers_view.append(item_view(m["product_id"], item, old_snapshot))
+            movers_view.append(item_view(m["product_id"], item, old_snapshot, legacy_old))
 
     categories = []
     for key, label in CATEGORIES:
@@ -467,35 +578,45 @@ def api_menu():
         )
         categories.append({"key": key, "label": label, "count": count})
 
-    return {"categories": categories, "movers": movers_view}
+    return {"categories": categories, "movers": movers_view, "window": window if window in WINDOW_SECONDS else DEFAULT_WINDOW}
 
 
 @app.get("/api/category/{rarity}")
-def api_category(rarity: str):
+def api_category(rarity: str, window: str = DEFAULT_WINDOW):
     rarity = rarity.lower()
+    window_sec = _resolve_window(window)
     snapshot = _current_snapshot()
-    old_snapshot = _previous_snapshot()
+    old_snapshot = _snapshot_at(window_sec)
+    legacy_old = _legacy_snapshot_at(window_sec)
 
     items = [
-        item_view(pid, item, old_snapshot)
+        item_view(pid, item, old_snapshot, legacy_old)
         for pid, item in snapshot.items()
         if (item.get("rare") or "").lower() == rarity and item.get("price") is not None
     ]
     items.sort(key=lambda x: x["price"], reverse=True)
 
-    return {"rarity": rarity, "label": CATEGORY_LABELS.get(rarity, rarity), "items": items}
+    return {
+        "rarity": rarity,
+        "label": CATEGORY_LABELS.get(rarity, rarity),
+        "items": items,
+        "window": window if window in WINDOW_SECONDS else DEFAULT_WINDOW,
+    }
 
 
 @app.get("/api/item/{pid}")
-def api_item(pid: str):
+def api_item(pid: str, window: str = DEFAULT_WINDOW):
+    window_sec = _resolve_window(window)
     snapshot = _current_snapshot()
     item = snapshot.get(pid)
     if not item:
         raise HTTPException(status_code=404, detail="item not found")
 
-    old_snapshot = _previous_snapshot()
-    view = item_view(pid, item, old_snapshot, include_value_history=True)
+    old_snapshot = _snapshot_at(window_sec)
+    legacy_old = _legacy_snapshot_at(window_sec)
+    view = item_view(pid, item, old_snapshot, legacy_old, include_value_history=True)
     view["candles"] = build_candles(pid)
+    view["window"] = window if window in WINDOW_SECONDS else DEFAULT_WINDOW
     return view
 
 
@@ -530,6 +651,7 @@ def run_price_check_once():
         legacy_products = mm2_api.fetch_legacy_products()
         if legacy_products:
             _legacy_index = mm2_api.normalize_legacy(legacy_products)
+            _append_legacy_price_log(_legacy_index)
             log.info("Legacy-каталог обновлён (%d предметов).", len(_legacy_index))
         else:
             log.warning("Не удалось получить legacy-каталог — сравнение цен временно недоступно.")

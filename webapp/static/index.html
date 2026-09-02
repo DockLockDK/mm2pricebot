@@ -143,6 +143,26 @@
   .cv-stat .v{ font-size:14px; font-weight:700; }
 
   .loading{ text-align:center; color:var(--hint); padding:30px 0; }
+
+  .win-row{ display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; margin:-2px -2px 14px; scrollbar-width:none; }
+  .win-row::-webkit-scrollbar{ display:none; }
+  .win-chip{ flex:none; font-size:12px; font-weight:700; color:var(--hint); background:var(--card);
+    border:1px solid var(--line); border-radius:20px; padding:6px 13px; cursor:pointer; white-space:nowrap; }
+  .win-chip.active{ color:var(--accent-text); background:var(--accent); border-color:transparent; }
+
+  .search-row{ position:relative; margin-bottom:10px; }
+  .search-row svg{ position:absolute; left:13px; top:50%; transform:translateY(-50%); pointer-events:none; }
+  .search-input{ width:100%; background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:11px 12px 11px 38px; font-size:14px; color:var(--text); font-family:inherit; }
+  .search-input::placeholder{ color:var(--hint); }
+  .search-input:focus{ outline:none; border-color:var(--accent); }
+
+  .sort-select{ width:100%; background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:11px 34px 11px 14px; font-size:13.5px; font-weight:600; color:var(--text); font-family:inherit;
+    margin-bottom:14px; appearance:none; -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9l6 6 6-6' stroke='%238b8f9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 10px center; }
+  .sort-select:focus{ outline:none; border-color:var(--accent); }
 </style>
 </head>
 <body>
@@ -159,11 +179,23 @@
     <h2 class="section-title"><span>Категории</span></h2>
     <div id="categories" class="cat-row"><div class="loading">Загрузка…</div></div>
 
-    <h2 class="section-title"><span>Сильно изменились в цене</span><span class="hint">24 часа</span></h2>
+    <h2 class="section-title"><span>Сильно изменились в цене</span></h2>
+    <div id="home-win-row" class="win-row"></div>
     <div id="movers" class="grid"></div>
   </section>
 
   <section id="screen-category" class="screen">
+    <div class="search-row">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#8b8f9a" stroke-width="1.8"/><path d="M21 21l-4.3-4.3" stroke="#8b8f9a" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input type="text" id="category-search" class="search-input" placeholder="Поиск по названию…">
+    </div>
+    <select id="category-sort" class="sort-select">
+      <option value="price_desc">Цена: сначала дороже</option>
+      <option value="price_asc">Цена: сначала дешевле</option>
+      <option value="change_desc">Изменение: сначала рост</option>
+      <option value="change_asc">Изменение: сначала падение</option>
+    </select>
+    <div id="category-win-row" class="win-row"></div>
     <div id="category-grid" class="grid"><div class="loading">Загрузка…</div></div>
   </section>
 
@@ -176,6 +208,7 @@
       <div id="item-prev" class="num"></div>
     </div>
     <div class="change-center"><div id="item-change"></div></div>
+    <div id="item-win-row" class="win-row"></div>
 
     <div id="deal-note" class="deal-note" style="display:none;">
       <div class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#ffb020"/></svg></div>
@@ -225,6 +258,31 @@ const CATEGORY_ICONS = {
 
 const ARROW_UP = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M12 20V4M12 4l-6 6M12 4l6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const ARROW_DOWN = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+// Период сравнения "было -> стало" — общий для главного экрана, категории и
+// карточки предмета: сколько выбрали, столько и используется в /api/... до
+// следующей смены. Список синхронизирован с WINDOW_OPTIONS в webapp/server.py.
+const WINDOW_OPTIONS = [
+  ["1m", "1 мин"], ["5m", "5 мин"], ["1h", "1 час"], ["3h", "3 часа"],
+  ["1d", "Сутки"], ["1w", "Неделя"], ["1mo", "Месяц"], ["1q", "Квартал"], ["1y", "Год"],
+];
+let currentWindow = "5m";
+
+function renderWindowRow(containerSel, onChange) {
+  const container = el(containerSel);
+  container.innerHTML = WINDOW_OPTIONS.map(([key, label]) =>
+    `<button class="win-chip${key === currentWindow ? " active" : ""}" data-win="${key}">${label}</button>`
+  ).join("");
+  container.querySelectorAll(".win-chip").forEach(btn => {
+    btn.onclick = () => {
+      const key = btn.dataset.win;
+      if (key === currentWindow) return;
+      currentWindow = key;
+      document.querySelectorAll(".win-chip").forEach(b => b.classList.toggle("active", b.dataset.win === key));
+      onChange(key);
+    };
+  });
+}
 
 function el(sel) { return document.querySelector(sel); }
 function escapeHtml(s) {
@@ -288,7 +346,9 @@ async function loadHome() {
   el("#header-title").textContent = "MM2 Каталог";
   backAction = null;
 
-  const res = await fetch("/api/menu");
+  renderWindowRow("#home-win-row", () => loadHome());
+
+  const res = await fetch(`/api/menu?window=${currentWindow}`);
   const data = await res.json();
 
   const catWrap = el("#categories");
@@ -317,24 +377,60 @@ async function loadHome() {
   }
 }
 
+let categoryItems = [];
+let categorySearch = "";
+let categorySort = "price_desc";
+let categoryKeyLoaded = null;
+
+const SORTERS = {
+  price_desc: (a, b) => (b.best_price ?? b.price ?? 0) - (a.best_price ?? a.price ?? 0),
+  price_asc: (a, b) => (a.best_price ?? a.price ?? 0) - (b.best_price ?? b.price ?? 0),
+  change_desc: (a, b) => (b.change_percent ?? -Infinity) - (a.change_percent ?? -Infinity),
+  change_asc: (a, b) => (a.change_percent ?? Infinity) - (b.change_percent ?? Infinity),
+};
+
+function renderCategoryGrid(key) {
+  const grid = el("#category-grid");
+  grid.innerHTML = "";
+  const query = categorySearch.trim().toLowerCase();
+  const filtered = query ? categoryItems.filter(it => (it.name || "").toLowerCase().includes(query)) : categoryItems.slice();
+  filtered.sort(SORTERS[categorySort] || SORTERS.price_desc);
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty">${query ? "Ничего не найдено по запросу «" + escapeHtml(categorySearch) + "»." : "Нет предметов с активными лотами в этой категории."}</div>`;
+    return;
+  }
+  for (const item of filtered) {
+    grid.appendChild(itemCard(item, () => loadItem(item.id, () => loadCategory(key))));
+  }
+}
+
 async function loadCategory(key) {
   showScreen("category");
   el("#header-title").textContent = key;
   backAction = loadHome;
 
-  const res = await fetch(`/api/category/${key}`);
-  const data = await res.json();
-  el("#header-title").textContent = data.label;
+  if (categoryKeyLoaded !== key) { categorySearch = ""; }
+  categoryKeyLoaded = key;
+
+  renderWindowRow("#category-win-row", () => loadCategory(key));
+
+  const searchInput = el("#category-search");
+  searchInput.value = categorySearch;
+  searchInput.oninput = () => { categorySearch = searchInput.value; renderCategoryGrid(key); };
+
+  const sortSelect = el("#category-sort");
+  sortSelect.value = categorySort;
+  sortSelect.onchange = () => { categorySort = sortSelect.value; renderCategoryGrid(key); };
 
   const grid = el("#category-grid");
-  grid.innerHTML = "";
-  if (!data.items.length) {
-    grid.innerHTML = '<div class="empty">Нет предметов с активными лотами в этой категории.</div>';
-    return;
-  }
-  for (const item of data.items) {
-    grid.appendChild(itemCard(item, () => loadItem(item.id, () => loadCategory(key))));
-  }
+  grid.innerHTML = '<div class="loading">Загрузка…</div>';
+
+  const res = await fetch(`/api/category/${key}?window=${currentWindow}`);
+  const data = await res.json();
+  el("#header-title").textContent = data.label;
+  categoryItems = data.items;
+  renderCategoryGrid(key);
 }
 
 function renderPriceChart(candles) {
@@ -406,7 +502,9 @@ async function loadItem(id, backFn) {
   backAction = backFn || loadHome;
   el("#header-title").textContent = "…";
 
-  const res = await fetch(`/api/item/${id}`);
+  renderWindowRow("#item-win-row", () => loadItem(id, backFn));
+
+  const res = await fetch(`/api/item/${id}?window=${currentWindow}`);
   if (!res.ok) {
     el("#header-title").textContent = "Не найдено";
     return;
