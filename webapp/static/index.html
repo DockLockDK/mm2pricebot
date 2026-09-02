@@ -30,12 +30,16 @@
   body{
     margin:0; background:var(--bg); color:var(--text);
     font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    padding-bottom: 24px;
+    padding-bottom: max(24px, var(--tg-safe-area-inset-bottom, 0px), env(safe-area-inset-bottom, 0px));
   }
   .num{ font-family:'Space Grotesk', 'Manrope', sans-serif; }
 
   header{
-    padding:18px 18px 14px; position:sticky; top:0; background:var(--bg); z-index:10;
+    /* В полноэкранном режиме (requestFullscreen) сверху больше нет "шторки"
+       Telegram — контент может упереться в вырез/чёлку, поэтому добавляем
+       safe-area отступ поверх обычного паддинга. */
+    padding:max(18px, var(--tg-content-safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px), env(safe-area-inset-top, 0px)) 18px 14px;
+    position:sticky; top:0; background:var(--bg); z-index:10;
     display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--line);
   }
   header h1{ font-size:19px; font-weight:700; margin:0; flex:1; letter-spacing:-0.01em; }
@@ -256,7 +260,18 @@
 
 <script>
 const tg = window.Telegram && window.Telegram.WebApp;
-if (tg) { tg.ready(); tg.expand(); }
+if (tg) {
+  tg.ready();
+  tg.expand();
+  // Полноэкранный режим (Bot API 8.0+) — убирает верхнюю "шторку" Telegram
+  // с заголовком бота. На старых клиентах метода просто нет — тихо пропускаем.
+  if (typeof tg.requestFullscreen === "function") {
+    try { tg.requestFullscreen(); } catch (e) {}
+  }
+  if (typeof tg.disableVerticalSwipes === "function") {
+    try { tg.disableVerticalSwipes(); } catch (e) {}
+  }
+}
 
 const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
