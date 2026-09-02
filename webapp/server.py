@@ -75,6 +75,7 @@ CATEGORY_LABELS = dict(CATEGORIES)
 MOVERS_LIMIT = 20
 CANDLE_BUCKET_SEC = 3600  # часовые свечи
 PRICE_LOG_READ_LIMIT = 20000  # сколько последних строк price_history.jsonl читать за раз
+VALUE_LOG_READ_LIMIT = 20000  # то же самое для value_history.jsonl (community value)
 
 # ---------- Алерты о сильном падении цены (push в Telegram) ----------
 # Шлём push ТОЛЬКО по этим редкостям (Unique — по просьбе пользователя исключён
@@ -93,6 +94,13 @@ ALERT_MIN_HISTORY_SAMPLES = 5
 # месте (баг: без этого бот спамил один и тот же алерт каждые 5 минут, пока
 # цена не отрастёт обратно). Не версионируем — рантайм-состояние.
 ALERTED_STATE_FILE = str(REPO_DIR / "alerted_drops.json")
+
+# Куда копим историю Community value (mm2values.com) по времени — отдельный лог,
+# формат как у price_history.jsonl, но по ключу normalize_name(имя) вместо
+# product_id (у mm2values нет своих ID, только имена). Нужен только чтобы
+# рисовать график изменения value на карточке предмета — сама текущая величина
+# берётся из _mm2values_index, тут только история для графика.
+VALUE_LOG_FILE = str(REPO_DIR / "value_history.jsonl")
 
 app = FastAPI(title="MM2 Price Bot API")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -162,7 +170,7 @@ def _previous_snapshot():
     return snap
 
 
-def item_view(pid, item, old_snapshot):
+def item_view(pid, item, old_snapshot, include_value_history=False):
     old_item = old_snapshot.get(pid) or {}
     old_price = old_item.get("price")
     price = item.get("price")
@@ -203,7 +211,7 @@ def item_view(pid, item, old_snapshot):
     community_values = []
     mm2v = _mm2values_index.get(name_key)
     if mm2v and mm2v.get("value_raw"):
-        community_values.append({
+        cv_entry = {
             "source": "mm2values",
             "label": "MM2Values",
             "value_raw": mm2v["value_raw"],
@@ -211,7 +219,10 @@ def item_view(pid, item, old_snapshot):
             "rarity": mm2v.get("rarity"),
             "stability": mm2v.get("stability"),
             "url": mm2v["url"],
-        })
+        }
+        if include_value_history:
+            cv_entry["history"] = build_value_series(name_key)
+        community_values.append(cv_entry)
     view["community_values"] = community_values
 
     return view
@@ -252,6 +263,56 @@ def build_candles(pid, bucket_sec=CANDLE_BUCKET_SEC):
         {"time": ts, **buckets[ts]}
         for ts in order
     ]
+
+
+def _read_value_log(limit_lines=VALUE_LOG_READ_LIMIT):
+    if not os.path.exists(VALUE_LOG_FILE):
+        return []
+    with open(VALUE_LOG_FILE, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+    out = []
+    for line in lines[-limit_lines:]:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return out
+
+
+def _append_value_log(mm2values_index):
+    """Дописывает одну строку в value_history.jsonl: {normalize_name(имя): value}
+    для всех предметов, у которых mm2values дал числовое значение."""
+    values = {
+        key: v["value"] for key, v in mm2values_index.items() if v.get("value") is not None
+    }
+    if not values:
+        return
+    line = {"timestamp": datetime.now(timezone.utc).isoformat(), "values": values}
+    try:
+        with open(VALUE_LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(json.dumps(line, ensure_ascii=False) + "\n")
+    except OSError:
+        log.exception("Не удалось дописать value_history.jsonl")
+
+
+def build_value_series(name_key):
+    """История Community value (mm2values) для графика: [{time, value}, ...] по
+    возрастанию времени. Пусто, если истории ещё нет или предмет не отслеживался."""
+    points = []
+    for entry in _read_value_log():
+        value = entry.get("values", {}).get(name_key)
+        if value is None:
+            continue
+        try:
+            dt = datetime.fromisoformat(entry["timestamp"])
+        except (KeyError, ValueError):
+            continue
+        points.append({"time": int(dt.timestamp()), "value": value})
+    points.sort(key=lambda p: p["time"])
+    return points
 
 
 def _price_history_avg(pid, days=AVG_PRICE_WINDOW_DAYS):
@@ -433,7 +494,7 @@ def api_item(pid: str):
         raise HTTPException(status_code=404, detail="item not found")
 
     old_snapshot = _previous_snapshot()
-    view = item_view(pid, item, old_snapshot)
+    view = item_view(pid, item, old_snapshot, include_value_history=True)
     view["candles"] = build_candles(pid)
     return view
 
@@ -480,6 +541,7 @@ def run_price_check_once():
         idx = mm2_api.fetch_mm2values()
         if idx:
             _mm2values_index = idx
+            _append_value_log(idx)
             log.info("mm2values.com обновлён (%d предметов).", len(idx))
         else:
             log.warning("Не удалось получить данные с mm2values.com.")
