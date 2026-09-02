@@ -36,6 +36,7 @@
 """
 
 import asyncio
+import hashlib
 import logging
 import os
 import sys
@@ -49,7 +50,7 @@ for _p in (str(REPO_DIR), str(BASE_DIR)):
 
 from fastapi import Body, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 import mm2_api
@@ -269,9 +270,27 @@ def api_inventory_set(pid: str, payload: dict = Body(...)):
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 
+def _static_version():
+    """Хэш содержимого app.js+style.css — используется как ?v= в index.html,
+    чтобы браузер/Telegram WebView гарантированно подтягивали новый файл
+    после деплоя, а не отдавали закэшированную версию под тем же URL (баг
+    класса "у меня всё ещё старый интерфейс", уже дважды путавший при
+    проверке новых фич)."""
+    h = hashlib.md5()
+    for name in ("app.js", "style.css"):
+        h.update((STATIC_DIR / name).read_bytes())
+    return h.hexdigest()[:8]
+
+
+_STATIC_VERSION = _static_version()
+
+
 @app.get("/")
 def index():
-    return FileResponse(str(STATIC_DIR / "index.html"))
+    html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+    html = html.replace('/static/app.js"', f'/static/app.js?v={_STATIC_VERSION}"')
+    html = html.replace('/static/style.css"', f'/static/style.css?v={_STATIC_VERSION}"')
+    return HTMLResponse(html)
 
 
 # ---------- Фоновая проверка цен ----------
