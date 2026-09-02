@@ -719,7 +719,16 @@ async function loadItem(id, backFn) {
     ? `<a class="buy-btn secondary" href="${item.legacy_buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.legacy_price)}<span class="tag">Legacy-каталог</span></a>`
     : "";
 
-  buyGroup.innerHTML = legacyCheaper ? (legacyBtn.replace('secondary', '') + currentBtn.replace('buy-btn', 'buy-btn secondary')) : (currentBtn + legacyBtn);
+  // FunPay сопоставлен по неточному текстовому совпадению названия в
+  // объявлении продавца (см. price_history.update_funpay) — поэтому всегда
+  // третья, второстепенная кнопка, никогда не главная/выделенная, даже если
+  // там формально дешевле всего.
+  const funpayBtn = item.funpay_price != null
+    ? `<a class="buy-btn secondary" href="${item.funpay_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.funpay_price)}<span class="tag">FunPay</span></a>`
+    : "";
+
+  buyGroup.innerHTML = (legacyCheaper ? (legacyBtn.replace('secondary', '') + currentBtn.replace('buy-btn', 'buy-btn secondary')) : (currentBtn + legacyBtn)) + funpayBtn;
+  el("#funpay-note").style.display = item.funpay_price != null ? "block" : "none";
 
   // Community value (mm2values.com) — справочно, не цена покупки.
   const cvWrap = el("#community-values");

@@ -136,6 +136,7 @@
   .deal-note .icon{ width:30px; height:30px; border-radius:10px; background:rgba(255,176,32,0.18); display:flex;
     align-items:center; justify-content:center; flex:none; }
   .deal-note b{ color:var(--deal); }
+  .funpay-note{ font-size:11px; color:var(--hint); text-align:center; line-height:1.4; margin:0 0 14px; }
 
   .community-values{ display:none; flex-direction:column; gap:12px; margin:0 0 20px; }
   .cv-panel{ background:var(--card); border:1px solid rgba(45,212,191,0.16); border-radius:18px; padding:14px 16px; }

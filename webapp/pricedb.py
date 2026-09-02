@@ -48,6 +48,7 @@ _TABLES = {
     "price_points": ("product_id", "price"),
     "legacy_price_points": ("match_key", "price"),
     "value_points": ("name_key", "value"),
+    "funpay_price_points": ("name_key", "price"),
 }
 
 
@@ -96,6 +97,14 @@ def init_db():
         CREATE INDEX IF NOT EXISTS idx_value_points_key_ts ON value_points(name_key, ts);
         CREATE INDEX IF NOT EXISTS idx_value_points_ts ON value_points(ts);
 
+        CREATE TABLE IF NOT EXISTS funpay_price_points (
+            ts INTEGER NOT NULL,
+            name_key TEXT NOT NULL,
+            price REAL NOT NULL
+        );
+        CREATE INDEX IF NOT EXISTS idx_funpay_price_points_key_ts ON funpay_price_points(name_key, ts);
+        CREATE INDEX IF NOT EXISTS idx_funpay_price_points_ts ON funpay_price_points(ts);
+
         CREATE TABLE IF NOT EXISTS kv_meta (
             key TEXT PRIMARY KEY,
             value TEXT
@@ -138,6 +147,18 @@ def insert_value_points(ts, values):
     conn.executemany(
         "INSERT INTO value_points (ts, name_key, value) VALUES (?, ?, ?)",
         [(ts, key, value) for key, value in values.items() if value is not None],
+    )
+    conn.commit()
+
+
+def insert_funpay_points(ts, prices):
+    """prices: {name_key: цена}."""
+    if not prices:
+        return
+    conn = get_conn()
+    conn.executemany(
+        "INSERT INTO funpay_price_points (ts, name_key, price) VALUES (?, ?, ?)",
+        [(ts, key, price) for key, price in prices.items() if price is not None],
     )
     conn.commit()
 

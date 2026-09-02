@@ -407,4 +407,65 @@ def fetch_mmoexp_latest():
     }
 
 
+# ---------------------------------------------------------------------------
+# FunPay (funpay.com/lots/925/, категория "Предметы" MM2) — площадка
+# объявлений о продаже, а не структурированный каталог вроде dreampets:
+# продавец сам пишет текст лота (эмодзи, реклама вперемешку с названием
+# предмета), нет отдельного поля "название предмета" или "редкость". Одна
+# страница отдаёт сразу все ~4000 лотов категории (без пагинации), каждый —
+# блок <a class="tc-item" data-f-type="...">...</a>. Нас интересуют только
+# data-f-type="предметы" (остальное — гайды/скрипты/услуги и т.п., не MM2-лоты).
+# Сопоставление текста лота с конкретным предметом каталога — отдельным шагом
+# в price_history.update_funpay (подстрока нормализованного имени), а не тут.
+FUNPAY_MM2_URL = "https://funpay.com/lots/925/"
+FUNPAY_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/120.0 Safari/537.36",
+}
+_FUNPAY_OFFER_MARKER = 'href="https://funpay.com/lots/offer?id='
+_FUNPAY_TYPE_RE = re.compile(r'data-f-type="([^"]*)"')
+_FUNPAY_DESC_RE = re.compile(r'<div class="tc-desc-text">(.*?)</div>', re.S)
+_FUNPAY_PRICE_RE = re.compile(r'<div class="tc-price" data-s="([\d.]+)"')
+
+
+def _parse_funpay_html(html):
+    """Разбирает HTML страницы категории FunPay на сырые лоты — вынесено из
+    fetch_funpay_listings() отдельной чистой функцией, чтобы парсинг можно
+    было проверить юнит-тестом на сохранённом образце HTML без сетевого
+    запроса (сам funpay.com недоступен из песочницы разработки — блокирует
+    дата-центровские IP, но открыт с реального сервера)."""
+    results = []
+    for chunk in html.split(_FUNPAY_OFFER_MARKER)[1:]:
+        offer_id = chunk.split('"', 1)[0]
+        type_m = _FUNPAY_TYPE_RE.search(chunk[:400])
+        if not type_m or type_m.group(1) != "предметы":
+            continue
+        desc_m = _FUNPAY_DESC_RE.search(chunk)
+        price_m = _FUNPAY_PRICE_RE.search(chunk)
+        if not desc_m or not price_m:
+            continue
+        try:
+            price = float(price_m.group(1))
+        except ValueError:
+            continue
+        results.append({
+            "text": desc_m.group(1),
+            "price": price,
+            "url": f"https://funpay.com/lots/offer?id={offer_id}",
+        })
+    return results
+
+
+def fetch_funpay_listings():
+    """Сырые лоты категории 'Предметы' на FunPay (MM2) — список
+    {'text', 'price', 'url'} или [] при сбое запроса."""
+    try:
+        resp = requests.get(FUNPAY_MM2_URL, headers=FUNPAY_HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        print(f"[!] Ошибка запроса FunPay: {e}")
+        return []
+    return _parse_funpay_html(resp.text)
+
+
 

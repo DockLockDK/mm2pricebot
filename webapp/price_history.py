@@ -112,6 +112,7 @@ _legacy_index = {}
 _mm2values_index = {}
 _roblox_game_info = {}
 _mm2_news = {}
+_funpay_index = {}
 
 
 def update_legacy(legacy_index):
@@ -136,6 +137,47 @@ def update_mm2values(mm2values_index):
     values = {key: v["value"] for key, v in mm2values_index.items() if v.get("value") is not None}
     pricedb.insert_value_points(now_ts, values)
     return len(mm2values_index)
+
+
+_FUNPAY_MIN_NAME_LEN = 4  # короче — слишком велик риск случайного совпадения подстроки
+
+
+def update_funpay(funpay_listings, snapshot):
+    """Сопоставляет сырые лоты FunPay (см. mm2_api.fetch_funpay_listings) с
+    предметами каталога. FunPay не отдаёт название/редкость отдельными
+    полями — только текст объявления продавца (эмодзи, реклама вперемешку с
+    названием), поэтому ищем нормализованное имя предмета КАК ПОДСТРОКУ в
+    нормализованном тексте лота: mm2_api.normalize_name оставляет только
+    a-z0-9, а название предмета в MM2 всегда латиницей — кириллица и эмодзи
+    вокруг него просто отваливаются. Ограничиваемся Godly/Ancient/Unique
+    (тот же круг, что и Community Value) — на коротких/частых именах риск
+    ложного совпадения иначе выше, чем польза от такого сопоставления.
+    Возвращает количество сопоставленных предметов — для логирования."""
+    global _funpay_index
+    catalog_names = set()
+    for item in snapshot.values():
+        name = item.get("name")
+        if name and len(name) >= _FUNPAY_MIN_NAME_LEN and (item.get("rare") or "").lower() in mm2_api.MM2VALUES_CATEGORIES:
+            catalog_names.add(name)
+
+    normalized_listings = [(mm2_api.normalize_name(l["text"]), l) for l in funpay_listings]
+
+    new_index = {}
+    for name in catalog_names:
+        key = mm2_api.normalize_name(name)
+        if not key:
+            continue
+        best = None
+        for norm_text, listing in normalized_listings:
+            if key in norm_text and (best is None or listing["price"] < best["price"]):
+                best = listing
+        if best:
+            new_index[key] = {"price": best["price"], "url": best["url"]}
+
+    _funpay_index = new_index
+    now_ts = int(time.time())
+    pricedb.insert_funpay_points(now_ts, {key: v["price"] for key, v in new_index.items()})
+    return len(new_index)
 
 
 def update_roblox_game_info(info):
@@ -302,6 +344,15 @@ def item_view(pid, item, old_snapshot, legacy_old=None):
         }
         community_values.append(cv_entry)
     view["community_values"] = community_values
+
+    # FunPay — реальное объявление о продаже (не абстрактная Value), но
+    # сопоставлено с предметом по неточному текстовому совпадению (см.
+    # update_funpay), поэтому НЕ участвует в best_price/cheaper_source —
+    # показываем отдельной, всегда второстепенной кнопкой на карточке, а не
+    # выдаём за официальную "самую дешёвую" цену.
+    fp = _funpay_index.get(name_key) if (item.get("rare") or "").lower() in mm2_api.MM2VALUES_CATEGORIES else None
+    view["funpay_price"] = fp["price"] if fp else None
+    view["funpay_url"] = fp["url"] if fp else None
 
     # Исторический минимум/максимум — из ТОЙ ЖЕ серии, что и текущая
     # best_price/график (см. cheaper_source выше): иначе "рекорд" был бы по

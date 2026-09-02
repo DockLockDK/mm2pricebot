@@ -326,6 +326,13 @@ def run_price_check_once():
     except Exception:
         log.exception("Ошибка при обновлении новостей MM2 (Colbe/mmoexp)")
 
+    try:
+        funpay_listings = mm2_api.fetch_funpay_listings()
+        count = price_history.update_funpay(funpay_listings, new_snapshot)
+        log.info("FunPay: сопоставлено %d предметов (из %d лотов 'Предметы').", count, len(funpay_listings))
+    except Exception:
+        log.exception("Ошибка при обновлении цен FunPay")
+
     # Алерты о сильном падении цены — считаем ДО append_price_points() ниже,
     # чтобы "средняя за N дней" была за период ДО этого момента, а не включала
     # саму текущую (уже упавшую) цену.
