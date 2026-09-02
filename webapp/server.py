@@ -251,6 +251,7 @@ def api_inventory():
             "category": view["category"],
             "image": view["image"],
             "best_price": view["best_price"],
+            "community_values": view["community_values"],
             "quantity": quantity,
             "subtotal": subtotal,
         })

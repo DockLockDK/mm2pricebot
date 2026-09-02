@@ -147,6 +147,14 @@ function renderWindowRow(containerSel, onChange) {
 
 function el(sel) { return document.querySelector(sel); }
 function fmtPrice(p) { return p != null ? p.toFixed(2) + "₽" : "—"; }
+
+// Value без Demand/Rarity/Stability и без %-пилюль — в пикере/инвентаре/
+// трейде нужна только сама цифра ценности, а не полная сводка как на
+// карточке предмета.
+function valueText(item) {
+  const cv = (item.community_values || []).find(c => c.source === "mm2values");
+  return cv && cv.value_raw != null ? `Value: ${cv.value_raw}` : "";
+}
 function changePill(change) {
   if (change == null) return "";
   const up = change > 0;
@@ -470,7 +478,7 @@ function renderPickerResults(items) {
       <img src="${item.image}" loading="lazy" alt="">
       <div class="picker-row-info">
         <div class="picker-row-name">${escapeHtml(item.name)}</div>
-        <div class="picker-row-meta">${escapeHtml(item.rare || "")} · ${fmtPrice(item.best_price)}</div>
+        <div class="picker-row-meta">${fmtPrice(item.best_price)}${valueText(item) ? " · " + valueText(item) : ""}</div>
       </div>
     `;
     row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
@@ -529,6 +537,7 @@ function renderInventoryList(items, total) {
       <div class="inv-row-info">
         <div class="inv-row-name">${escapeHtml(item.name)}</div>
         <div class="inv-row-meta">${fmtPrice(item.best_price)} × ${item.quantity} = <b>${fmtPrice(item.subtotal)}</b></div>
+        ${valueText(item) ? `<div class="inv-row-value">${valueText(item)}</div>` : ""}
       </div>
       <div class="inv-stepper">
         <button class="inv-stepper-btn" data-act="minus">−</button>
@@ -582,6 +591,7 @@ function renderTradeSide(side, containerSel) {
         <div class="trade-row-info">
           <div class="trade-row-name">${escapeHtml(item.name)}</div>
           <div class="trade-row-meta">${fmtPrice(item.best_price)} × ${item.quantity}</div>
+          ${valueText(item) ? `<div class="trade-row-value">${valueText(item)}</div>` : ""}
         </div>
       </div>
       <div class="trade-row-bottom">

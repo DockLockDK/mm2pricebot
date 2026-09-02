@@ -221,6 +221,7 @@
   .inv-row-info{ flex:1; min-width:0; }
   .inv-row-name{ font-size:13px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .inv-row-meta{ font-size:11.5px; color:var(--hint); margin-top:2px; }
+  .inv-row-value{ font-size:11px; color:var(--value); margin-top:2px; font-weight:600; }
   .inv-row .inv-stepper{ margin:0; padding:5px 8px; gap:8px; }
 
   /* ---------- Калькулятор трейда ---------- */
@@ -236,6 +237,7 @@
   .trade-row-info{ flex:1; min-width:0; }
   .trade-row-name{ font-size:11px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .trade-row-meta{ font-size:10px; color:var(--hint); margin-top:1px; }
+  .trade-row-value{ font-size:10px; color:var(--value); margin-top:1px; font-weight:600; }
   .trade-row-bottom{ display:flex; align-items:center; justify-content:space-between; gap:4px; }
   .trade-row .inv-stepper{ margin:0; padding:3px 6px; gap:4px; }
   .trade-row .inv-stepper-btn{ width:20px; height:20px; font-size:12px; border-radius:6px; }
