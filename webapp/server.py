@@ -72,9 +72,9 @@ CHECK_INTERVAL_SEC = int(os.environ.get("CHECK_INTERVAL_SEC", "300"))
 PORT = int(os.environ.get("PORT", "8000"))
 
 CATEGORIES = [
-    ("godly", "🟡 Godly"),
-    ("ancient", "🔵 Ancient"),
-    ("unique", "🟣 Unique"),
+    ("godly", "Godly"),
+    ("ancient", "Ancient"),
+    ("unique", "Unique"),
 ]
 CATEGORY_LABELS = dict(CATEGORIES)
 

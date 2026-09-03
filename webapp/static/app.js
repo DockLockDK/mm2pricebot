@@ -146,6 +146,12 @@ function renderWindowRow(containerSel, onChange) {
 }
 
 function el(sel) { return document.querySelector(sel); }
+
+function setHeaderTitle(text, cls, iconHtml) {
+  const h1 = el("#header-title");
+  h1.innerHTML = (iconHtml || "") + escapeHtml(text);
+  h1.className = cls || "";
+}
 function fmtPrice(p) { return p != null ? p.toFixed(2) + "₽" : "—"; }
 
 // Value без Demand/Rarity/Stability и без %-пилюль — в пикере/инвентаре/
@@ -212,7 +218,7 @@ function itemCard(item, onOpen) {
 
 async function loadHome() {
   showScreen("home");
-  el("#header-title").textContent = "MM2 Каталог";
+  setHeaderTitle("MM2 Каталог");
   backAction = null;
 
   el("#open-inventory-btn").onclick = loadInventory;
@@ -298,7 +304,7 @@ function renderCategoryGrid(key) {
 
 async function loadCategory(key) {
   showScreen("category");
-  el("#header-title").textContent = key;
+  setHeaderTitle(key);
   backAction = loadHome;
 
   if (categoryKeyLoaded !== key) { categorySearch = ""; categoryChangeFilter = "all"; }
@@ -339,7 +345,8 @@ async function loadCategory(key) {
 
   const res = await fetch(`/api/category/${key}?window=${currentWindow}`);
   const data = await res.json();
-  el("#header-title").textContent = data.label;
+  const meta = rareMeta(key);
+  setHeaderTitle(data.label, meta.cls, CATEGORY_ICONS[key]);
   categoryItems = data.items;
   renderCategoryGrid(key);
 }
@@ -549,7 +556,7 @@ async function setInventoryQuantity(pid, quantity) {
 
 async function loadInventory() {
   showScreen("inventory");
-  el("#header-title").textContent = "Мой инвентарь";
+  setHeaderTitle("Мой инвентарь");
   backAction = loadHome;
 
   el("#inventory-list").innerHTML = '<div class="loading">Загрузка…</div>';
@@ -581,7 +588,7 @@ const trade = { a: [], b: [] };
 
 function loadTrade() {
   showScreen("trade");
-  el("#header-title").textContent = "Калькулятор трейда";
+  setHeaderTitle("Калькулятор трейда");
   backAction = loadHome;
   renderTrade();
 }
@@ -721,7 +728,7 @@ function renderFeesSellResult() {
 
 async function loadFees() {
   showScreen("fees");
-  el("#header-title").textContent = "Комиссии DP";
+  setHeaderTitle("Комиссии DP");
   backAction = loadHome;
 
   if (!dreampetsFees) {
@@ -760,19 +767,19 @@ async function loadFees() {
 async function loadItem(id, backFn) {
   showScreen("item");
   backAction = backFn || loadHome;
-  el("#header-title").textContent = "…";
+  setHeaderTitle("…");
 
   renderWindowRow("#item-win-row", () => loadItem(id, backFn));
 
   const res = await fetch(`/api/item/${id}?window=${currentWindow}`);
   if (!res.ok) {
-    el("#header-title").textContent = "Не найдено";
+    setHeaderTitle("Не найдено");
     return;
   }
   const item = await res.json();
   const meta = rareMeta(item.rare);
 
-  el("#header-title").textContent = item.name;
+  setHeaderTitle(item.name, meta.cls, CATEGORY_ICONS[(item.rare || "").toLowerCase()]);
   el("#item-image").src = item.image;
   el("#item-image").onerror = function() { this.src = PLACEHOLDER; };
   el("#item-name").textContent = item.name;

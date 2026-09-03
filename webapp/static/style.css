@@ -52,7 +52,12 @@
     position:sticky; top:0; background:var(--bg); z-index:10;
     display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--line);
   }
-  header h1{ font-size:17px; font-weight:700; margin:0; flex:1; letter-spacing:0.01em; text-transform:uppercase; }
+  header h1{ font-size:17px; font-weight:700; margin:0; flex:1; letter-spacing:0.01em; text-transform:uppercase;
+    display:flex; align-items:center; gap:6px; }
+  header h1 svg{ width:16px; height:16px; flex:none; }
+  header h1.rare-godly{ color:var(--godly); }
+  header h1.rare-ancient{ color:var(--ancient); }
+  header h1.rare-unique{ color:var(--unique); }
   #back-btn{
     display:none; align-items:center; justify-content:center;
     width:36px; height:36px; background:var(--card); border:1px solid var(--line);
