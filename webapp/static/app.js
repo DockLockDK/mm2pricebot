@@ -721,7 +721,7 @@ function renderFeesSellResult() {
 
 async function loadFees() {
   showScreen("fees");
-  el("#header-title").textContent = "Комиссии DreamPets";
+  el("#header-title").textContent = "Комиссии DP";
   backAction = loadHome;
 
   if (!dreampetsFees) {
