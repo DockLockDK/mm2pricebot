@@ -246,6 +246,10 @@
   .hist-badge.low{ color:var(--up); background:rgba(0,237,63,0.1); border-color:rgba(0,237,63,0.3); }
   .hist-badge.high{ color:var(--down); background:rgba(255,59,48,0.1); border-color:rgba(255,59,48,0.3); }
 
+  .sale-count{ display:none; align-items:center; justify-content:center; gap:6px; font-size:11.5px;
+    color:var(--hint); margin:0 0 14px; text-align:center; }
+  .sale-count svg{ width:13px; height:13px; flex:none; }
+
   /* ---------- Степпер количества (инвентарь на карточке предмета и списках) ---------- */
   .inv-stepper{ display:flex; align-items:center; justify-content:center; gap:12px; background:var(--card);
     border:1px solid var(--line); clip-path:var(--clip-panel-sm); padding:8px 14px; margin-bottom:14px; }

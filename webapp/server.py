@@ -191,6 +191,9 @@ def api_item(pid: str, window: str = price_history.DEFAULT_WINDOW):
             cv["history"] = price_history.build_value_series(name_key, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
     view["window"] = resolved_window
     view["inventory_quantity"] = inventory.load().get(pid, 0)
+
+    stats = mm2_api.fetch_product_stats(pid)
+    view["sale_count"] = stats["sale_count"] if stats else None
     return view
 
 

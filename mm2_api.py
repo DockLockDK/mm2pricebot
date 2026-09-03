@@ -38,6 +38,43 @@ HEADERS = {
 
 REQUEST_TIMEOUT = 15
 
+# Живая статистика лотов конкретного предмета (сколько сейчас выставлено на
+# продажу) — тот же маркет-API, эндпоинт /market/products/{id}/stats, найден
+# в JS-бандле сайта (getMarketProductStats). Дёргается синхронно из
+# /api/item на один конкретный товар, когда пользователь открывает карточку —
+# отдельный короткий таймаут, чтобы медленный ответ DreamPets не подвешивал
+# открытие карточки в мини-приложении надолго.
+PRODUCT_STATS_URL_TMPL = "https://mm2-test.dreampets.gg/api/market/v1/market/products/{product_id}/stats"
+LIVE_STATS_TIMEOUT = 6
+
+
+def fetch_product_stats(product_id):
+    """Сколько лотов этого предмета сейчас реально выставлено на продажу в
+    основном каталоге — {'sale_count': int, 'min_price': float|None} или None
+    при сбое запроса. Это НЕ история покупок (кто когда что купил) — публичный
+    API DreamPets такого не отдаёт, только приватную историю покупок
+    авторизованного аккаунта, к которой у бота нет доступа."""
+    try:
+        resp = requests.get(
+            PRODUCT_STATS_URL_TMPL.format(product_id=product_id),
+            params={"currency": CURRENCY},
+            headers=HEADERS,
+            timeout=LIVE_STATS_TIMEOUT,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+    except (requests.RequestException, ValueError) as e:
+        print(f"[!] Ошибка запроса статистики лотов ({product_id}): {e}")
+        return None
+
+    min_price = data.get("min_price")
+    try:
+        min_price = float(min_price) if min_price is not None else None
+    except (TypeError, ValueError):
+        min_price = None
+
+    return {"sale_count": int(data.get("sale_count") or 0), "min_price": min_price}
+
 
 def fetch_all_products():
     """Одним запросом забирает весь каталог. Возвращает список сырых dict'ов от API."""

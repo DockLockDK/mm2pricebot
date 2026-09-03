@@ -375,6 +375,26 @@ function renderHistBadge(item) {
   }
 }
 
+function pluralRu(n, one, few, many) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+  return many;
+}
+
+function renderSaleCount(item) {
+  const box = el("#item-sale-count");
+  const n = item.sale_count;
+  if (n == null) {
+    box.style.display = "none";
+    return;
+  }
+  box.style.display = "flex";
+  el("#item-sale-count-text").textContent = n === 0
+    ? "Сейчас нет лотов в продаже"
+    : `Сейчас в продаже: ${n} ${pluralRu(n, "лот", "лота", "лотов")}`;
+}
+
 function renderPriceChart(candles) {
   const chartEl = el("#chart");
   chartEl.innerHTML = "";
@@ -793,6 +813,7 @@ async function loadItem(id, backFn) {
   el("#item-prev").textContent = item.prev_price != null ? fmtPrice(item.prev_price) : "";
   el("#item-change").innerHTML = changePill(item.change_percent);
   renderHistBadge(item);
+  renderSaleCount(item);
 
   const invQtyEl = el("#item-inv-qty");
   let invQty = item.inventory_quantity || 0;
