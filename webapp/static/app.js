@@ -76,7 +76,7 @@ function renderMm2News(news) {
     const ago = timeAgoRu(news.colbe.published);
     html += `
       <a class="news-card" href="${news.colbe.url}" target="_blank" rel="noopener">
-        <span class="news-src">▶ Colbe · YouTube${ago ? " · " + ago : ""}</span>
+        <span class="news-src"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4v16a1 1 0 0 0 1.524 .852l13 -8a1 1 0 0 0 0 -1.704l-13 -8a1 1 0 0 0 -1.524 .852z" /></svg> Colbe · YouTube${ago ? " · " + ago : ""}</span>
         <span class="news-title">${escapeHtml(news.colbe.title)}</span>
         <span class="news-body">${escapeHtml(truncate(news.colbe.description, 200))}</span>
       </a>`;
@@ -84,7 +84,7 @@ function renderMm2News(news) {
   if (news.mmoexp && news.mmoexp.url) {
     html += `
       <a class="news-card" href="${news.mmoexp.url}" target="_blank" rel="noopener">
-        <span class="news-src">📰 MMOexp.com${news.mmoexp.published ? " · " + news.mmoexp.published : ""}</span>
+        <span class="news-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" /><path d="M8 8l4 0" /><path d="M8 12l4 0" /><path d="M8 16l4 0" /></svg> MMOexp.com${news.mmoexp.published ? " · " + news.mmoexp.published : ""}</span>
         <span class="news-title">${escapeHtml(news.mmoexp.title)}</span>
         <span class="news-body">${escapeHtml(truncate(news.mmoexp.summary, 200))}</span>
       </a>`;
@@ -102,13 +102,13 @@ function rareMeta(rare) {
 }
 
 const CATEGORY_ICONS = {
-  godly: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.6 6.2L21 9l-5 4.6L17.4 21 12 17.3 6.6 21 8 13.6 3 9l6.4-0.8L12 2z" stroke="#f2c94c" stroke-width="1.6" stroke-linejoin="round"/></svg>',
-  ancient: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 3c-3 2-6 2.5-6 2.5v6c0 4.5 3 7.5 6 8.5 3-1 6-4 6-8.5v-6S15 5 12 3z" stroke="#4f8cff" stroke-width="1.6" stroke-linejoin="round"/></svg>',
-  unique: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#9b7cf5" stroke-width="1.6"/><path d="M12 2v3.2M12 18.8V22M2 12h3.2M18.8 12H22" stroke="#9b7cf5" stroke-width="1.6" stroke-linecap="round"/></svg>',
+  godly: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></svg>',
+  ancient: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /></svg>',
+  unique: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /></svg>',
 };
 
-const ARROW_UP = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M12 20V4M12 4l-6 6M12 4l6 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const ARROW_DOWN = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M12 20l-6-6M12 20l6-6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const ARROW_UP = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg>';
+const ARROW_DOWN = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M16 15l-4 4" /><path d="M8 15l4 4" /></svg>';
 
 // Период сравнения "было -> стало" — общий для главного экрана, категории и
 // карточки предмета: сколько выбрали, столько и используется в /api/... до
@@ -195,14 +195,14 @@ function itemCard(item, onOpen) {
       <img src="${item.image}" loading="lazy" alt="">
     </div>
     <div class="item-name">${escapeHtml(item.name)}</div>
-    ${item.chroma ? '<div class="item-chroma">🌈 Разноцветная хрома</div>' : ""}
+    ${item.chroma ? '<div class="item-chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Разноцветная хрома</div>' : ""}
     <div class="price-line"><div class="item-price num">${fmtPrice(mainPrice)}</div></div>
     <div class="change-row">
       ${item.prev_price != null ? `<div class="item-prev num">${fmtPrice(item.prev_price)}</div>` : ""}
       ${changePill(change)}
     </div>
-    ${hasDeal ? `<div class="item-deal">⚡ в обычном дороже: ${fmtPrice(item.price)}</div>` : ""}
-    ${isLegacyOnly ? `<div class="item-deal">⚡ только в Legacy-каталоге</div>` : ""}
+    ${hasDeal ? `<div class="item-deal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg> в обычном дороже: ${fmtPrice(item.price)}</div>` : ""}
+    ${isLegacyOnly ? `<div class="item-deal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg> только в Legacy-каталоге</div>` : ""}
     ${valuesLine ? `<div class="item-values"><span class="dot"></span>${escapeHtml(valuesLine)}</div>` : ""}
   `;
   card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
@@ -358,11 +358,11 @@ function renderHistBadge(item) {
   if (price >= item.hist_max * (1 - EPS)) {
     badge.style.display = "flex";
     badge.className = "hist-badge high";
-    badge.textContent = "🔺 Дороже, чем когда-либо за всё время наблюдений";
+    badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg> Дороже, чем когда-либо за всё время наблюдений';
   } else if (price <= item.hist_min * (1 + EPS)) {
     badge.style.display = "flex";
     badge.className = "hist-badge low";
-    badge.textContent = "🔻 Дешевле, чем когда-либо за всё время наблюдений";
+    badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6 6l4 -4l8 8" /><path d="M21 10l0 7l-7 0" /></svg> Дешевле, чем когда-либо за всё время наблюдений';
   } else {
     badge.style.display = "none";
   }
@@ -509,7 +509,7 @@ function renderSlotGrid(containerSel, items, { onAdd, onIncrement, onDecrement, 
     tile.innerHTML = `
       <div class="slot slot-filled">
         <img src="${item.image}" loading="lazy" alt="">
-        <button class="slot-remove" aria-label="Убрать">✕</button>
+        <button class="slot-remove" aria-label="Убрать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
       </div>
       <div class="slot-meta">
         <div class="slot-price">${fmtPrice(item.best_price)}</div>
@@ -647,11 +647,11 @@ function renderTrade() {
 
   let verdictText;
   if (diffPercent < 5) {
-    verdictText = `⚖️ Обмен примерно честный по ${basisLabel} (разница ${diffPercent.toFixed(0)}%)`;
+    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20l10 0" /><path d="M6 6l6 -1l6 1" /><path d="M12 3l0 17" /><path d="M9 12l-3 -6l-3 6a3 3 0 0 0 6 0" /><path d="M21 12l-3 -6l-3 6a3 3 0 0 0 6 0" /></svg> Обмен примерно честный по ${basisLabel} (разница ${diffPercent.toFixed(0)}%)`;
   } else if (diff > 0) {
-    verdictText = `📈 Ваша сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен невыгоден вам`;
+    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg> Ваша сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен невыгоден вам`;
   } else {
-    verdictText = `📉 Их сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен выгоден вам`;
+    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6 6l4 -4l8 8" /><path d="M21 10l0 7l-7 0" /></svg> Их сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен выгоден вам`;
   }
   const note = !useValue && (a.valueCount > 0 || b.valueCount > 0)
     ? '<div class="trade-verdict-note">Не у всех предметов есть Community Value — сравниваем по цене каталога.</div>'
@@ -779,7 +779,7 @@ async function loadItem(id, backFn) {
   el("#item-sub").innerHTML = `
     <span class="chip ${meta.cls}">${meta.label}</span>
     <span class="chip">${escapeHtml(item.category || "")}</span>
-    ${item.chroma ? '<span class="chip chroma">🌈 Разноцветная хрома</span>' : ""}
+    ${item.chroma ? '<span class="chip chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Разноцветная хрома</span>' : ""}
   `;
   const mainPrice = item.best_price != null ? item.best_price : item.price;
   el("#item-price").textContent = fmtPrice(mainPrice);
