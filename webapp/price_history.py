@@ -141,6 +141,14 @@ def update_mm2values(mm2values_index):
 
 
 _FUNPAY_MIN_NAME_LEN = 4  # короче — слишком велик риск случайного совпадения подстроки
+_FUNPAY_CHROMA_MARKER = "chroma"  # как выглядит после normalize_name (см. ниже)
+
+
+def funpay_key(name_key, chroma):
+    """Ключ _funpay_index/funpay_price_points: обычная версия предмета — как
+    раньше, просто normalize_name(name); хрома — с суффиксом, чтобы не делить
+    один ключ с обычной версией того же имени (см. update_funpay)."""
+    return f"{name_key}#chroma" if chroma else name_key
 
 
 def update_funpay(funpay_listings, snapshot):
@@ -153,27 +161,44 @@ def update_funpay(funpay_listings, snapshot):
     вокруг него просто отваливаются. Ограничиваемся Godly/Ancient/Unique
     (тот же круг, что и Community Value) — на коротких/частых именах риск
     ложного совпадения иначе выше, чем польза от такого сопоставления.
+
+    Обычная и хрома-версия одного и того же предмета делят имя (например
+    Icewing), а хрома почти всегда дороже — раньше это не различалось, и
+    алгоритм молча выбирал самый дешёвый подходящий лот по имени, из-за чего
+    хрома-предмету почти всегда доставалась цена обычного лота. Теперь
+    отдельно проверяем слово "chroma" в тексте лота (в норм. виде остаются
+    только a-z0-9, так что регистр/окружающие символы не важны) и сопоставляем
+    хрома-лоты только с хрома-предметами, обычные — только с обычными.
+    Продавцы, которые не пишут "chroma" явно в тексте объявления, для
+    хрома-предметов просто не попадут в сопоставление — это осознанный
+    компромисс: лучше не показать цену вовсе, чем выдать чужую.
+
     Возвращает количество сопоставленных предметов — для логирования."""
     global _funpay_index
-    catalog_names = set()
+    catalog_items = set()
     for item in snapshot.values():
         name = item.get("name")
         if name and len(name) >= _FUNPAY_MIN_NAME_LEN and (item.get("rare") or "").lower() in mm2_api.MM2VALUES_CATEGORIES:
-            catalog_names.add(name)
+            catalog_items.add((name, bool(item.get("chroma"))))
 
-    normalized_listings = [(mm2_api.normalize_name(l["text"]), l) for l in funpay_listings]
+    normalized_listings = []
+    for l in funpay_listings:
+        norm_text = mm2_api.normalize_name(l["text"])
+        normalized_listings.append((norm_text, _FUNPAY_CHROMA_MARKER in norm_text, l))
 
     new_index = {}
-    for name in catalog_names:
-        key = mm2_api.normalize_name(name)
-        if not key:
+    for name, chroma in catalog_items:
+        name_key = mm2_api.normalize_name(name)
+        if not name_key:
             continue
         best = None
-        for norm_text, listing in normalized_listings:
-            if key in norm_text and (best is None or listing["price"] < best["price"]):
+        for norm_text, is_chroma_listing, listing in normalized_listings:
+            if is_chroma_listing != chroma:
+                continue
+            if name_key in norm_text and (best is None or listing["price"] < best["price"]):
                 best = listing
         if best:
-            new_index[key] = {"price": best["price"], "url": best["url"]}
+            new_index[funpay_key(name_key, chroma)] = {"price": best["price"], "url": best["url"]}
 
     _funpay_index = new_index
     now_ts = int(time.time())
@@ -383,7 +408,9 @@ def item_view(pid, item, old_snapshot, legacy_old=None):
     # update_funpay), поэтому НЕ участвует в best_price/cheaper_source —
     # показываем отдельной, всегда второстепенной кнопкой на карточке, а не
     # выдаём за официальную "самую дешёвую" цену.
-    fp = _funpay_index.get(name_key) if (item.get("rare") or "").lower() in mm2_api.MM2VALUES_CATEGORIES else None
+    fp = None
+    if (item.get("rare") or "").lower() in mm2_api.MM2VALUES_CATEGORIES:
+        fp = _funpay_index.get(funpay_key(name_key, bool(item.get("chroma"))))
     view["funpay_price"] = fp["price"] if fp else None
     view["funpay_url"] = fp["url"] if fp else None
 
