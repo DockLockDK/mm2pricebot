@@ -140,6 +140,7 @@ function showScreen(name) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   el("#screen-" + name).classList.add("active");
   el("#back-btn").style.display = name === "home" ? "none" : "flex";
+  el("#about-btn").style.display = name === "home" ? "flex" : "none";
   if (tg) {
     if (name === "home") tg.BackButton.hide();
     else { tg.BackButton.show(); }
@@ -148,6 +149,13 @@ function showScreen(name) {
 
 el("#back-btn").onclick = () => { if (backAction) backAction(); };
 if (tg) tg.BackButton.onClick(() => { if (backAction) backAction(); });
+
+function loadAbout() {
+  showScreen("about");
+  setHeaderTitle("О проекте");
+  backAction = loadHome;
+}
+el("#about-btn").onclick = loadAbout;
 
 function itemCard(item, onOpen) {
   const card = document.createElement("div");

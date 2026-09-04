@@ -328,6 +328,31 @@
   .fees-result-sub{ font-size:11px; color:var(--hint); text-align:center; }
   .fees-note{ font-size:11px; color:var(--hint); line-height:1.5; margin-top:18px; text-align:center; }
 
+  /* ---------- О проекте (FAQ / дисклеймер / контакты) ---------- */
+  #about-btn{
+    display:none; align-items:center; justify-content:center;
+    width:36px; height:36px; background:var(--card); border:1px solid var(--line);
+    clip-path:var(--clip-panel-sm);
+    color:var(--text); cursor:pointer; flex:none; padding:0;
+  }
+  #about-btn svg{ display:block; }
+  .about-disclaimer{ display:flex; align-items:flex-start; gap:10px; background:rgba(255,255,255,0.04);
+    border:1px solid var(--line); clip-path:var(--clip-panel-sm); padding:14px; margin-bottom:20px;
+    font-size:12px; color:var(--hint); line-height:1.55; }
+  .about-disclaimer svg{ width:18px; height:18px; flex:none; color:var(--accent); margin-top:1px; }
+  .about-disclaimer b{ color:var(--text); }
+  .faq-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+  .faq-item{ background:var(--card); border:1px solid var(--line); clip-path:var(--clip-panel-sm); padding:12px 14px; }
+  .faq-item summary{ font-size:13px; font-weight:700; cursor:pointer; list-style:none; }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item summary::before{ content:"+ "; color:var(--accent); }
+  .faq-item[open] summary::before{ content:"− "; }
+  .faq-item p{ font-size:12px; color:var(--hint); line-height:1.5; margin:8px 0 0; }
+  .about-contacts{ background:var(--card); border:1px solid var(--line); clip-path:var(--clip-panel); padding:4px 14px; }
+  .contact-row{ display:flex; justify-content:space-between; align-items:center; padding:11px 0; font-size:13px; font-weight:600; }
+  .contact-row:not(:last-child){ border-bottom:1px solid var(--line); }
+  .contact-row .hint{ font-weight:400; }
+
   /* ---------- Пикер предмета (модалка поиска) ---------- */
   .picker-modal{ position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; display:flex;
     align-items:flex-end; justify-content:center; }
@@ -370,6 +395,7 @@
     #screen-inventory{ max-width:680px; margin:0 auto; }
     #screen-trade{ max-width:900px; margin:0 auto; }
     #screen-fees{ max-width:520px; margin:0 auto; }
+    #screen-about{ max-width:620px; margin:0 auto; }
 
     .picker-modal{ align-items:center; }
     .picker-sheet{ max-height:70vh; }
