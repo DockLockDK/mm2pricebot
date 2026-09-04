@@ -349,6 +349,7 @@ def item_view(pid, item, old_snapshot, legacy_old=None):
         "buy_url": mm2_api.buy_url(pid, item.get("name")),
         "legacy_price": None,
         "legacy_buy_url": None,
+        "legacy_product_id": None,
         "cheaper_source": "current",
     }
 
@@ -357,6 +358,7 @@ def item_view(pid, item, old_snapshot, legacy_old=None):
     if legacy and legacy.get("price") is not None:
         view["legacy_price"] = legacy["price"]
         view["legacy_buy_url"] = mm2_api.legacy_buy_url(legacy["product_id"], legacy["name"])
+        view["legacy_product_id"] = legacy["product_id"]
         if price is None or legacy["price"] < price:
             view["cheaper_source"] = "legacy"
             # Крупный ценник всегда показывает самый дешёвый вариант из двух каталогов —

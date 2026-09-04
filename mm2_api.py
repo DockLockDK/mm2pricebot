@@ -238,6 +238,32 @@ def legacy_buy_url(product_id, name):
     return LEGACY_BUY_URL_TMPL.format(slug=slugify(name), product_id=product_id)
 
 
+# Статистика лотов Legacy-каталога — отдельный сервис (mm2.dreampets.gg, не
+# mm2-test), найден в JS-бандле legacy-фронтенда сайта (SalesService.getStatistics).
+# В отличие от основного каталога тут POST с телом {product_ids, currency} и
+# сразу пачкой (мы используем с одним id — второй маркет одного предмета).
+LEGACY_STATS_URL = "https://mm2.dreampets.gg/api/sales/v1/sales/statistics"
+
+
+def fetch_legacy_sale_count(product_id):
+    """Сколько лотов этого предмета сейчас выставлено в Legacy-каталоге —
+    int или None при сбое запроса."""
+    try:
+        resp = requests.post(
+            LEGACY_STATS_URL,
+            json={"product_ids": [product_id], "currency": CURRENCY},
+            headers={**HEADERS, "Content-Type": "application/json"},
+            timeout=LIVE_STATS_TIMEOUT,
+        )
+        resp.raise_for_status()
+        info = resp.json().get("info") or {}
+        entry = info.get(product_id)
+        return int(entry["count"]) if entry and entry.get("count") is not None else 0
+    except (requests.RequestException, ValueError, TypeError, KeyError) as e:
+        print(f"[!] Ошибка запроса статистики лотов Legacy ({product_id}): {e}")
+        return None
+
+
 # ---------------------------------------------------------------------------
 # Community value-сайт (mm2values.com) — это НЕ магазин. Там нет ни кнопки
 # "купить", ни реальных денег — только условная "Value", ориентир комьюнити

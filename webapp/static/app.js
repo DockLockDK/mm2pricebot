@@ -92,7 +92,7 @@ function renderNextEvent() {
   const ev = nextSeasonalEvent();
   if (!ev) { box.innerHTML = ""; return; }
   const dateStr = ev.date.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
-  box.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2l0 -2" /></svg><div>Возможно скоро: <b>${ev.name}</b> — ориентировочно ${dateStr} <span class="hint">(неофициально, по опыту прошлых лет)</span></div>`;
+  box.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2l0 -2" /></svg><div>Следующее глобальное обновление: <b>${ev.name}</b> — ориентировочно ${dateStr} <span class="hint">(неофициально, не факт)</span></div>`;
 }
 
 function escapeHtml(s) {
@@ -140,6 +140,7 @@ const WINDOW_OPTIONS = [
   ["1d", "Сутки"], ["1w", "Неделя"], ["1mo", "Месяц"], ["1y", "Год"],
 ];
 let currentWindow = "5m";
+let categoriesExpanded = false;
 // График всегда показывает минимум сутки истории, даже если для "было/стало"
 // выбран более короткий период (см. CHART_WINDOW_SECONDS на бэкенде) — иначе
 // график почти всегда был бы пустым при выборе "5 мин"/"1 час".
@@ -184,11 +185,14 @@ const CURRENCY_SYMBOLS = { RUB: "₽", USD: "$", EUR: "€" };
 let currentCurrency = localStorage.getItem("currency") || "RUB";
 let exchangeRates = {};
 
+function convertPrice(p) {
+  if (p == null) return null;
+  const rate = currentCurrency !== "RUB" ? exchangeRates[currentCurrency] : null;
+  return rate ? p * rate : p;
+}
 function fmtPrice(p) {
   if (p == null) return "—";
-  const rate = currentCurrency !== "RUB" ? exchangeRates[currentCurrency] : null;
-  const value = rate ? p * rate : p;
-  return value.toFixed(2) + CURRENCY_SYMBOLS[currentCurrency];
+  return convertPrice(p).toFixed(2) + CURRENCY_SYMBOLS[currentCurrency];
 }
 
 el("#currency-btn").textContent = CURRENCY_SYMBOLS[currentCurrency];
@@ -237,10 +241,31 @@ function loadAbout() {
 }
 el("#about-btn").onclick = loadAbout;
 
-el("#theme-toggle").onchange = (e) => {
-  const theme = e.target.checked ? "light" : "dark";
+el("#discord-copy-btn").onclick = async () => {
+  const hint = el("#discord-copy-hint");
+  try {
+    await navigator.clipboard.writeText("docklock");
+    hint.textContent = "Скопировано!";
+  } catch (e) {
+    hint.textContent = "docklock";
+  }
+  setTimeout(() => { hint.textContent = "docklock · нажмите, чтобы скопировать"; }, 1500);
+};
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
-  location.reload();
+  // Цвета графиков (lightweight-charts) — не CSS, их нужно обновить явно,
+  // а не полагаться на каскад переменных, и только если график вообще
+  // сейчас отрисован (существует), иначе applyOptions упадёт.
+  const chartOpts = { layout: { textColor: chartTextColor() }, grid: { horzLines: { color: chartGridColor() } } };
+  if (priceChart) priceChart.applyOptions(chartOpts);
+  if (valueChart) valueChart.applyOptions(chartOpts);
+  if (marketIndexChart) marketIndexChart.applyOptions(chartOpts);
+}
+
+el("#theme-toggle").onchange = (e) => {
+  applyTheme(e.target.checked ? "light" : "dark");
 };
 
 function itemCard(item, onOpen, onRemove) {
@@ -260,7 +285,7 @@ function itemCard(item, onOpen, onRemove) {
       <img src="${item.image}" loading="lazy" alt="">
     </div>
     <div class="item-name">${escapeHtml(item.name)}</div>
-    ${item.chroma ? '<div class="item-chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Разноцветная хрома</div>' : ""}
+    ${item.chroma ? '<div class="item-chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Хрома</div>' : ""}
     <div class="price-line"><div class="item-price num">${fmtPrice(mainPrice)}</div></div>
     <div class="change-row">
       ${item.prev_price != null ? `<div class="item-prev num">${fmtPrice(item.prev_price)}</div>` : ""}
@@ -309,10 +334,12 @@ async function loadHome() {
 
   const catWrap = el("#categories");
   catWrap.innerHTML = "";
-  for (const c of data.categories) {
+  const CATEGORIES_COLLAPSED_COUNT = 3;
+  data.categories.forEach((c, i) => {
     const meta = rareMeta(c.key);
     const btn = document.createElement("button");
     btn.className = `cat-btn ${meta.cls}`;
+    if (i >= CATEGORIES_COLLAPSED_COUNT && !categoriesExpanded) btn.classList.add("cat-hidden");
     btn.innerHTML = `
       <div class="icon">${CATEGORY_ICONS[c.key] || ""}</div>
       <div class="label">${meta.label}</div>
@@ -320,6 +347,20 @@ async function loadHome() {
     `;
     btn.onclick = () => loadCategory(c.key);
     catWrap.appendChild(btn);
+  });
+  const catToggle = el("#categories-toggle");
+  if (data.categories.length > CATEGORIES_COLLAPSED_COUNT) {
+    catToggle.style.display = "block";
+    catToggle.textContent = categoriesExpanded ? "Свернуть" : "Показать все";
+    catToggle.onclick = () => {
+      categoriesExpanded = !categoriesExpanded;
+      catWrap.querySelectorAll(".cat-btn").forEach((btn, i) => {
+        btn.classList.toggle("cat-hidden", i >= CATEGORIES_COLLAPSED_COUNT && !categoriesExpanded);
+      });
+      catToggle.textContent = categoriesExpanded ? "Свернуть" : "Показать все";
+    };
+  } else {
+    catToggle.style.display = "none";
   }
 
   const moversWrap = el("#movers");
@@ -488,7 +529,7 @@ function renderPriceChart(candles) {
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" }, horzLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" } },
-    localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: 0 }) + "₽" },
+    localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: currentCurrency === "RUB" ? 0 : 2 }) + CURRENCY_SYMBOLS[currentCurrency] },
   });
   const series = priceChart.addAreaSeries({
     lineColor: "#4f8cff", topColor: "rgba(79,140,255,0.28)", bottomColor: "rgba(79,140,255,0)",
@@ -496,7 +537,7 @@ function renderPriceChart(candles) {
     priceLineVisible: false,
     lastValueVisible: candles.length > 1,
   });
-  series.setData(candles.map(c => ({ time: c.time, value: c.close })));
+  series.setData(candles.map(c => ({ time: c.time, value: convertPrice(c.close) })));
   priceChart.timeScale().fitContent();
 }
 
@@ -519,15 +560,15 @@ function renderMarketIndexChart(data) {
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" }, horzLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" } },
-    localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: 0 }) + "₽" },
+    localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: currentCurrency === "RUB" ? 0 : 2 }) + CURRENCY_SYMBOLS[currentCurrency] },
   });
   if (godly.length) {
     const s = marketIndexChart.addLineSeries({ color: "#ff8800", lineWidth: 2, priceLineVisible: false, lastValueVisible: godly.length > 1 });
-    s.setData(godly.map(p => ({ time: p.time, value: p.value })));
+    s.setData(godly.map(p => ({ time: p.time, value: convertPrice(p.value) })));
   }
   if (ancient.length) {
     const s = marketIndexChart.addLineSeries({ color: "#4466cc", lineWidth: 2, priceLineVisible: false, lastValueVisible: ancient.length > 1 });
-    s.setData(ancient.map(p => ({ time: p.time, value: p.value })));
+    s.setData(ancient.map(p => ({ time: p.time, value: convertPrice(p.value) })));
   }
   marketIndexChart.timeScale().fitContent();
 }
@@ -1051,7 +1092,7 @@ async function loadItem(id, backFn) {
   el("#item-sub").innerHTML = `
     <span class="chip ${meta.cls}">${meta.label}</span>
     <span class="chip">${escapeHtml(item.category || "")}</span>
-    ${item.chroma ? '<span class="chip chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Разноцветная хрома</span>' : ""}
+    ${item.chroma ? '<span class="chip chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Хрома</span>' : ""}
   `;
   const mainPrice = item.best_price != null ? item.best_price : item.price;
   el("#item-price").textContent = fmtPrice(mainPrice);

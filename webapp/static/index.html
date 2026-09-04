@@ -60,6 +60,7 @@
 
     <h2 class="section-title"><span>Категории</span></h2>
     <div id="categories" class="cat-row"><div class="loading">Загрузка…</div></div>
+    <button id="categories-toggle" class="categories-toggle" style="display:none;">Показать все</button>
 
     <h2 class="section-title"><span>Индекс рынка <button class="help-icon" data-tip="Средняя цена по ВСЕМ предметам Godly и по ВСЕМ Ancient — общий пульс рынка этих редкостей, а не цена одного конкретного предмета.">?</button></span></h2>
     <div class="chart-block">
@@ -140,7 +141,7 @@
     <div class="buy-group" id="buy-group"></div>
     <div id="funpay-note" class="funpay-note" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" /><path d="M12 16h.01" /></svg>
-      <div><b>FunPay — экспериментальная функция.</b> Это сторонняя площадка объявлений, не связанная с DreamPets, и там встречаются мошенники. Совпадение с названием предмета ищется автоматически по тексту объявления и может быть неточным. Если цена подозрительно ниже рыночной — это повод насторожиться, а не повод спешить. Проверяйте продавца и не переводите деньги раньше, чем получите предмет.</div>
+      <div><b>FunPay — экспериментальная функция.</b> Это сторонняя площадка объявлений, не связанная с DreamPets, и там встречаются мошенники. Совпадение с названием предмета ищется автоматически по тексту объявления и может быть неточным. Если цена подозрительно ниже рыночной — это повод насторожиться, а не повод спешить. Покупаете здесь на свой страх и риск — только если понимаете, что делаете.</div>
     </div>
 
     <div class="community-values" id="community-values"></div>
@@ -257,7 +258,7 @@
 
     <div class="about-disclaimer">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" /><path d="M12 16h.01" /></svg>
-      <div>Этот бот и мини-приложение — независимый фан-проект для отслеживания цен на предметы Murder Mystery 2 в Roblox. Мы не являемся представителями и никак не связаны с <b>DreamPets</b>, <b>FunPay</b>, <b>Roblox Corporation</b>, <b>Nikilis</b> или официальной командой Murder Mystery 2. Все названия, торговые марки и материалы принадлежат их правообладателям. Информация даётся «как есть», в справочных целях, и может быть неточной или устаревшей.</div>
+      <div>Этот бот и мини-приложение — независимый фан-проект для отслеживания цен на предметы Murder Mystery 2 в Roblox. Мы не являемся представителями и никак не связаны с <b>DreamPets</b>, <b>FunPay</b>, <b>MM2Values</b>, <b>Roblox Corporation</b>, <b>Nikilis</b> или официальной командой Murder Mystery 2. Все названия, торговые марки и материалы принадлежат их правообладателям. Информация даётся «как есть», в справочных целях, и может быть неточной или устаревшей.</div>
     </div>
 
     <h2 class="section-title"><span>FAQ</span></h2>
@@ -276,16 +277,26 @@
       </details>
       <details class="faq-item">
         <summary>Это безопасно? Нужно ли давать боту пароль?</summary>
-        <p>Бот никогда не просит пароль и не имеет доступа к вашему аккаунту DreamPets или Roblox. Инвентарь и трейд-калькулятор в мини-приложении — это ваши личные заметки внутри бота, не связанные с реальным аккаунтом.</p>
+        <p>Бот никогда не просит пароль и не имеет доступа к вашему аккаунту DreamPets, Roblox или Telegram. Инвентарь и трейд-калькулятор в мини-приложении — это ваши личные заметки внутри бота, не связанные с реальным аккаунтом.</p>
+      </details>
+      <details class="faq-item">
+        <summary>В чём разница между основным и Legacy-каталогом?</summary>
+        <p>Это два отдельных маркетплейса на одном сайте DreamPets, с разными лотами и продавцами. Мы сравниваем цену в обоих и показываем более дешёвый вариант, а количество лотов в продаже считаем по сумме обоих сразу.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Как часто обновляются цены и график?</summary>
+        <p>Бот проверяет каталог DreamPets каждые несколько минут (обычно раз в 5 минут) и дописывает точку в историю — из этих точек и строится график.</p>
       </details>
     </div>
 
     <h2 class="section-title"><span>Контакты автора</span></h2>
     <div class="about-contacts">
-      <!-- TODO: вставить реальные контакты (Telegram/Discord/Roblox) автора. -->
-      <div class="contact-row"><span>Telegram</span><span class="hint">—</span></div>
-      <div class="contact-row"><span>Discord</span><span class="hint">—</span></div>
-      <div class="contact-row"><span>Roblox</span><span class="hint">—</span></div>
+      <a class="contact-row" href="https://www.roblox.com/users/981635087/profile" target="_blank" rel="noopener">
+        <span>Roblox</span><span class="hint">Профиль →</span>
+      </a>
+      <button class="contact-row" id="discord-copy-btn" type="button">
+        <span>Discord</span><span class="hint" id="discord-copy-hint">docklock · нажмите, чтобы скопировать</span>
+      </button>
     </div>
   </section>
 </main>

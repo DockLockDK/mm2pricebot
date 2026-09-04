@@ -225,8 +225,18 @@ def api_item(pid: str, window: str = price_history.DEFAULT_WINDOW):
     view["inventory_quantity"] = inventory.load().get(pid, 0)
     view["is_favorite"] = pid in favorites.load()
 
+    # Считаем лоты по ОБОИМ маркетам DreamPets — основному и Legacy — сразу
+    # суммой, а не только по основному, если у предмета вообще есть Legacy-
+    # версия (см. view["legacy_product_id"] выше).
     stats = mm2_api.fetch_product_stats(pid)
-    view["sale_count"] = stats["sale_count"] if stats else None
+    main_count = stats["sale_count"] if stats else None
+    legacy_count = None
+    if view.get("legacy_product_id"):
+        legacy_count = mm2_api.fetch_legacy_sale_count(view["legacy_product_id"])
+    if main_count is None and legacy_count is None:
+        view["sale_count"] = None
+    else:
+        view["sale_count"] = (main_count or 0) + (legacy_count or 0)
     return view
 
 
