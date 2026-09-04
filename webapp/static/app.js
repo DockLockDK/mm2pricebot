@@ -227,8 +227,12 @@ async function loadHome() {
 
   renderWindowRow("#home-win-row", () => loadHome());
 
-  const res = await fetch(`/api/menu?window=${currentWindow}`);
+  const [res, marketRes] = await Promise.all([
+    fetch(`/api/menu?window=${currentWindow}`),
+    fetch(`/api/market_index?window=${currentWindow}`),
+  ]);
   const data = await res.json();
+  renderMarketIndexChart(await marketRes.json());
 
   renderGameUpdate(data.game_update);
   renderMm2News(data.news);
@@ -422,6 +426,38 @@ function renderPriceChart(candles) {
   priceChart.timeScale().fitContent();
 }
 
+let marketIndexChart = null;
+
+function renderMarketIndexChart(data) {
+  const chartEl = el("#market-index-chart");
+  chartEl.innerHTML = "";
+  const godly = (data && data.godly) || [];
+  const ancient = (data && data.ancient) || [];
+  if ((!godly.length && !ancient.length) || !window.LightweightCharts) {
+    chartEl.innerHTML = '<div class="empty">Пока недостаточно истории для графика — она копится каждые несколько минут.</div>';
+    return;
+  }
+  marketIndexChart = LightweightCharts.createChart(chartEl, {
+    width: chartEl.clientWidth,
+    height: 180,
+    layout: { background: { color: "transparent" }, textColor: "#8a8a80", fontFamily: "'IBM Plex Mono','Space Mono',monospace" },
+    grid: { vertLines: { visible: false }, horzLines: { color: "rgba(255,255,255,0.06)" } },
+    timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
+    rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
+    crosshair: { vertLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" }, horzLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" } },
+    localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: 0 }) + "₽" },
+  });
+  if (godly.length) {
+    const s = marketIndexChart.addLineSeries({ color: "#ff8800", lineWidth: 2, priceLineVisible: false, lastValueVisible: godly.length > 1 });
+    s.setData(godly.map(p => ({ time: p.time, value: p.value })));
+  }
+  if (ancient.length) {
+    const s = marketIndexChart.addLineSeries({ color: "#4466cc", lineWidth: 2, priceLineVisible: false, lastValueVisible: ancient.length > 1 });
+    s.setData(ancient.map(p => ({ time: p.time, value: p.value })));
+  }
+  marketIndexChart.timeScale().fitContent();
+}
+
 function renderValueChart(history, sourceLabel) {
   const block = el("#value-chart-block");
   const chartEl = el("#value-chart");
@@ -457,6 +493,8 @@ window.addEventListener("resize", () => {
   if (priceChart && chartEl) priceChart.applyOptions({ width: chartEl.clientWidth });
   const valueChartEl = el("#value-chart");
   if (valueChart && valueChartEl) valueChart.applyOptions({ width: valueChartEl.clientWidth });
+  const marketIndexChartEl = el("#market-index-chart");
+  if (marketIndexChart && marketIndexChartEl) marketIndexChart.applyOptions({ width: marketIndexChartEl.clientWidth });
 });
 
 // ---------- Общий пикер предмета (для инвентаря и калькулятора трейда) ----------

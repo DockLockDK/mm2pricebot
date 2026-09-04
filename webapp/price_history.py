@@ -486,6 +486,29 @@ def build_value_series(name_key, bucket_sec=None, window_seconds=None):
     return _bucket(rows, bucket_sec, kind="last")
 
 
+def rarity_product_ids(rarity):
+    """product_id всех предметов текущего каталога данной редкости —
+    источник для build_rarity_index. Редкость предмета в MM2 практически
+    никогда не меняется, поэтому текущий список безопасно использовать и для
+    построения графика по прошлым точкам истории."""
+    snap = current_snapshot()
+    rarity = (rarity or "").lower()
+    return [pid for pid, item in snap.items() if (item.get("rare") or "").lower() == rarity]
+
+
+def build_rarity_index(rarity, bucket_sec=None, window_seconds=None):
+    """Средняя цена по ВСЕМ предметам редкости `rarity` на каждый момент
+    истории — агрегированный 'индекс рынка' этой редкости для главного
+    экрана (не график одного предмета). [{time, value}, ...] по возрастанию
+    времени, как build_value_series."""
+    pids = rarity_product_ids(rarity)
+    if not pids:
+        return []
+    since_ts = int(time.time()) - window_seconds if window_seconds else None
+    rows = pricedb.price_points_avg_series(pids, since_ts=since_ts)
+    return _bucket(rows, bucket_sec, kind="last")
+
+
 def price_history_avg(pid, days):
     """Средняя цена предмета за последние `days` дней. Возвращает (среднее,
     число_точек) — вызывающий сам решает, достаточно ли точек, чтобы

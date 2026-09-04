@@ -162,9 +162,15 @@
   #item-prev{ font-size:14px; color:var(--hint); text-decoration:line-through; }
   .change-center{ display:flex; justify-content:center; margin-bottom:18px; }
 
-  #chart, #value-chart{ width:100%; overflow:hidden; margin-bottom:8px; background:var(--card); border:1px solid var(--line); clip-path:var(--clip-panel); }
+  #chart, #value-chart, #market-index-chart{ width:100%; overflow:hidden; margin-bottom:8px; background:var(--card); border:1px solid var(--line); clip-path:var(--clip-panel); }
   .chart-block{ margin-bottom:20px; }
   .chart-foot{ display:flex; justify-content:space-between; font-size:10px; color:var(--hint); padding:0 2px; }
+
+  .market-index-legend{ display:flex; justify-content:center; gap:18px; font-size:11px; color:var(--hint); text-transform:uppercase; letter-spacing:.03em; }
+  .market-index-legend .legend-item{ display:flex; align-items:center; gap:5px; }
+  .market-index-legend .dot{ width:8px; height:8px; border-radius:50%; }
+  .market-index-legend .godly .dot{ background:var(--godly); }
+  .market-index-legend .ancient .dot{ background:var(--ancient); }
 
   .buy-group{ display:flex; flex-direction:column; gap:10px; margin-bottom:8px; }
   .buy-btn{

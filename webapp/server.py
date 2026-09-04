@@ -132,6 +132,23 @@ def api_menu(window: str = price_history.DEFAULT_WINDOW):
     }
 
 
+@app.get("/api/market_index")
+def api_market_index(window: str = price_history.DEFAULT_WINDOW):
+    """Агрегированный 'индекс рынка' Godly/Ancient для графика на главном
+    экране — средняя цена по всем предметам редкости, а не одного предмета.
+    window тут задаёт только глубину графика (см. resolve_chart_window),
+    как и на карточке предмета, а не период сравнения (тут нечего сравнивать
+    "было/стало" — это непрерывная линия)."""
+    resolved_window = window if window in price_history.WINDOW_SECONDS else price_history.DEFAULT_WINDOW
+    bucket_sec = price_history.CHART_BUCKET_SECONDS.get(resolved_window, price_history.CANDLE_BUCKET_SEC)
+    chart_window_sec = price_history.resolve_chart_window(resolved_window)
+    return {
+        "window": resolved_window,
+        "godly": price_history.build_rarity_index("godly", bucket_sec=bucket_sec, window_seconds=chart_window_sec),
+        "ancient": price_history.build_rarity_index("ancient", bucket_sec=bucket_sec, window_seconds=chart_window_sec),
+    }
+
+
 @app.get("/api/category/{rarity}")
 def api_category(rarity: str, window: str = price_history.DEFAULT_WINDOW):
     rarity = rarity.lower()

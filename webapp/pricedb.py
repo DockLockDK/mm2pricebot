@@ -202,6 +202,26 @@ def price_series(product_id, since_ts=None):
     return cur.fetchall()
 
 
+def price_points_avg_series(product_ids, since_ts=None):
+    """[(ts, средняя_цена), ...] по возрастанию времени — усреднение цены по
+    списку product_id на каждый момент истории, где есть хоть одна точка.
+    Один цикл проверки цен пишет все product_id разом с одним и тем же ts
+    (см. price_history.append_price_points), поэтому GROUP BY ts честно
+    объединяет "снимок всего рынка на этот цикл", а не разные моменты
+    времени случайно оказавшиеся рядом."""
+    if not product_ids:
+        return []
+    conn = get_conn()
+    placeholders = ",".join("?" * len(product_ids))
+    query = f"SELECT ts, AVG(price) FROM price_points WHERE product_id IN ({placeholders})"
+    params = list(product_ids)
+    if since_ts is not None:
+        query += " AND ts >= ?"
+        params.append(since_ts)
+    query += " GROUP BY ts ORDER BY ts"
+    return conn.execute(query, params).fetchall()
+
+
 def legacy_price_series(match_key, since_ts=None):
     """[(ts, price), ...] по возрастанию времени для одного предмета в legacy-каталоге."""
     conn = get_conn()
