@@ -26,7 +26,7 @@ const I18N = {
   about: { ru: "О проекте", en: "About" },
   no_photo: { ru: "нет фото", en: "no photo" },
 
-  home_title: { ru: "MM2 Каталог", en: "MM2 Catalog" },
+  home_title: { ru: "MM2 Pulse", en: "MM2 Pulse" },
   tool_inventory: { ru: "Мой инвентарь", en: "My Inventory" },
   tool_favorites: { ru: "Избранное", en: "Favorites" },
   tool_trade: { ru: "Калькулятор трейда", en: "Trade Calculator" },
