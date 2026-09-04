@@ -105,6 +105,24 @@ def api_windows():
     }
 
 
+SUPPORT_STAR_AMOUNTS = {50, 100, 300}
+
+
+@app.post("/api/support/invoice")
+async def api_support_invoice(payload: dict = Body(...)):
+    """Ссылка на разовый донат через Telegram Stars — сумма ограничена
+    заранее заданным набором (SUPPORT_STAR_AMOUNTS), чтобы не плодить
+    произвольные инвойсы по запросу."""
+    stars = payload.get("stars")
+    if stars not in SUPPORT_STAR_AMOUNTS:
+        raise HTTPException(status_code=400, detail="unsupported amount")
+    lang = payload.get("lang") if payload.get("lang") in ("ru", "en") else "ru"
+    url = await telegram_bot.create_support_invoice_link(stars, lang)
+    if not url:
+        raise HTTPException(status_code=503, detail="donations are not configured")
+    return {"url": url}
+
+
 @app.get("/api/exchange_rates")
 def api_exchange_rates():
     """Курс рубля к доллару/евро — только для переключателя валюты
@@ -145,7 +163,6 @@ def api_menu(window: str = price_history.DEFAULT_WINDOW):
         "window": resolved_window,
         "game_update": price_history.roblox_game_info(),
         "tracking_since": price_history.tracking_since_ts(),
-        "visit_count": price_history.increment_visit_count(),
     }
 
 

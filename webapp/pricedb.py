@@ -360,18 +360,3 @@ def tracking_since_ts():
     conn = get_conn()
     row = conn.execute("SELECT MIN(ts) FROM price_points").fetchone()
     return row[0] if row and row[0] is not None else None
-
-
-def increment_visit_count():
-    """Увеличивает счётчик открытий мини-приложения на 1 и возвращает новое
-    значение. Считает каждое открытие (в т.ч. повторные от одного и того же
-    человека), а не уникальных пользователей — Telegram Web App не даёт
-    надёжно и анонимно отличать людей друг от друга."""
-    conn = get_conn()
-    conn.execute(
-        "INSERT INTO kv_meta (key, value) VALUES ('visit_count', '1') "
-        "ON CONFLICT(key) DO UPDATE SET value = CAST(CAST(value AS INTEGER) + 1 AS TEXT)"
-    )
-    conn.commit()
-    row = conn.execute("SELECT value FROM kv_meta WHERE key = 'visit_count'").fetchone()
-    return int(row[0]) if row else 1

@@ -220,6 +220,18 @@
 
   .empty{ color:var(--hint); font-size:14px; padding:20px 0; text-align:center; }
 
+  .greeting-info{ font-size:15px; font-weight:700; color:var(--text); margin-bottom:10px; letter-spacing:0.01em; }
+  .greeting-info:empty{ display:none; }
+
+  .support-block{ display:flex; flex-direction:column; gap:10px; background:var(--card); border:1px solid var(--line);
+    clip-path:var(--clip-panel-sm); padding:14px; margin-bottom:14px; }
+  .support-note{ font-size:12px; color:var(--hint); line-height:1.5; }
+  .support-amounts{ display:flex; gap:8px; }
+  .support-amount-btn{ flex:1; background:rgba(155,124,245,0.1); border:1px solid var(--accent); color:var(--accent);
+    font-family:inherit; font-weight:700; font-size:14px; padding:10px 0; cursor:pointer; clip-path:var(--clip-panel-sm); }
+  .support-amount-btn:active{ filter:brightness(1.15); }
+  .support-hint{ font-size:11px; color:var(--hint); text-align:center; min-height:1em; }
+
   .game-update{ display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600;
     color:var(--hint); background:var(--card); border:1px solid var(--line); clip-path:var(--clip-panel-sm);
     padding:10px 14px; margin-bottom:14px; }

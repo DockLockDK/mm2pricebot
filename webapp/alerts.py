@@ -56,6 +56,11 @@ ALERTED_UNDERVALUE_STATE_FILE = str(_REPO_DIR / "alerted_undervalue.json")
 # состояние: предмет может упасть и вырасти в разные циклы, дедуп должен быть
 # независимым для каждого направления.
 ALERTED_RISE_STATE_FILE = str(_REPO_DIR / "alerted_rise.json")
+# id-ы всех сообщений-алертов, которые бот реально отправил в чат, по порядку
+# отправки — чтобы при превышении notification_settings.max_alert_messages
+# можно было удалить именно самые старые (см. _record_and_trim_alert_message).
+SENT_ALERT_MESSAGES_FILE = str(_REPO_DIR / "sent_alert_messages.json")
+TELEGRAM_DELETE_API_URL = f"https://api.telegram.org/bot{tracker.TELEGRAM_BOT_TOKEN}/deleteMessage"
 
 
 def _load_json_state(path):
@@ -148,11 +153,40 @@ def build_drop_alerts(new_snapshot, old_snapshot, alerted_state):
     return found
 
 
+def _load_sent_message_ids():
+    data = _load_json_state(SENT_ALERT_MESSAGES_FILE)
+    return data.get("ids", []) if isinstance(data, dict) else []
+
+
+def _record_and_trim_alert_message(message_id):
+    """Запоминает id только что отправленного алерта и удаляет из чата самые
+    старые, если их накопилось больше notification_settings.max_alert_messages
+    — чтобы уведомления не захламляли чат бесконечно."""
+    if message_id is None:
+        return
+    max_messages = notification_settings.load()["max_alert_messages"]
+    ids = _load_sent_message_ids()
+    ids.append(message_id)
+    while len(ids) > max_messages:
+        old_id = ids.pop(0)
+        try:
+            requests.post(
+                TELEGRAM_DELETE_API_URL,
+                data={"chat_id": tracker.TELEGRAM_CHAT_ID, "message_id": old_id},
+                timeout=15,
+            )
+        except requests.RequestException:
+            log.exception("Не удалось удалить старое уведомление %s", old_id)
+    _save_json_state(SENT_ALERT_MESSAGES_FILE, {"ids": ids})
+
+
 def _send_telegram_alert(text, keyboard, image_url):
     """Общая отправка для всех видов алертов — с картинкой предмета
     (sendPhoto, подпись = текст), а если картинки нет или Telegram не смог её
     загрузить (CDN недоступен/нет фото у предмета), откатываемся на обычное
-    текстовое sendMessage, чтобы алерт в любом случае дошёл."""
+    текстовое sendMessage, чтобы алерт в любом случае дошёл. Id успешно
+    отправленного сообщения запоминаем и подрезаем историю алертов в чате
+    (см. _record_and_trim_alert_message)."""
     if not tracker.TELEGRAM_BOT_TOKEN or not tracker.TELEGRAM_CHAT_ID:
         return
 
@@ -170,6 +204,7 @@ def _send_telegram_alert(text, keyboard, image_url):
                 timeout=15,
             )
             if resp.status_code == 200:
+                _record_and_trim_alert_message(resp.json().get("result", {}).get("message_id"))
                 return
             log.warning(
                 "Telegram sendPhoto вернул ошибку, шлю текстом без картинки: %s %s",
@@ -189,7 +224,9 @@ def _send_telegram_alert(text, keyboard, image_url):
             },
             timeout=15,
         )
-        if resp.status_code != 200:
+        if resp.status_code == 200:
+            _record_and_trim_alert_message(resp.json().get("result", {}).get("message_id"))
+        else:
             log.warning("Telegram API вернул ошибку при отправке алерта: %s %s", resp.status_code, resp.text)
     except requests.RequestException:
         log.exception("Не удалось отправить алерт в Telegram")

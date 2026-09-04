@@ -94,6 +94,8 @@ const I18N = {
   scope_all: { ru: "Все предметы", en: "All items" },
   scope_selected: { ru: "Только выбранные", en: "Only selected" },
   notif_note: { ru: "Алерты приходят только по Godly/Ancient и только когда цена сильно отклоняется от своей средней за последние дни — не на каждое небольшое движение.", en: "Alerts fire only for Godly/Ancient, and only when the price deviates sharply from its recent average — not for every small move." },
+  max_alerts_label: { ru: "Хранить уведомлений в чате", en: "Keep alerts in chat" },
+  max_alerts_hint: { ru: "старые лишние автоматически удаляются", en: "older ones are deleted automatically" },
   remove_label: { ru: "Убрать", en: "Remove" },
 
   my_side: { ru: "Моя сторона", en: "My side" },
@@ -188,7 +190,17 @@ const I18N = {
   fees_result_sell_sub: { ru: "Комиссия за вывод: {fee} ({rate}%{fixed})", en: "Withdrawal fee: {fee} ({rate}%{fixed})" },
 
   stats_tracking_since: { ru: "Отслеживаем рынок с {date}", en: "Tracking the market since {date}" },
-  stats_visits: { ru: "Открытий приложения: {count}", en: "App opens: {count}" },
+
+  greeting_morning: { ru: "Доброе утро", en: "Good morning" },
+  greeting_day: { ru: "Добрый день", en: "Good afternoon" },
+  greeting_evening: { ru: "Добрый вечер", en: "Good evening" },
+  greeting_night: { ru: "Доброй ночи", en: "Good night" },
+
+  support_title: { ru: "Поддержать проект", en: "Support the project" },
+  support_note: { ru: "Полностью добровольно, через звёзды Telegram — без банковских карт и личных данных.", en: "Fully optional, via Telegram Stars — no bank cards or personal data involved." },
+  support_outside_telegram: { ru: "Открой в Telegram, чтобы задонатить", en: "Open in Telegram to donate" },
+  support_error: { ru: "Не получилось создать донат — попробуй позже", en: "Couldn't start the donation — try again later" },
+  support_thanks: { ru: "Спасибо за поддержку! 🎉", en: "Thanks for the support! 🎉" },
 };
 
 function t(key, vars) {
@@ -240,15 +252,48 @@ function timeAgo(isoString) {
   return t("just_now");
 }
 
-function renderStatsInfo(trackingSince, visitCount) {
+function renderGreeting() {
+  const box = el("#greeting-info");
+  const hour = new Date().getHours();
+  let key;
+  if (hour >= 5 && hour < 12) key = "greeting_morning";
+  else if (hour >= 12 && hour < 18) key = "greeting_day";
+  else if (hour >= 18 && hour < 23) key = "greeting_evening";
+  else key = "greeting_night";
+  const user = tg && tg.initDataUnsafe && tg.initDataUnsafe.user;
+  const name = user && (user.first_name || user.username);
+  box.textContent = name ? `${t(key)}, ${name}!` : `${t(key)}!`;
+}
+
+function wireSupportButtons() {
+  const hint = el("#support-hint");
+  el("#support-amounts").querySelectorAll(".support-amount-btn").forEach(btn => {
+    btn.onclick = async () => {
+      if (!tg) { hint.textContent = t("support_outside_telegram"); return; }
+      hint.textContent = "";
+      try {
+        const res = await fetch("/api/support/invoice", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ stars: Number(btn.dataset.stars), lang: currentLang }),
+        });
+        if (!res.ok) throw new Error("bad response");
+        const data = await res.json();
+        tg.openInvoice(data.url, (status) => {
+          if (status === "paid") hint.textContent = t("support_thanks");
+        });
+      } catch (e) {
+        hint.textContent = t("support_error");
+      }
+    };
+  });
+}
+
+function renderStatsInfo(trackingSince) {
   const box = el("#stats-info");
-  const parts = [];
-  if (trackingSince) {
-    const dateStr = new Date(trackingSince * 1000).toLocaleDateString(currentLang === "en" ? "en-US" : "ru-RU", { day: "numeric", month: "long", year: "numeric" });
-    parts.push(t("stats_tracking_since", { date: dateStr }));
-  }
-  if (visitCount != null) parts.push(t("stats_visits", { count: visitCount }));
-  box.innerHTML = parts.length ? `<span class="dot"></span>${parts.join(" · ")}` : "";
+  if (!trackingSince) { box.innerHTML = ""; return; }
+  const dateStr = new Date(trackingSince * 1000).toLocaleDateString(currentLang === "en" ? "en-US" : "ru-RU", { day: "numeric", month: "long", year: "numeric" });
+  box.innerHTML = `<span class="dot"></span>${t("stats_tracking_since", { date: dateStr })}`;
 }
 
 function renderGameUpdate(gameUpdate) {
@@ -536,6 +581,8 @@ async function loadHome() {
   el("#open-trade-btn").onclick = loadTrade;
   el("#open-fees-btn").onclick = loadFees;
   el("#open-notifications-btn").onclick = loadNotifications;
+  renderGreeting();
+  wireSupportButtons();
 
   renderWindowRow("#home-win-row", () => loadHome());
 
@@ -549,7 +596,7 @@ async function loadHome() {
 
   renderGameUpdate(data.game_update);
   renderNextEvent();
-  renderStatsInfo(data.tracking_since, data.visit_count);
+  renderStatsInfo(data.tracking_since);
 
   const catWrap = el("#categories");
   catWrap.innerHTML = "";
@@ -1059,6 +1106,12 @@ async function loadNotifications() {
 }
 
 function renderNotifSections() {
+  const maxMsgInput = el("#notif-max-messages");
+  maxMsgInput.value = notifSettings.max_alert_messages;
+  maxMsgInput.onchange = () => {
+    const v = Math.max(1, Number(maxMsgInput.value) || 30);
+    patchNotifSettings({ max_alert_messages: v });
+  };
   renderNotifSection("drop");
   renderNotifSection("rise");
 }

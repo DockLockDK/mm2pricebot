@@ -622,7 +622,3 @@ def init():
 
 def tracking_since_ts():
     return pricedb.tracking_since_ts()
-
-
-def increment_visit_count():
-    return pricedb.increment_visit_count()
