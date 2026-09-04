@@ -55,7 +55,7 @@
     <h2 class="section-title"><span>Категории</span></h2>
     <div id="categories" class="cat-row"><div class="loading">Загрузка…</div></div>
 
-    <h2 class="section-title"><span>Индекс рынка</span></h2>
+    <h2 class="section-title"><span>Индекс рынка <button class="help-icon" data-tip="Средняя цена по ВСЕМ предметам Godly и по ВСЕМ Ancient — общий пульс рынка этих редкостей, а не цена одного конкретного предмета.">?</button></span></h2>
     <div class="chart-block">
       <div id="market-index-chart"></div>
       <div class="market-index-legend">
@@ -114,6 +114,7 @@
     <div id="item-sale-count" class="sale-count" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3" /></svg>
       <span id="item-sale-count-text"></span>
+      <button class="help-icon" data-tip="Сколько лотов этого предмета сейчас реально выставлено на продажу в основном каталоге DreamPets — считается напрямую по их API в момент открытия карточки.">?</button>
     </div>
     <div id="item-win-row" class="win-row"></div>
 
@@ -127,6 +128,7 @@
     <div id="deal-note" class="deal-note" style="display:none;">
       <div class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg></div>
       <div id="deal-note-text"></div>
+      <button class="help-icon" data-tip="Legacy-каталог — старая версия магазина DreamPets на том же сайте, с отдельными лотами. Иногда там дешевле, чем в основном каталоге — тогда показываем это как отдельный вариант покупки.">?</button>
     </div>
 
     <div class="buy-group" id="buy-group"></div>
@@ -143,7 +145,7 @@
     </div>
 
     <div class="chart-block" id="value-chart-block" style="display:none;">
-      <h2 class="section-title"><span>История Community Value</span><span class="hint" id="value-chart-source"></span></h2>
+      <h2 class="section-title"><span>История Community Value <button class="help-icon" data-tip="Community Value — не реальная цена продажи, а ориентир сообщества (сайт mm2values.com) для трейдинга: во сколько игроки условно оценивают предмет при обмене. Никогда не используется как цена покупки.">?</button></span><span class="hint" id="value-chart-source"></span></h2>
       <div id="value-chart"></div>
     </div>
   </section>

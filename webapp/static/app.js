@@ -908,7 +908,8 @@ function renderTrade() {
   const note = !useValue && (a.valueCount > 0 || b.valueCount > 0)
     ? '<div class="trade-verdict-note">Не у всех предметов есть Community Value — сравниваем по цене каталога.</div>'
     : "";
-  verdictEl.innerHTML = `<div class="trade-verdict-text">${verdictText}</div>${note}`;
+  const verdictTip = "Сравниваем сумму Community Value обеих сторон (а если она есть не у всех предметов — сумму цен по каталогу). Разница до 5% считается честным обменом.";
+  verdictEl.innerHTML = `<div class="trade-verdict-text">${verdictText} <button class="help-icon" data-tip="${escapeHtml(verdictTip)}">?</button></div>${note}`;
 }
 
 // ---------- Калькулятор комиссий DreamPets (пополнение/вывод) ----------
@@ -1139,5 +1140,44 @@ async function loadItem(id, backFn) {
   const firstWithHistory = communityValues.find(v => v.history && v.history.length);
   renderValueChart(firstWithHistory ? firstWithHistory.history : null, firstWithHistory ? firstWithHistory.label : null);
 }
+
+// ---------- Подсказки "?" у графиков/функций ----------
+// Один делегированный обработчик на весь документ — новые .help-icon,
+// появляющиеся в динамически отрисованных экранах (трейд, карточка
+// предмета), подхватываются сами, без повторной привязки.
+
+let openHelpPopover = null;
+let openHelpBtn = null;
+
+function closeHelpPopover() {
+  if (openHelpPopover) openHelpPopover.remove();
+  openHelpPopover = null;
+  openHelpBtn = null;
+}
+
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".help-icon");
+  if (btn) {
+    e.stopPropagation();
+    const reopening = btn !== openHelpBtn;
+    closeHelpPopover();
+    if (reopening) {
+      const popover = document.createElement("div");
+      popover.className = "help-popover";
+      popover.textContent = btn.dataset.tip;
+      document.body.appendChild(popover);
+      const rect = btn.getBoundingClientRect();
+      const popRect = popover.getBoundingClientRect();
+      let left = rect.left + rect.width / 2 - popRect.width / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - popRect.width - 8));
+      popover.style.left = left + "px";
+      popover.style.top = (rect.bottom + 6) + "px";
+      openHelpPopover = popover;
+      openHelpBtn = btn;
+    }
+    return;
+  }
+  if (openHelpPopover && !e.target.closest(".help-popover")) closeHelpPopover();
+});
 
 loadHome();
