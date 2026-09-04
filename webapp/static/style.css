@@ -19,6 +19,13 @@
     --godly: #ff8800;
     --ancient: #4466cc;
     --unique: #d6489a;
+    --legendary: #ff4d4d;
+    --rare: #00c2d1;
+    --uncommon: #38bdf8;
+    --common: #9ca3af;
+    --classic: #a67c52;
+    --christmas: #16a34a;
+    --halloween: #f97316;
     --line: #232320;
 
     --glow-accent: 0 0 8px rgba(176,38,255,0.35), 0 0 18px rgba(176,38,255,0.18);
@@ -58,6 +65,13 @@
   header h1.rare-godly{ color:var(--godly); }
   header h1.rare-ancient{ color:var(--ancient); }
   header h1.rare-unique{ color:var(--unique); }
+  header h1.rare-legendary{ color:var(--legendary); }
+  header h1.rare-rare{ color:var(--rare); }
+  header h1.rare-uncommon{ color:var(--uncommon); }
+  header h1.rare-common{ color:var(--common); }
+  header h1.rare-classic{ color:var(--classic); }
+  header h1.rare-christmas{ color:var(--christmas); }
+  header h1.rare-halloween{ color:var(--halloween); }
   #back-btn{
     display:none; align-items:center; justify-content:center;
     width:36px; height:36px; background:var(--card); border:1px solid var(--line);
@@ -91,6 +105,20 @@
   .cat-btn.rare-ancient .label{ color:var(--ancient); }
   .cat-btn.rare-unique .icon svg{ color:var(--unique); }
   .cat-btn.rare-unique .label{ color:var(--unique); }
+  .cat-btn.rare-legendary .icon svg{ color:var(--legendary); }
+  .cat-btn.rare-legendary .label{ color:var(--legendary); }
+  .cat-btn.rare-rare .icon svg{ color:var(--rare); }
+  .cat-btn.rare-rare .label{ color:var(--rare); }
+  .cat-btn.rare-uncommon .icon svg{ color:var(--uncommon); }
+  .cat-btn.rare-uncommon .label{ color:var(--uncommon); }
+  .cat-btn.rare-common .icon svg{ color:var(--common); }
+  .cat-btn.rare-common .label{ color:var(--common); }
+  .cat-btn.rare-classic .icon svg{ color:var(--classic); }
+  .cat-btn.rare-classic .label{ color:var(--classic); }
+  .cat-btn.rare-christmas .icon svg{ color:var(--christmas); }
+  .cat-btn.rare-christmas .label{ color:var(--christmas); }
+  .cat-btn.rare-halloween .icon svg{ color:var(--halloween); }
+  .cat-btn.rare-halloween .label{ color:var(--halloween); }
 
   .grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
   .item-card{
@@ -158,6 +186,13 @@
   .chip.rare-godly{ color:var(--godly); background:rgba(255,136,0,0.1); border-color:rgba(255,136,0,0.3); }
   .chip.rare-ancient{ color:var(--ancient); background:rgba(68,102,204,0.12); border-color:rgba(68,102,204,0.35); }
   .chip.rare-unique{ color:var(--unique); background:rgba(214,72,154,0.12); border-color:rgba(214,72,154,0.35); }
+  .chip.rare-legendary{ color:var(--legendary); background:rgba(255,77,77,0.1); border-color:rgba(255,77,77,0.3); }
+  .chip.rare-rare{ color:var(--rare); background:rgba(0,194,209,0.1); border-color:rgba(0,194,209,0.3); }
+  .chip.rare-uncommon{ color:var(--uncommon); background:rgba(56,189,248,0.1); border-color:rgba(56,189,248,0.3); }
+  .chip.rare-common{ color:var(--common); background:rgba(156,163,175,0.1); border-color:rgba(156,163,175,0.3); }
+  .chip.rare-classic{ color:var(--classic); background:rgba(166,124,82,0.1); border-color:rgba(166,124,82,0.3); }
+  .chip.rare-christmas{ color:var(--christmas); background:rgba(22,163,74,0.1); border-color:rgba(22,163,74,0.3); }
+  .chip.rare-halloween{ color:var(--halloween); background:rgba(249,115,22,0.1); border-color:rgba(249,115,22,0.3); }
   .chip.chroma{ background-color:transparent; border-color:var(--line);
     background-image:linear-gradient(90deg, #ff5f6d, #ffc371, #47cf73, #22d3ee, #4466cc, #d6489a);
     -webkit-background-clip:text, border-box; background-clip:text, border-box; -webkit-text-fill-color:transparent; }

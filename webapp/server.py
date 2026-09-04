@@ -76,7 +76,14 @@ PORT = int(os.environ.get("PORT", "8000"))
 CATEGORIES = [
     ("godly", "Godly"),
     ("ancient", "Ancient"),
+    ("legendary", "Legendary"),
     ("unique", "Unique"),
+    ("rare", "Rare"),
+    ("uncommon", "Uncommon"),
+    ("common", "Common"),
+    ("classic", "Classic"),
+    ("christmas", "Christmas"),
+    ("halloween", "Halloween"),
 ]
 CATEGORY_LABELS = dict(CATEGORIES)
 
