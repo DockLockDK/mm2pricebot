@@ -4,6 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>MM2 Каталог</title>
+<script>
+  try {
+    var savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light" || savedTheme === "dark") document.documentElement.setAttribute("data-theme", savedTheme);
+  } catch (e) {}
+</script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -242,6 +248,13 @@
   </section>
 
   <section id="screen-about" class="screen">
+    <div class="notif-section">
+      <div class="notif-section-head">
+        <span>Светлая тема</span>
+        <label class="switch"><input type="checkbox" id="theme-toggle"><span class="switch-track"></span></label>
+      </div>
+    </div>
+
     <div class="about-disclaimer">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" /><path d="M12 16h.01" /></svg>
       <div>Этот бот и мини-приложение — независимый фан-проект для отслеживания цен на предметы Murder Mystery 2 в Roblox. Мы не являемся представителями и никак не связаны с <b>DreamPets</b>, <b>FunPay</b>, <b>Roblox Corporation</b>, <b>Nikilis</b> или официальной командой Murder Mystery 2. Все названия, торговые марки и материалы принадлежат их правообладателям. Информация даётся «как есть», в справочных целях, и может быть неточной или устаревшей.</div>

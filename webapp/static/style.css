@@ -36,6 +36,37 @@
     --clip-panel: polygon(var(--notch) 0%, 100% 0%, 100% calc(100% - var(--notch)), calc(100% - var(--notch)) 100%, 0% 100%, 0% var(--notch));
     --clip-panel-sm: polygon(var(--notch-sm) 0%, 100% 0%, 100% calc(100% - var(--notch-sm)), calc(100% - var(--notch-sm)) 100%, 0% 100%, 0% var(--notch-sm));
   }
+  /* Светлая тема — та же форма/раскладка, но фосфорное свечение на белом
+     фоне не читается, поэтому не инвертируем цвета в лоб: фон тёплый
+     светлый ("бумага"), акцент и семантические цвета (up/down/редкости)
+     затемнены на пару тонов ради контраста, свечения почти убраны. */
+  :root[data-theme="light"]{
+    --bg: #f4f2ec;
+    --card: #ffffff;
+    --card-raised: #ece8dd;
+    --text: #1b1a15;
+    --hint: #78766c;
+    --accent: #8c1fd6;
+    --accent-text: #ffffff;
+    --up: #0a9c34;
+    --down: #d4291c;
+    --deal: #b45f00;
+    --value: #0891b2;
+    --godly: #c2660a;
+    --ancient: #3454a8;
+    --unique: #b23b7d;
+    --legendary: #d13a3a;
+    --rare: #007b87;
+    --uncommon: #0b76a3;
+    --common: #6b7280;
+    --classic: #8a6239;
+    --christmas: #157f3a;
+    --halloween: #c85a0d;
+    --line: #ddd8ca;
+
+    --glow-accent: 0 1px 3px rgba(140,31,214,0.25);
+    --text-glow-accent: none;
+  }
   *{ box-sizing:border-box; }
   body{
     margin:0; background:var(--bg); color:var(--text);
@@ -49,6 +80,7 @@
     background:repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
     opacity:.5;
   }
+  :root[data-theme="light"] body::before{ display:none; }
   .num{ font-family:'IBM Plex Mono', 'Space Mono', ui-monospace, monospace; font-variant-numeric:tabular-nums; }
 
   header{
@@ -250,6 +282,8 @@
     clip-path:var(--clip-panel-sm); padding:12px 14px; margin:0 0 14px; font-size:11.5px; color:#ff8a80; line-height:1.5; }
   .funpay-note svg{ width:18px; height:18px; flex:none; color:var(--down); margin-top:1px; }
   .funpay-note b{ color:var(--down); }
+  :root[data-theme="light"] .deal-note{ color:var(--deal); }
+  :root[data-theme="light"] .funpay-note{ color:var(--down); }
 
   .community-values{ display:none; flex-direction:column; gap:12px; margin:0 0 20px; }
   .cv-panel{ background:var(--card); border:1px solid rgba(34,211,238,0.2); clip-path:var(--clip-panel); padding:14px 16px; }

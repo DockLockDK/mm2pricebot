@@ -233,8 +233,15 @@ function loadAbout() {
   showScreen("about");
   setHeaderTitle("О проекте");
   backAction = loadHome;
+  el("#theme-toggle").checked = isLightTheme();
 }
 el("#about-btn").onclick = loadAbout;
+
+el("#theme-toggle").onchange = (e) => {
+  const theme = e.target.checked ? "light" : "dark";
+  localStorage.setItem("theme", theme);
+  location.reload();
+};
 
 function itemCard(item, onOpen, onRemove) {
   const card = document.createElement("div");
@@ -462,6 +469,10 @@ function renderSaleCount(item) {
     : `Сейчас в продаже: ${n} ${pluralRu(n, "лот", "лота", "лотов")}`;
 }
 
+function isLightTheme() { return document.documentElement.getAttribute("data-theme") === "light"; }
+function chartTextColor() { return isLightTheme() ? "#4a483e" : "#c8c8cc"; }
+function chartGridColor() { return isLightTheme() ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.06)"; }
+
 function renderPriceChart(candles) {
   const chartEl = el("#chart");
   chartEl.innerHTML = "";
@@ -472,8 +483,8 @@ function renderPriceChart(candles) {
   priceChart = LightweightCharts.createChart(chartEl, {
     width: chartEl.clientWidth,
     height: 220,
-    layout: { background: { color: "transparent" }, textColor: "#c8c8cc", fontFamily: "'Space Grotesk','Manrope',sans-serif" },
-    grid: { vertLines: { visible: false }, horzLines: { color: "rgba(255,255,255,0.06)" } },
+    layout: { background: { color: "transparent" }, textColor: chartTextColor(), fontFamily: "'IBM Plex Mono','Space Mono',monospace" },
+    grid: { vertLines: { visible: false }, horzLines: { color: chartGridColor() } },
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" }, horzLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" } },
@@ -503,8 +514,8 @@ function renderMarketIndexChart(data) {
   marketIndexChart = LightweightCharts.createChart(chartEl, {
     width: chartEl.clientWidth,
     height: 180,
-    layout: { background: { color: "transparent" }, textColor: "#8a8a80", fontFamily: "'IBM Plex Mono','Space Mono',monospace" },
-    grid: { vertLines: { visible: false }, horzLines: { color: "rgba(255,255,255,0.06)" } },
+    layout: { background: { color: "transparent" }, textColor: chartTextColor(), fontFamily: "'IBM Plex Mono','Space Mono',monospace" },
+    grid: { vertLines: { visible: false }, horzLines: { color: chartGridColor() } },
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" }, horzLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" } },
@@ -534,8 +545,8 @@ function renderValueChart(history, sourceLabel) {
   valueChart = LightweightCharts.createChart(chartEl, {
     width: chartEl.clientWidth,
     height: 160,
-    layout: { background: { color: "transparent" }, textColor: "#c8c8cc", fontFamily: "'Space Grotesk','Manrope',sans-serif" },
-    grid: { vertLines: { visible: false }, horzLines: { color: "rgba(255,255,255,0.06)" } },
+    layout: { background: { color: "transparent" }, textColor: chartTextColor(), fontFamily: "'IBM Plex Mono','Space Mono',monospace" },
+    grid: { vertLines: { visible: false }, horzLines: { color: chartGridColor() } },
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.2, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(45,212,191,0.35)", labelBackgroundColor: "#1c3532" }, horzLine: { color: "rgba(45,212,191,0.35)", labelBackgroundColor: "#1c3532" } },
