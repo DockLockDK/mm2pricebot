@@ -144,6 +144,8 @@ def api_menu(window: str = price_history.DEFAULT_WINDOW):
         "movers": movers_view,
         "window": resolved_window,
         "game_update": price_history.roblox_game_info(),
+        "tracking_since": price_history.tracking_since_ts(),
+        "visit_count": price_history.increment_visit_count(),
     }
 
 

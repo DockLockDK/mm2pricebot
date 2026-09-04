@@ -36,7 +36,7 @@ const I18N = {
   categories_show_all: { ru: "Показать все", en: "Show all" },
   categories_collapse: { ru: "Свернуть", en: "Collapse" },
   market_index_title: { ru: "Индекс рынка", en: "Market Index" },
-  market_index_tip: { ru: "Средняя цена по ВСЕМ предметам Godly и по ВСЕМ Ancient — общий пульс рынка этих редкостей, а не цена одного конкретного предмета.", en: "Average price across ALL Godly items and ALL Ancient items — an overall pulse for these rarities, not the price of one specific item." },
+  market_index_tip: { ru: "Берём все предметы этой редкости (Godly или Ancient) из основного каталога DreamPets и на каждый сохранённый момент времени считаем среднюю цену по ним всем — получается одна линия, общий пульс редкости, а не цена одного конкретного скина. Если один предмет распродался или подорожал — линия почти не дрогнет, а вот массовый рост или падение по всей редкости будет видно сразу.", en: "We take every item of this rarity (Godly or Ancient) from DreamPets' main catalog and, for every saved point in time, average their prices together — one line, the overall pulse of the rarity, not the price of one specific skin. If a single item sells out or spikes, the line barely moves; a broad move across the whole rarity shows up right away." },
   big_movers_title: { ru: "Сильно изменились в цене", en: "Big price movers" },
   no_movers: { ru: "Пока нет заметных изменений цен — они появятся, как только накопится история.", en: "No notable price changes yet — they'll show up once enough history builds up." },
 
@@ -134,7 +134,11 @@ const I18N = {
   faq5_a: { ru: "Это два отдельных маркетплейса на одном сайте DreamPets, с разными лотами и продавцами. Мы сравниваем цену в обоих и показываем более дешёвый вариант, а количество лотов в продаже считаем по сумме обоих сразу.", en: "They're two separate marketplaces on the same DreamPets site, with different listings and sellers. We compare the price on both and show the cheaper option, and count lots for sale as the sum of both at once." },
   faq6_q: { ru: "Как часто обновляются цены и график?", en: "How often do prices and the chart update?" },
   faq6_a: { ru: "Бот проверяет каталог DreamPets каждые несколько минут (обычно раз в 5 минут) и дописывает точку в историю — из этих точек и строится график.", en: "The bot checks the DreamPets catalog every few minutes (usually every 5 minutes) and appends a point to the history — the chart is built from those points." },
-  author_contacts: { ru: "Контакты автора", en: "Author's contacts" },
+  faq7_q: { ru: "Как считается процент изменения цены (+/-)?", en: "How is the price change percentage (+/-) calculated?" },
+  faq7_a: { ru: "Берём текущую цену и сравниваем с ценой на момент «сейчас минус выбранный период» (5 мин / 1 час / сутки и так далее — переключатель над списком). Процент показывает именно это изменение, а не движение с начала дня или чего-то ещё.", en: "We take the current price and compare it to the price at \"now minus the selected period\" (5 min / 1 hour / 1 day and so on — the switch above the list). The percentage reflects exactly that change, not movement since the start of the day or anything else." },
+  faq8_q: { ru: "Как строится график цены?", en: "How is the price chart built?" },
+  faq8_a: { ru: "График всегда показывает минимум сутки истории, даже если для «было → стало» выбран более короткий период — иначе он был бы почти пустым. Точки укрупняются в блоки: почасовые для суток, 4-часовые для недели, дневные для месяца, недельные для года — чтобы линия оставалась читаемой на любом периоде.", en: "The chart always shows at least a day of history, even when a shorter period is selected for the \"then → now\" comparison — otherwise it would be almost empty. Points are grouped into buckets: hourly for a day, 4-hour for a week, daily for a month, weekly for a year — so the line stays readable on any period." },
+  author_contacts: { ru: "Связаться со мной", en: "Contact me" },
   roblox_profile: { ru: "Профиль →", en: "Profile →" },
   discord_copy_hint: { ru: "docklock · нажмите, чтобы скопировать", en: "docklock · click to copy" },
   discord_copied: { ru: "Скопировано!", en: "Copied!" },
@@ -182,6 +186,9 @@ const I18N = {
   fees_result_topup_sub: { ru: "Из них комиссия за пополнение: {fee} ({rate}%)", en: "Of which top-up fee: {fee} ({rate}%)" },
   fees_result_sell_main: { ru: "Получите на карту: <b>{net}</b>", en: "You'll receive: <b>{net}</b>" },
   fees_result_sell_sub: { ru: "Комиссия за вывод: {fee} ({rate}%{fixed})", en: "Withdrawal fee: {fee} ({rate}%{fixed})" },
+
+  stats_tracking_since: { ru: "Отслеживаем рынок с {date}", en: "Tracking the market since {date}" },
+  stats_visits: { ru: "Открытий приложения: {count}", en: "App opens: {count}" },
 };
 
 function t(key, vars) {
@@ -231,6 +238,17 @@ function timeAgo(isoString) {
     }
   }
   return t("just_now");
+}
+
+function renderStatsInfo(trackingSince, visitCount) {
+  const box = el("#stats-info");
+  const parts = [];
+  if (trackingSince) {
+    const dateStr = new Date(trackingSince * 1000).toLocaleDateString(currentLang === "en" ? "en-US" : "ru-RU", { day: "numeric", month: "long", year: "numeric" });
+    parts.push(t("stats_tracking_since", { date: dateStr }));
+  }
+  if (visitCount != null) parts.push(t("stats_visits", { count: visitCount }));
+  box.innerHTML = parts.length ? `<span class="dot"></span>${parts.join(" · ")}` : "";
 }
 
 function renderGameUpdate(gameUpdate) {
@@ -465,6 +483,7 @@ function applyTheme(theme) {
 
 el("#theme-toggle").onchange = (e) => {
   applyTheme(e.target.checked ? "light" : "dark");
+  updateThemeBtnIcon();
 };
 
 function itemCard(item, onOpen, onRemove) {
@@ -530,6 +549,7 @@ async function loadHome() {
 
   renderGameUpdate(data.game_update);
   renderNextEvent();
+  renderStatsInfo(data.tracking_since, data.visit_count);
 
   const catWrap = el("#categories");
   catWrap.innerHTML = "";
@@ -711,6 +731,22 @@ function renderSaleCount(item) {
 function isLightTheme() { return document.documentElement.getAttribute("data-theme") === "light"; }
 function chartTextColor() { return isLightTheme() ? "#4a483e" : "#c8c8cc"; }
 function chartGridColor() { return isLightTheme() ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.06)"; }
+
+const SUN_ICON = '<path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />';
+const MOON_ICON = '<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />';
+
+function updateThemeBtnIcon() {
+  const iconEl = el("#theme-btn-icon");
+  if (iconEl) iconEl.innerHTML = isLightTheme() ? SUN_ICON : MOON_ICON;
+}
+updateThemeBtnIcon();
+
+el("#theme-btn").onclick = () => {
+  applyTheme(isLightTheme() ? "dark" : "light");
+  updateThemeBtnIcon();
+  const themeToggle = el("#theme-toggle");
+  if (themeToggle) themeToggle.checked = isLightTheme();
+};
 
 function renderPriceChart(candles) {
   const chartEl = el("#chart");

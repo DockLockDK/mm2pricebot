@@ -618,3 +618,11 @@ def init():
         _migrate_legacy_jsonl()
     if counts.get("value_points", 0) == 0:
         _migrate_value_jsonl()
+
+
+def tracking_since_ts():
+    return pricedb.tracking_since_ts()
+
+
+def increment_visit_count():
+    return pricedb.increment_visit_count()
