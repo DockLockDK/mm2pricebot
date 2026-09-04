@@ -20,12 +20,13 @@
 <body>
 
 <header>
-  <button id="back-btn" aria-label="Назад">
+  <button id="back-btn" data-i18n-aria="back" aria-label="Назад">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6l6 6" /></svg>
   </button>
   <h1 id="header-title">MM2 Каталог</h1>
-  <button id="currency-btn" class="currency-btn" aria-label="Валюта">₽</button>
-  <button id="about-btn" aria-label="О проекте">
+  <button id="lang-btn" class="currency-btn" data-i18n-aria="language" aria-label="Язык">RU</button>
+  <button id="currency-btn" class="currency-btn" data-i18n-aria="currency" aria-label="Валюта">₽</button>
+  <button id="about-btn" data-i18n-aria="about" aria-label="О проекте">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M12 9h.01" /><path d="M11 12h1v4h1" /></svg>
   </button>
 </header>
@@ -38,31 +39,31 @@
     <div class="tool-row">
       <button class="tool-btn" id="open-inventory-btn">
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /><path d="M16 5.25l-8 4.5" /></svg>
-        <span class="tool-label">Мой инвентарь</span>
+        <span class="tool-label" data-i18n="tool_inventory">Мой инвентарь</span>
       </button>
       <button class="tool-btn" id="open-favorites-btn">
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></svg>
-        <span class="tool-label">Избранное</span>
+        <span class="tool-label" data-i18n="tool_favorites">Избранное</span>
       </button>
       <button class="tool-btn" id="open-trade-btn">
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-10" /><path d="M12 7c1.956 0 3.724 .802 5 2.095l-2.956 2.904a3 3 0 0 0 -2.038 -.799a3 3 0 0 0 -2.038 .798l-2.956 -2.903a6.979 6.979 0 0 1 5 -2.095" /></svg>
-        <span class="tool-label">Калькулятор трейда</span>
+        <span class="tool-label" data-i18n="tool_trade">Калькулятор трейда</span>
       </button>
       <button class="tool-btn" id="open-fees-btn">
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" /></svg>
-        <span class="tool-label">Комиссии DP</span>
+        <span class="tool-label" data-i18n="tool_fees">Комиссии DP</span>
       </button>
       <button class="tool-btn" id="open-notifications-btn">
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
-        <span class="tool-label">Уведомления</span>
+        <span class="tool-label" data-i18n="tool_notifications">Уведомления</span>
       </button>
     </div>
 
-    <h2 class="section-title"><span>Категории</span></h2>
-    <div id="categories" class="cat-row"><div class="loading">Загрузка…</div></div>
+    <h2 class="section-title"><span data-i18n="categories_title">Категории</span></h2>
+    <div id="categories" class="cat-row"><div class="loading" data-i18n="loading">Загрузка…</div></div>
     <button id="categories-toggle" class="categories-toggle" style="display:none;">Показать все</button>
 
-    <h2 class="section-title"><span>Индекс рынка <button class="help-icon" data-tip="Средняя цена по ВСЕМ предметам Godly и по ВСЕМ Ancient — общий пульс рынка этих редкостей, а не цена одного конкретного предмета.">?</button></span></h2>
+    <h2 class="section-title"><span><span data-i18n="market_index_title">Индекс рынка</span> <button class="help-icon" data-i18n-tip="market_index_tip" data-tip="Средняя цена по ВСЕМ предметам Godly и по ВСЕМ Ancient — общий пульс рынка этих редкостей, а не цена одного конкретного предмета.">?</button></span></h2>
     <div class="chart-block">
       <div id="market-index-chart"></div>
       <div class="market-index-legend">
@@ -71,7 +72,7 @@
       </div>
     </div>
 
-    <h2 class="section-title"><span>Сильно изменились в цене</span></h2>
+    <h2 class="section-title"><span data-i18n="big_movers_title">Сильно изменились в цене</span></h2>
     <div id="home-win-row" class="win-row"></div>
     <div id="movers" class="grid"></div>
   </section>
@@ -79,33 +80,33 @@
   <section id="screen-category" class="screen">
     <div class="search-row">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
-      <input type="text" id="category-search" class="search-input" placeholder="Поиск по названию…">
+      <input type="text" id="category-search" class="search-input" data-i18n-placeholder="search_by_name" placeholder="Поиск по названию…">
     </div>
     <select id="category-sort" class="sort-select">
-      <option value="price_desc">Цена: сначала дороже</option>
-      <option value="price_asc">Цена: сначала дешевле</option>
-      <option value="change_desc">Изменение: сначала рост</option>
-      <option value="change_asc">Изменение: сначала падение</option>
+      <option value="price_desc" data-i18n="sort_price_desc">Цена: сначала дороже</option>
+      <option value="price_asc" data-i18n="sort_price_asc">Цена: сначала дешевле</option>
+      <option value="change_desc" data-i18n="sort_change_desc">Изменение: сначала рост</option>
+      <option value="change_asc" data-i18n="sort_change_asc">Изменение: сначала падение</option>
     </select>
     <div class="filter-row">
       <div class="filter-chips" id="category-change-filter">
-        <button class="filter-chip all active" data-filter="all">Все</button>
-        <button class="filter-chip up" data-filter="up"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg> Выросли</button>
-        <button class="filter-chip down" data-filter="down"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M16 15l-4 4" /><path d="M8 15l4 4" /></svg> Упали</button>
+        <button class="filter-chip all active" data-filter="all" data-i18n="filter_all">Все</button>
+        <button class="filter-chip up" data-filter="up"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg> <span data-i18n="filter_up">Выросли</span></button>
+        <button class="filter-chip down" data-filter="down"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M16 15l-4 4" /><path d="M8 15l4 4" /></svg> <span data-i18n="filter_down">Упали</span></button>
       </div>
       <div class="threshold-box" id="category-threshold-box" style="display:none;">
-        от <input type="number" id="category-threshold" class="threshold-input" value="10" min="0" step="1">%
+        <span data-i18n="from_label">от</span> <input type="number" id="category-threshold" class="threshold-input" value="10" min="0" step="1">%
       </div>
     </div>
     <div id="category-win-row" class="win-row"></div>
-    <div id="category-grid" class="grid"><div class="loading">Загрузка…</div></div>
+    <div id="category-grid" class="grid"><div class="loading" data-i18n="loading">Загрузка…</div></div>
   </section>
 
   <section id="screen-item" class="screen">
     <div class="hero-wrap">
       <div class="hero-frame">
         <img id="item-image" src="" alt="" />
-        <button id="item-fav-btn" class="fav-btn" aria-label="В избранное">
+        <button id="item-fav-btn" class="fav-btn" data-i18n-aria="add_to_favorites" aria-label="В избранное">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></svg>
         </button>
       </div>
@@ -121,12 +122,12 @@
     <div id="item-sale-count" class="sale-count" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M3 6v5.172a2 2 0 0 0 .586 1.414l7.71 7.71a2.41 2.41 0 0 0 3.408 0l5.592 -5.592a2.41 2.41 0 0 0 0 -3.408l-7.71 -7.71a2 2 0 0 0 -1.414 -.586h-5.172a3 3 0 0 0 -3 3" /></svg>
       <span id="item-sale-count-text"></span>
-      <button class="help-icon" data-tip="Сколько лотов этого предмета сейчас реально выставлено на продажу в основном каталоге DreamPets — считается напрямую по их API в момент открытия карточки.">?</button>
+      <button class="help-icon" data-i18n-tip="sale_count_tip" data-tip="Сколько лотов этого предмета сейчас реально выставлено на продажу в основном каталоге DreamPets — считается напрямую по их API в момент открытия карточки.">?</button>
     </div>
     <div id="item-win-row" class="win-row"></div>
 
     <div class="inv-stepper" id="item-inv-stepper">
-      <span class="inv-stepper-label">В инвентаре:</span>
+      <span class="inv-stepper-label" data-i18n="in_inventory_label">В инвентаре:</span>
       <button id="item-inv-minus" class="inv-stepper-btn">−</button>
       <span id="item-inv-qty" class="num">0</span>
       <button id="item-inv-plus" class="inv-stepper-btn">+</button>
@@ -135,31 +136,31 @@
     <div id="deal-note" class="deal-note" style="display:none;">
       <div class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg></div>
       <div id="deal-note-text"></div>
-      <button class="help-icon" data-tip="Legacy-каталог — старая версия магазина DreamPets на том же сайте, с отдельными лотами. Иногда там дешевле, чем в основном каталоге — тогда показываем это как отдельный вариант покупки.">?</button>
+      <button class="help-icon" data-i18n-tip="legacy_tip" data-tip="Legacy-каталог — старая версия магазина DreamPets на том же сайте, с отдельными лотами. Иногда там дешевле, чем в основном каталоге — тогда показываем это как отдельный вариант покупки.">?</button>
     </div>
 
     <div class="buy-group" id="buy-group"></div>
     <div id="funpay-note" class="funpay-note" style="display:none;">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" /><path d="M12 16h.01" /></svg>
-      <div><b>FunPay — экспериментальная функция.</b> Это сторонняя площадка объявлений, не связанная с DreamPets, и там встречаются мошенники. Совпадение с названием предмета ищется автоматически по тексту объявления и может быть неточным. Если цена подозрительно ниже рыночной — это повод насторожиться, а не повод спешить. Покупаете здесь на свой страх и риск — только если понимаете, что делаете.</div>
+      <div data-i18n-html="funpay_note_html"><b>FunPay — экспериментальная функция.</b> Это сторонняя площадка объявлений, не связанная с DreamPets, и там встречаются мошенники. Совпадение с названием предмета ищется автоматически по тексту объявления и может быть неточным. Если цена подозрительно ниже рыночной — это повод насторожиться, а не повод спешить. Покупаете здесь на свой страх и риск — только если понимаете, что делаете.</div>
     </div>
 
     <div class="community-values" id="community-values"></div>
 
     <div class="chart-block">
-      <h2 class="section-title"><span>История цены</span><span class="hint" id="chart-bucket-hint"></span></h2>
+      <h2 class="section-title"><span data-i18n="price_history_title">История цены</span><span class="hint" id="chart-bucket-hint"></span></h2>
       <div id="chart"></div>
     </div>
 
     <div class="chart-block" id="value-chart-block" style="display:none;">
-      <h2 class="section-title"><span>История Community Value <button class="help-icon" data-tip="Community Value — не реальная цена продажи, а ориентир сообщества (сайт mm2values.com) для трейдинга: во сколько игроки условно оценивают предмет при обмене. Никогда не используется как цена покупки.">?</button></span><span class="hint" id="value-chart-source"></span></h2>
+      <h2 class="section-title"><span><span data-i18n="cv_history_title">История Community Value</span> <button class="help-icon" data-i18n-tip="cv_history_tip" data-tip="Community Value — не реальная цена продажи, а ориентир сообщества (сайт mm2values.com) для трейдинга: во сколько игроки условно оценивают предмет при обмене. Никогда не используется как цена покупки.">?</button></span><span class="hint" id="value-chart-source"></span></h2>
       <div id="value-chart"></div>
     </div>
   </section>
 
   <section id="screen-inventory" class="screen">
     <div class="inv-summary">
-      <div class="inv-total-label">Итого стоимость инвентаря</div>
+      <div class="inv-total-label" data-i18n="inventory_total_label">Итого стоимость инвентаря</div>
       <div class="inv-total num" id="inventory-total">—</div>
     </div>
     <div id="inventory-list" class="slot-grid"></div>
@@ -172,43 +173,43 @@
   <section id="screen-notifications" class="screen">
     <div class="notif-section">
       <div class="notif-section-head">
-        <span>Падение цены</span>
+        <span data-i18n="price_drop_title">Падение цены</span>
         <label class="switch"><input type="checkbox" id="notif-drop-enabled"><span class="switch-track"></span></label>
       </div>
       <div class="notif-scope" id="notif-drop-scope">
-        <button class="scope-chip" data-scope="all">Все предметы</button>
-        <button class="scope-chip" data-scope="selected">Только выбранные</button>
+        <button class="scope-chip" data-scope="all" data-i18n="scope_all">Все предметы</button>
+        <button class="scope-chip" data-scope="selected" data-i18n="scope_selected">Только выбранные</button>
       </div>
       <div class="notif-items" id="notif-drop-items"></div>
     </div>
 
     <div class="notif-section">
       <div class="notif-section-head">
-        <span>Рост цены</span>
+        <span data-i18n="price_rise_title">Рост цены</span>
         <label class="switch"><input type="checkbox" id="notif-rise-enabled"><span class="switch-track"></span></label>
       </div>
       <div class="notif-scope" id="notif-rise-scope">
-        <button class="scope-chip" data-scope="all">Все предметы</button>
-        <button class="scope-chip" data-scope="selected">Только выбранные</button>
+        <button class="scope-chip" data-scope="all" data-i18n="scope_all">Все предметы</button>
+        <button class="scope-chip" data-scope="selected" data-i18n="scope_selected">Только выбранные</button>
       </div>
       <div class="notif-items" id="notif-rise-items"></div>
     </div>
 
-    <div class="fees-note">Алерты приходят только по Godly/Ancient и только когда цена сильно отклоняется от своей средней за последние дни — не на каждое небольшое движение.</div>
+    <div class="fees-note" data-i18n="notif_note">Алерты приходят только по Godly/Ancient и только когда цена сильно отклоняется от своей средней за последние дни — не на каждое небольшое движение.</div>
   </section>
 
   <section id="screen-trade" class="screen">
     <div class="trade-cols">
       <div class="trade-col">
         <div class="trade-col-head">
-          <span>Моя сторона</span>
+          <span data-i18n="my_side">Моя сторона</span>
           <span class="trade-col-total num" id="trade-a-total">0₽</span>
         </div>
         <div id="trade-list-a" class="slot-grid"></div>
       </div>
       <div class="trade-col">
         <div class="trade-col-head">
-          <span>Их сторона</span>
+          <span data-i18n="their_side">Их сторона</span>
           <span class="trade-col-total num" id="trade-b-total">0₽</span>
         </div>
         <div id="trade-list-b" class="slot-grid"></div>
@@ -219,83 +220,83 @@
 
   <section id="screen-fees" class="screen">
     <div class="fees-tabs">
-      <button class="fees-tab active" data-tab="buy">Купить</button>
-      <button class="fees-tab" data-tab="sell">Продать</button>
+      <button class="fees-tab active" data-tab="buy" data-i18n="fees_buy_tab">Купить</button>
+      <button class="fees-tab" data-tab="sell" data-i18n="fees_sell_tab">Продать</button>
     </div>
 
     <div id="fees-buy" class="fees-panel">
-      <div class="fees-label">Цена предмета, ₽</div>
+      <div class="fees-label" data-i18n="fees_item_price_label">Цена предмета, ₽</div>
       <div class="fees-price-row">
-        <input type="number" id="fees-buy-price" class="fees-input" placeholder="Например, 500" min="0">
-        <button class="fees-pick-btn" id="fees-buy-pick">Выбрать предмет</button>
+        <input type="number" id="fees-buy-price" class="fees-input" data-i18n-placeholder="fees_price_placeholder" placeholder="Например, 500" min="0">
+        <button class="fees-pick-btn" id="fees-buy-pick" data-i18n="fees_pick_item">Выбрать предмет</button>
       </div>
-      <div class="fees-label">Способ оплаты</div>
+      <div class="fees-label" data-i18n="fees_payment_method">Способ оплаты</div>
       <select id="fees-buy-method" class="fees-select"></select>
       <div class="fees-result" id="fees-buy-result"></div>
     </div>
 
     <div id="fees-sell" class="fees-panel" style="display:none;">
-      <div class="fees-label">Цена продажи, ₽</div>
+      <div class="fees-label" data-i18n="fees_sell_price_label">Цена продажи, ₽</div>
       <div class="fees-price-row">
-        <input type="number" id="fees-sell-price" class="fees-input" placeholder="Например, 500" min="0">
-        <button class="fees-pick-btn" id="fees-sell-pick">Выбрать предмет</button>
+        <input type="number" id="fees-sell-price" class="fees-input" data-i18n-placeholder="fees_price_placeholder" placeholder="Например, 500" min="0">
+        <button class="fees-pick-btn" id="fees-sell-pick" data-i18n="fees_pick_item">Выбрать предмет</button>
       </div>
-      <div class="fees-label">Способ вывода</div>
+      <div class="fees-label" data-i18n="fees_withdrawal_method">Способ вывода</div>
       <select id="fees-sell-method" class="fees-select"></select>
       <div class="fees-result" id="fees-sell-result"></div>
     </div>
 
-    <div class="fees-note">Комиссии — реальные, из открытого API самого DP, обновляются вместе с ценами. Расчёт по стандартной для платёжных агрегаторов модели: комиссия берётся от суммы платежа/вывода. Если итоговые цифры на сайте будут отличаться — напишите точный пример, поправим формулу.</div>
+    <div class="fees-note" data-i18n="fees_note">Комиссии — реальные, из открытого API самого DP, обновляются вместе с ценами. Расчёт по стандартной для платёжных агрегаторов модели: комиссия берётся от суммы платежа/вывода. Если итоговые цифры на сайте будут отличаться — напишите точный пример, поправим формулу.</div>
   </section>
 
   <section id="screen-about" class="screen">
     <div class="notif-section">
       <div class="notif-section-head">
-        <span>Светлая тема</span>
+        <span data-i18n="light_theme">Светлая тема</span>
         <label class="switch"><input type="checkbox" id="theme-toggle"><span class="switch-track"></span></label>
       </div>
     </div>
 
     <div class="about-disclaimer">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" /><path d="M12 16h.01" /></svg>
-      <div>Этот бот и мини-приложение — независимый фан-проект для отслеживания цен на предметы Murder Mystery 2 в Roblox. Мы не являемся представителями и никак не связаны с <b>DreamPets</b>, <b>FunPay</b>, <b>MM2Values</b>, <b>Roblox Corporation</b>, <b>Nikilis</b> или официальной командой Murder Mystery 2. Все названия, торговые марки и материалы принадлежат их правообладателям. Информация даётся «как есть», в справочных целях, и может быть неточной или устаревшей.</div>
+      <div data-i18n-html="disclaimer_html">Этот бот и мини-приложение — независимый фан-проект для отслеживания цен на предметы Murder Mystery 2 в Roblox. Мы не являемся представителями и никак не связаны с <b>DreamPets</b>, <b>FunPay</b>, <b>MM2Values</b>, <b>Roblox Corporation</b>, <b>Nikilis</b> или официальной командой Murder Mystery 2. Все названия, торговые марки и материалы принадлежат их правообладателям. Информация даётся «как есть», в справочных целях, и может быть неточной или устаревшей.</div>
     </div>
 
-    <h2 class="section-title"><span>FAQ</span></h2>
+    <h2 class="section-title"><span data-i18n="faq_title">FAQ</span></h2>
     <div class="faq-list">
       <details class="faq-item">
-        <summary>Это официальный магазин DreamPets?</summary>
-        <p>Нет. Это сторонний инструмент для отслеживания цен, сделанный фанатом. Покупка предметов происходит на самом DreamPets или FunPay — бот только показывает цены и ссылки на реальные лоты.</p>
+        <summary data-i18n="faq1_q">Это официальный магазин DreamPets?</summary>
+        <p data-i18n="faq1_a">Нет. Это сторонний инструмент для отслеживания цен, сделанный фанатом. Покупка предметов происходит на самом DreamPets или FunPay — бот только показывает цены и ссылки на реальные лоты.</p>
       </details>
       <details class="faq-item">
-        <summary>Откуда берутся цены?</summary>
-        <p>Из открытого API самого DreamPets (основной и Legacy-каталог) и с сайта mm2values.com (Community Value). Это публичные данные — ничего не взломано и не куплено.</p>
+        <summary data-i18n="faq2_q">Откуда берутся цены?</summary>
+        <p data-i18n="faq2_a">Из открытого API самого DreamPets (основной и Legacy-каталог) и с сайта mm2values.com (Community Value). Это публичные данные — ничего не взломано и не куплено.</p>
       </details>
       <details class="faq-item">
-        <summary>Почему цена отличается от той, что я вижу на сайте?</summary>
-        <p>Цены в боте обновляются каждые несколько минут, а на самом DreamPets — в реальном времени: за это время лоты могут смениться или самый дешёвый может распродаться.</p>
+        <summary data-i18n="faq3_q">Почему цена отличается от той, что я вижу на сайте?</summary>
+        <p data-i18n="faq3_a">Цены в боте обновляются каждые несколько минут, а на самом DreamPets — в реальном времени: за это время лоты могут смениться или самый дешёвый может распродаться.</p>
       </details>
       <details class="faq-item">
-        <summary>Это безопасно? Нужно ли давать боту пароль?</summary>
-        <p>Бот никогда не просит пароль и не имеет доступа к вашему аккаунту DreamPets, Roblox или Telegram. Инвентарь и трейд-калькулятор в мини-приложении — это ваши личные заметки внутри бота, не связанные с реальным аккаунтом.</p>
+        <summary data-i18n="faq4_q">Это безопасно? Нужно ли давать боту пароль?</summary>
+        <p data-i18n="faq4_a">Бот никогда не просит пароль и не имеет доступа к вашему аккаунту DreamPets, Roblox или Telegram. Инвентарь и трейд-калькулятор в мини-приложении — это ваши личные заметки внутри бота, не связанные с реальным аккаунтом.</p>
       </details>
       <details class="faq-item">
-        <summary>В чём разница между основным и Legacy-каталогом?</summary>
-        <p>Это два отдельных маркетплейса на одном сайте DreamPets, с разными лотами и продавцами. Мы сравниваем цену в обоих и показываем более дешёвый вариант, а количество лотов в продаже считаем по сумме обоих сразу.</p>
+        <summary data-i18n="faq5_q">В чём разница между основным и Legacy-каталогом?</summary>
+        <p data-i18n="faq5_a">Это два отдельных маркетплейса на одном сайте DreamPets, с разными лотами и продавцами. Мы сравниваем цену в обоих и показываем более дешёвый вариант, а количество лотов в продаже считаем по сумме обоих сразу.</p>
       </details>
       <details class="faq-item">
-        <summary>Как часто обновляются цены и график?</summary>
-        <p>Бот проверяет каталог DreamPets каждые несколько минут (обычно раз в 5 минут) и дописывает точку в историю — из этих точек и строится график.</p>
+        <summary data-i18n="faq6_q">Как часто обновляются цены и график?</summary>
+        <p data-i18n="faq6_a">Бот проверяет каталог DreamPets каждые несколько минут (обычно раз в 5 минут) и дописывает точку в историю — из этих точек и строится график.</p>
       </details>
     </div>
 
-    <h2 class="section-title"><span>Контакты автора</span></h2>
+    <h2 class="section-title"><span data-i18n="author_contacts">Контакты автора</span></h2>
     <div class="about-contacts">
       <a class="contact-row" href="https://www.roblox.com/users/981635087/profile" target="_blank" rel="noopener">
-        <span>Roblox</span><span class="hint">Профиль →</span>
+        <span>Roblox</span><span class="hint" data-i18n="roblox_profile">Профиль →</span>
       </a>
       <button class="contact-row" id="discord-copy-btn" type="button">
-        <span>Discord</span><span class="hint" id="discord-copy-hint">docklock · нажмите, чтобы скопировать</span>
+        <span>Discord</span><span class="hint" id="discord-copy-hint" data-i18n="discord_copy_hint">docklock · нажмите, чтобы скопировать</span>
       </button>
     </div>
   </section>
@@ -306,9 +307,9 @@
     <div class="picker-head">
       <div class="search-row">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
-        <input type="text" id="picker-search" class="search-input" placeholder="Поиск предмета… (любая редкость)">
+        <input type="text" id="picker-search" class="search-input" data-i18n-placeholder="picker_search_placeholder" placeholder="Поиск предмета… (любая редкость)">
       </div>
-      <button id="picker-close" class="picker-close" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
+      <button id="picker-close" class="picker-close" data-i18n-aria="picker_close" aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
     </div>
     <div id="picker-results" class="picker-results"></div>
   </div>

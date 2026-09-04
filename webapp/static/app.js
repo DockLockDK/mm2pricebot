@@ -12,34 +12,225 @@ if (tg) {
   }
 }
 
+// ---------- Локализация (RU/EN) ----------
+// Нет сборки/бандлера — простой словарь ключ->текст на оба языка. t(key, vars)
+// подставляет {var} в строку; применяется и к статике через data-i18n* в
+// HTML (applyStaticI18n), и напрямую в JS для всего, что рендерится в рантайме
+// (карточки предметов, алерты, подсказки и т.д.).
+let currentLang = localStorage.getItem("lang") || "ru";
+
+const I18N = {
+  back: { ru: "Назад", en: "Back" },
+  currency: { ru: "Валюта", en: "Currency" },
+  language: { ru: "Язык", en: "Language" },
+  about: { ru: "О проекте", en: "About" },
+  no_photo: { ru: "нет фото", en: "no photo" },
+
+  home_title: { ru: "MM2 Каталог", en: "MM2 Catalog" },
+  tool_inventory: { ru: "Мой инвентарь", en: "My Inventory" },
+  tool_favorites: { ru: "Избранное", en: "Favorites" },
+  tool_trade: { ru: "Калькулятор трейда", en: "Trade Calculator" },
+  tool_fees: { ru: "Комиссии DP", en: "DP Fees" },
+  tool_notifications: { ru: "Уведомления", en: "Notifications" },
+  categories_title: { ru: "Категории", en: "Categories" },
+  categories_show_all: { ru: "Показать все", en: "Show all" },
+  categories_collapse: { ru: "Свернуть", en: "Collapse" },
+  market_index_title: { ru: "Индекс рынка", en: "Market Index" },
+  market_index_tip: { ru: "Средняя цена по ВСЕМ предметам Godly и по ВСЕМ Ancient — общий пульс рынка этих редкостей, а не цена одного конкретного предмета.", en: "Average price across ALL Godly items and ALL Ancient items — an overall pulse for these rarities, not the price of one specific item." },
+  big_movers_title: { ru: "Сильно изменились в цене", en: "Big price movers" },
+  no_movers: { ru: "Пока нет заметных изменений цен — они появятся, как только накопится история.", en: "No notable price changes yet — they'll show up once enough history builds up." },
+
+  search_by_name: { ru: "Поиск по названию…", en: "Search by name…" },
+  sort_price_desc: { ru: "Цена: сначала дороже", en: "Price: high to low" },
+  sort_price_asc: { ru: "Цена: сначала дешевле", en: "Price: low to high" },
+  sort_change_desc: { ru: "Изменение: сначала рост", en: "Change: gainers first" },
+  sort_change_asc: { ru: "Изменение: сначала падение", en: "Change: losers first" },
+  filter_all: { ru: "Все", en: "All" },
+  filter_up: { ru: "Выросли", en: "Up" },
+  filter_down: { ru: "Упали", en: "Down" },
+  from_label: { ru: "от", en: "from" },
+  no_items_in_category: { ru: "Нет предметов с активными лотами в этой категории.", en: "No items with active listings in this category." },
+  no_search_results: { ru: "Ничего не найдено по запросу «{q}».", en: "No results for “{q}”." },
+  no_filtered_movers: { ru: "Нет предметов, которые {dir} на {threshold}% и больше за выбранный период.", en: "No items {dir} by {threshold}% or more over the selected period." },
+  dir_up: { ru: "выросли", en: "went up" },
+  dir_down: { ru: "упали", en: "went down" },
+
+  add_to_favorites: { ru: "В избранное", en: "Add to favorites" },
+  remove_from_favorites: { ru: "Убрать из избранного", en: "Remove from favorites" },
+  in_inventory_label: { ru: "В инвентаре:", en: "In inventory:" },
+  sale_count_tip: { ru: "Сколько лотов этого предмета сейчас реально выставлено на продажу в основном каталоге DreamPets — считается напрямую по их API в момент открытия карточки.", en: "How many lots of this item are currently listed for sale across both DreamPets markets — counted live via their API when the card is opened." },
+  sale_count_none: { ru: "Сейчас нет лотов в продаже", en: "No lots for sale right now" },
+  sale_count_some: { ru: "Сейчас в продаже: {n} {word}", en: "Currently for sale: {n} {word}" },
+  lot_one: { ru: "лот", en: "lot" },
+  lot_few: { ru: "лота", en: "lots" },
+  lot_many: { ru: "лотов", en: "lots" },
+  legacy_tip: { ru: "Legacy-каталог — старая версия магазина DreamPets на том же сайте, с отдельными лотами. Иногда там дешевле, чем в основном каталоге — тогда показываем это как отдельный вариант покупки.", en: "The Legacy catalog is an older version of the DreamPets store on the same site, with its own separate listings. It's sometimes cheaper than the main catalog — when it is, we show it as a separate buy option." },
+  funpay_warning: { ru: "Это сторонняя площадка объявлений, не связанная с DreamPets, и там встречаются мошенники. Совпадение с названием предмета ищется автоматически по тексту объявления и может быть неточным. Если цена подозрительно ниже рыночной — это повод насторожиться, а не повод спешить. Покупаете здесь на свой страх и риск — только если понимаете, что делаете.", en: "It's a third-party listings marketplace not affiliated with DreamPets, and scammers do show up there. The match to the item name is found automatically from the listing's text and can be wrong. A suspiciously low price is a reason to be careful, not to rush. Buying here is entirely at your own risk — only if you know what you're doing." },
+  funpay_warning_title: { ru: "FunPay — экспериментальная функция.", en: "FunPay is an experimental feature." },
+  price_history_title: { ru: "История цены", en: "Price History" },
+  cv_history_title: { ru: "История Community Value", en: "Community Value History" },
+  cv_history_tip: { ru: "Community Value — не реальная цена продажи, а ориентир сообщества (сайт mm2values.com) для трейдинга: во сколько игроки условно оценивают предмет при обмене. Никогда не используется как цена покупки.", en: "Community Value isn't a real sale price — it's the community's trading benchmark (from mm2values.com): roughly what players agree an item is worth in trades. It's never used as a buy price." },
+  chart_loading: { ru: "Пока недостаточно истории для графика — она копится каждые несколько минут.", en: "Not enough history for a chart yet — it builds up every few minutes." },
+  chart_source_current: { ru: "Текущий", en: "Current" },
+  chart_source_legacy: { ru: "Legacy", en: "Legacy" },
+  not_a_buy_price: { ru: "не цена покупки", en: "not a buy price" },
+  cv_value: { ru: "Value", en: "Value" },
+  cv_demand: { ru: "Demand", en: "Demand" },
+  cv_rarity: { ru: "Rarity", en: "Rarity" },
+  cv_stability: { ru: "Stability", en: "Stability" },
+  cv_no_data: { ru: "нет данных", en: "no data" },
+
+  inventory_total_label: { ru: "Итого стоимость инвентаря", en: "Total inventory value" },
+  favorites_empty: { ru: "Пока пусто — добавь предметы, за которыми хочешь следить.", en: "Nothing here yet — add items you want to keep an eye on." },
+  add_label: { ru: "Добавить", en: "Add" },
+  add_item_label: { ru: "Добавить предмет", en: "Add item" },
+  picker_search_placeholder: { ru: "Поиск предмета… (любая редкость)", en: "Search for an item… (any rarity)" },
+  picker_close: { ru: "Закрыть", en: "Close" },
+  picker_no_results: { ru: "Ничего не найдено.", en: "Nothing found." },
+  picker_loading: { ru: "Загрузка…", en: "Loading…" },
+
+  price_drop_title: { ru: "Падение цены", en: "Price drop" },
+  price_rise_title: { ru: "Рост цены", en: "Price rise" },
+  scope_all: { ru: "Все предметы", en: "All items" },
+  scope_selected: { ru: "Только выбранные", en: "Only selected" },
+  notif_note: { ru: "Алерты приходят только по Godly/Ancient и только когда цена сильно отклоняется от своей средней за последние дни — не на каждое небольшое движение.", en: "Alerts fire only for Godly/Ancient, and only when the price deviates sharply from its recent average — not for every small move." },
+  remove_label: { ru: "Убрать", en: "Remove" },
+
+  my_side: { ru: "Моя сторона", en: "My side" },
+  their_side: { ru: "Их сторона", en: "Their side" },
+  trade_fair: { ru: "Обмен примерно честный по {basis} (разница {pct}%)", en: "The trade is roughly fair by {basis} (a {pct}% difference)" },
+  trade_you_pricier: { ru: "Ваша сторона дороже по {basis} на {pct}% — обмен невыгоден вам", en: "Your side is worth {pct}% more by {basis} — this trade favors them" },
+  trade_they_pricier: { ru: "Их сторона дороже по {basis} на {pct}% — обмен выгоден вам", en: "Their side is worth {pct}% more by {basis} — this trade favors you" },
+  trade_basis_cv: { ru: "Community Value", en: "Community Value" },
+  trade_basis_catalog: { ru: "цене каталога", en: "catalog price" },
+  trade_verdict_tip: { ru: "Сравниваем сумму Community Value обеих сторон (а если она есть не у всех предметов — сумму цен по каталогу). Разница до 5% считается честным обменом.", en: "We compare the total Community Value of both sides (or total catalog price if not every item has a Value). Up to a 5% difference counts as a fair trade." },
+  trade_note_mixed: { ru: "Не у всех предметов есть Community Value — сравниваем по цене каталога.", en: "Not every item has a Community Value — comparing by catalog price instead." },
+
+  fees_buy_tab: { ru: "Купить", en: "Buy" },
+  fees_sell_tab: { ru: "Продать", en: "Sell" },
+  fees_item_price_label: { ru: "Цена предмета, ₽", en: "Item price, ₽" },
+  fees_price_placeholder: { ru: "Например, 500", en: "E.g. 500" },
+  fees_pick_item: { ru: "Выбрать предмет", en: "Pick an item" },
+  fees_payment_method: { ru: "Способ оплаты", en: "Payment method" },
+  fees_sell_price_label: { ru: "Цена продажи, ₽", en: "Sale price, ₽" },
+  fees_withdrawal_method: { ru: "Способ вывода", en: "Withdrawal method" },
+  fees_note: { ru: "Комиссии — реальные, из открытого API самого DP, обновляются вместе с ценами. Расчёт по стандартной для платёжных агрегаторов модели: комиссия берётся от суммы платежа/вывода. Если итоговые цифры на сайте будут отличаться — напишите точный пример, поправим формулу.", en: "The fees are real, pulled from DP's own open API, refreshed along with prices. Calculated the standard payment-processor way: the fee is taken from the payment/withdrawal amount. If the numbers on the site turn out different, send us the exact example and we'll fix the formula." },
+
+  light_theme: { ru: "Светлая тема", en: "Light theme" },
+  disclaimer_html: {
+    ru: 'Этот бот и мини-приложение — независимый фан-проект для отслеживания цен на предметы Murder Mystery 2 в Roblox. Мы не являемся представителями и никак не связаны с <b>DreamPets</b>, <b>FunPay</b>, <b>MM2Values</b>, <b>Roblox Corporation</b>, <b>Nikilis</b> или официальной командой Murder Mystery 2. Все названия, торговые марки и материалы принадлежат их правообладателям. Информация даётся «как есть», в справочных целях, и может быть неточной или устаревшей.',
+    en: 'This bot and mini-app are an independent fan project for tracking Murder Mystery 2 item prices in Roblox. We are not representatives of, and have no affiliation with, <b>DreamPets</b>, <b>FunPay</b>, <b>MM2Values</b>, <b>Roblox Corporation</b>, <b>Nikilis</b>, or the official Murder Mystery 2 team. All names, trademarks and materials belong to their respective owners. Information is provided "as is", for reference only, and may be inaccurate or out of date.',
+  },
+  faq_title: { ru: "FAQ", en: "FAQ" },
+  faq1_q: { ru: "Это официальный магазин DreamPets?", en: "Is this an official DreamPets store?" },
+  faq1_a: { ru: "Нет. Это сторонний инструмент для отслеживания цен, сделанный фанатом. Покупка предметов происходит на самом DreamPets или FunPay — бот только показывает цены и ссылки на реальные лоты.", en: "No. It's a third-party price-tracking tool made by a fan. Actually buying items happens on DreamPets or FunPay themselves — the bot only shows prices and links to the real listings." },
+  faq2_q: { ru: "Откуда берутся цены?", en: "Where do the prices come from?" },
+  faq2_a: { ru: "Из открытого API самого DreamPets (основной и Legacy-каталог) и с сайта mm2values.com (Community Value). Это публичные данные — ничего не взломано и не куплено.", en: "From DreamPets' own open API (main and Legacy catalog) and from mm2values.com (Community Value). This is all public data — nothing was hacked or bought." },
+  faq3_q: { ru: "Почему цена отличается от той, что я вижу на сайте?", en: "Why does the price differ from what I see on the site?" },
+  faq3_a: { ru: "Цены в боте обновляются каждые несколько минут, а на самом DreamPets — в реальном времени: за это время лоты могут смениться или самый дешёвый может распродаться.", en: "Prices in the bot refresh every few minutes, while DreamPets itself updates in real time — in that window, listings can change or the cheapest one can sell out." },
+  faq4_q: { ru: "Это безопасно? Нужно ли давать боту пароль?", en: "Is this safe? Do I need to give the bot a password?" },
+  faq4_a: { ru: "Бот никогда не просит пароль и не имеет доступа к вашему аккаунту DreamPets, Roblox или Telegram. Инвентарь и трейд-калькулятор в мини-приложении — это ваши личные заметки внутри бота, не связанные с реальным аккаунтом.", en: "The bot never asks for a password and has no access to your DreamPets, Roblox, or Telegram account. The inventory and trade calculator in the mini-app are just personal notes inside the bot, not linked to a real account." },
+  faq5_q: { ru: "В чём разница между основным и Legacy-каталогом?", en: "What's the difference between the main and Legacy catalog?" },
+  faq5_a: { ru: "Это два отдельных маркетплейса на одном сайте DreamPets, с разными лотами и продавцами. Мы сравниваем цену в обоих и показываем более дешёвый вариант, а количество лотов в продаже считаем по сумме обоих сразу.", en: "They're two separate marketplaces on the same DreamPets site, with different listings and sellers. We compare the price on both and show the cheaper option, and count lots for sale as the sum of both at once." },
+  faq6_q: { ru: "Как часто обновляются цены и график?", en: "How often do prices and the chart update?" },
+  faq6_a: { ru: "Бот проверяет каталог DreamPets каждые несколько минут (обычно раз в 5 минут) и дописывает точку в историю — из этих точек и строится график.", en: "The bot checks the DreamPets catalog every few minutes (usually every 5 minutes) and appends a point to the history — the chart is built from those points." },
+  author_contacts: { ru: "Контакты автора", en: "Author's contacts" },
+  roblox_profile: { ru: "Профиль →", en: "Profile →" },
+  discord_copy_hint: { ru: "docklock · нажмите, чтобы скопировать", en: "docklock · click to copy" },
+  discord_copied: { ru: "Скопировано!", en: "Copied!" },
+
+  loading: { ru: "Загрузка…", en: "Loading…" },
+  not_found: { ru: "Не найдено", en: "Not found" },
+  just_now: { ru: "только что", en: "just now" },
+  time_ago: { ru: "{n} {word} назад", en: "{n} {word} ago" },
+  game_update_prefix: { ru: "MM2 в Roblox обновлялась:", en: "MM2 in Roblox last updated:" },
+
+  win_5m: { ru: "5 мин", en: "5 min" },
+  win_1h: { ru: "1 час", en: "1 hour" },
+  win_1d: { ru: "Сутки", en: "1 day" },
+  win_1w: { ru: "Неделя", en: "1 week" },
+  win_1mo: { ru: "Месяц", en: "1 month" },
+  win_1y: { ru: "Год", en: "1 year" },
+  bucket_hourly_day: { ru: "почасовые точки · сутки", en: "hourly points · 1 day" },
+  bucket_4h_week: { ru: "4-часовые точки · неделя", en: "4-hour points · 1 week" },
+  bucket_daily_month: { ru: "дневные точки · месяц", en: "daily points · 1 month" },
+  bucket_weekly_year: { ru: "недельные точки · год", en: "weekly points · 1 year" },
+
+  event_halloween: { ru: "Хэллоуин", en: "Halloween" },
+  event_christmas: { ru: "Рождество", en: "Christmas" },
+  event_easter: { ru: "Пасха", en: "Easter" },
+  next_event_line: { ru: "Следующее глобальное обновление: <b>{name}</b> — ориентировочно {date}", en: "Next global update: <b>{name}</b> — approximately {date}" },
+  next_event_hint: { ru: "(неофициально, не факт)", en: "(unofficial, not guaranteed)" },
+
+  hist_badge_high: { ru: "Дороже, чем когда-либо за всё время наблюдений", en: "Higher than ever recorded" },
+  hist_badge_low: { ru: "Дешевле, чем когда-либо за всё время наблюдений", en: "Lower than ever recorded" },
+
+  chroma_label: { ru: "Хрома", en: "Chroma" },
+  item_deal_pricier: { ru: "в обычном дороже: {price}", en: "pricier in the main catalog: {price}" },
+  item_legacy_only_short: { ru: "только в Legacy-каталоге", en: "Legacy catalog only" },
+
+  deal_note_pricier_html: { ru: "<b>В обычном каталоге дороже</b> — {price} там же", en: "<b>More expensive in the main catalog</b> — {price} there" },
+  deal_note_legacy_only_html: { ru: "<b>Сейчас есть только в Legacy-каталоге</b> — в текущем распродано", en: "<b>Currently only available in the Legacy catalog</b> — sold out in the main one" },
+  buy_btn_label: { ru: "Купить за {price}", en: "Buy for {price}" },
+  funpay_tag: { ru: "FunPay", en: "FunPay" },
+  funpay_note_html: {
+    ru: '<b>FunPay — экспериментальная функция.</b> Это сторонняя площадка объявлений, не связанная с DreamPets, и там встречаются мошенники. Совпадение с названием предмета ищется автоматически по тексту объявления и может быть неточным. Если цена подозрительно ниже рыночной — это повод насторожиться, а не повод спешить. Покупаете здесь на свой страх и риск — только если понимаете, что делаете.',
+    en: '<b>FunPay is an experimental feature.</b> It is a third-party listings marketplace not affiliated with DreamPets, and scammers do show up there. The match to the item name is found automatically from the listing text and can be wrong. A suspiciously low price is a reason to be careful, not to rush. Buying here is entirely at your own risk — only if you know what you are doing.',
+  },
+
+  fees_result_topay: { ru: "К оплате: <b>{total}</b>", en: "Total to pay: <b>{total}</b>" },
+  fees_result_topup_sub: { ru: "Из них комиссия за пополнение: {fee} ({rate}%)", en: "Of which top-up fee: {fee} ({rate}%)" },
+  fees_result_sell_main: { ru: "Получите на карту: <b>{net}</b>", en: "You'll receive: <b>{net}</b>" },
+  fees_result_sell_sub: { ru: "Комиссия за вывод: {fee} ({rate}%{fixed})", en: "Withdrawal fee: {fee} ({rate}%{fixed})" },
+};
+
+function t(key, vars) {
+  const entry = I18N[key];
+  let text = entry ? (entry[currentLang] || entry.ru) : key;
+  if (vars) {
+    for (const k in vars) text = text.split(`{${k}}`).join(vars[k]);
+  }
+  return text;
+}
+
+function applyStaticI18n() {
+  document.documentElement.lang = currentLang;
+  document.title = t("home_title");
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+  document.querySelectorAll("[data-i18n-tip]").forEach(el => { el.setAttribute("data-tip", t(el.dataset.i18nTip)); });
+  const langBtn = el("#lang-btn");
+  if (langBtn) langBtn.textContent = currentLang.toUpperCase();
+}
+
 const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
   '<rect width="100" height="100" fill="#2a2d36"/>' +
-  '<text x="50" y="55" font-size="12" fill="#666" text-anchor="middle">нет фото</text></svg>'
+  '<text x="50" y="55" font-size="12" fill="#666" text-anchor="middle">no photo</text></svg>'
 );
 
-function timeAgoRu(isoString) {
+const TIME_UNITS = [
+  [31536000, { ru: ["год", "года", "лет"], en: "year" }],
+  [2592000, { ru: ["месяц", "месяца", "месяцев"], en: "month" }],
+  [86400, { ru: ["день", "дня", "дней"], en: "day" }],
+  [3600, { ru: ["час", "часа", "часов"], en: "hour" }],
+  [60, { ru: ["минуту", "минуты", "минут"], en: "minute" }],
+];
+
+function timeAgo(isoString) {
   const then = new Date(isoString).getTime();
   if (isNaN(then)) return null;
   const diffSec = Math.max(0, Math.floor((Date.now() - then) / 1000));
-  const units = [
-    [31536000, "год", "года", "лет"],
-    [2592000, "месяц", "месяца", "месяцев"],
-    [86400, "день", "дня", "дней"],
-    [3600, "час", "часа", "часов"],
-    [60, "минуту", "минуты", "минут"],
-  ];
-  for (const [sec, one, few, many] of units) {
+  for (const [sec, words] of TIME_UNITS) {
     const n = Math.floor(diffSec / sec);
     if (n >= 1) {
-      const mod10 = n % 10, mod100 = n % 100;
-      let word = many;
-      if (mod10 === 1 && mod100 !== 11) word = one;
-      else if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) word = few;
-      return `${n} ${word} назад`;
+      const word = currentLang === "en" ? words.en + (n === 1 ? "" : "s") : pluralRu(n, ...words.ru);
+      return t("time_ago", { n, word });
     }
   }
-  return "только что";
+  return t("just_now");
 }
 
 function renderGameUpdate(gameUpdate) {
@@ -48,8 +239,8 @@ function renderGameUpdate(gameUpdate) {
     box.innerHTML = "";
     return;
   }
-  const ago = timeAgoRu(gameUpdate.updated);
-  box.innerHTML = `<span class="dot"></span>MM2 в Roblox обновлялась: <b>${ago}</b>`;
+  const ago = timeAgo(gameUpdate.updated);
+  box.innerHTML = `<span class="dot"></span>${t("game_update_prefix")} <b>${ago}</b>`;
 }
 
 // Следующее сезонное событие MM2 (Хэллоуин/Рождество/Пасха) — Nikilis никогда
@@ -59,8 +250,8 @@ function renderGameUpdate(gameUpdate) {
 // Гаусса (западная/григорианская Пасха), остальные два события — фиксированные
 // день/месяц.
 const SEASONAL_EVENTS_FIXED = [
-  { name: "Хэллоуин", month: 10, day: 20 },
-  { name: "Рождество", month: 12, day: 1 },
+  { key: "halloween", month: 10, day: 20 },
+  { key: "christmas", month: 12, day: 1 },
 ];
 
 function easterSunday(year) {
@@ -79,8 +270,8 @@ function nextSeasonalEvent(now) {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const candidates = [];
   for (const y of [now.getFullYear(), now.getFullYear() + 1]) {
-    candidates.push({ name: "Пасха", date: easterSunday(y) });
-    for (const ev of SEASONAL_EVENTS_FIXED) candidates.push({ name: ev.name, date: new Date(y, ev.month - 1, ev.day) });
+    candidates.push({ key: "easter", date: easterSunday(y) });
+    for (const ev of SEASONAL_EVENTS_FIXED) candidates.push({ key: ev.key, date: new Date(y, ev.month - 1, ev.day) });
   }
   const future = candidates.filter(c => c.date >= today);
   future.sort((a, b) => a.date - b.date);
@@ -91,8 +282,9 @@ function renderNextEvent() {
   const box = el("#next-event-info");
   const ev = nextSeasonalEvent();
   if (!ev) { box.innerHTML = ""; return; }
-  const dateStr = ev.date.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
-  box.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2l0 -2" /></svg><div>Следующее глобальное обновление: <b>${ev.name}</b> — ориентировочно ${dateStr} <span class="hint">(неофициально, не факт)</span></div>`;
+  const dateStr = ev.date.toLocaleDateString(currentLang === "en" ? "en-US" : "ru-RU", { day: "numeric", month: "long" });
+  const line = t("next_event_line", { name: t("event_" + ev.key), date: dateStr });
+  box.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2l0 -2" /></svg><div>${line} <span class="hint">${t("next_event_hint")}</span></div>`;
 }
 
 function escapeHtml(s) {
@@ -135,27 +327,24 @@ const ARROW_DOWN = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" st
 // Период сравнения "было -> стало" — общий для главного экрана, категории и
 // карточки предмета: сколько выбрали, столько и используется в /api/... до
 // следующей смены. Список синхронизирован с WINDOW_OPTIONS в webapp/server.py.
-const WINDOW_OPTIONS = [
-  ["5m", "5 мин"], ["1h", "1 час"],
-  ["1d", "Сутки"], ["1w", "Неделя"], ["1mo", "Месяц"], ["1y", "Год"],
-];
+const WINDOW_KEYS = ["5m", "1h", "1d", "1w", "1mo", "1y"];
 let currentWindow = "5m";
 let categoriesExpanded = false;
 // График всегда показывает минимум сутки истории, даже если для "было/стало"
 // выбран более короткий период (см. CHART_WINDOW_SECONDS на бэкенде) — иначе
 // график почти всегда был бы пустым при выборе "5 мин"/"1 час".
-const CHART_BUCKET_LABELS = {
-  "5m": "почасовые точки · сутки",
-  "1h": "почасовые точки · сутки",
-  "1d": "почасовые точки · сутки", "1w": "4-часовые точки · неделя",
-  "1mo": "дневные точки · месяц",
-  "1y": "недельные точки · год",
+const CHART_BUCKET_KEYS = {
+  "5m": "bucket_hourly_day",
+  "1h": "bucket_hourly_day",
+  "1d": "bucket_hourly_day", "1w": "bucket_4h_week",
+  "1mo": "bucket_daily_month",
+  "1y": "bucket_weekly_year",
 };
 
 function renderWindowRow(containerSel, onChange) {
   const container = el(containerSel);
-  container.innerHTML = WINDOW_OPTIONS.map(([key, label]) =>
-    `<button class="win-chip${key === currentWindow ? " active" : ""}" data-win="${key}">${label}</button>`
+  container.innerHTML = WINDOW_KEYS.map(key =>
+    `<button class="win-chip${key === currentWindow ? " active" : ""}" data-win="${key}">${t("win_" + key)}</button>`
   ).join("");
   container.querySelectorAll(".win-chip").forEach(btn => {
     btn.onclick = () => {
@@ -202,12 +391,22 @@ el("#currency-btn").onclick = () => {
   location.reload();
 };
 
+const langBtnEl = el("#lang-btn");
+if (langBtnEl) {
+  langBtnEl.textContent = currentLang.toUpperCase();
+  langBtnEl.onclick = () => {
+    currentLang = currentLang === "ru" ? "en" : "ru";
+    localStorage.setItem("lang", currentLang);
+    location.reload();
+  };
+}
+
 // Value без Demand/Rarity/Stability и без %-пилюль — в пикере/инвентаре/
 // трейде нужна только сама цифра ценности, а не полная сводка как на
 // карточке предмета.
 function valueText(item) {
   const cv = (item.community_values || []).find(c => c.source === "mm2values");
-  return cv && cv.value_raw != null ? `Value: ${cv.value_raw}` : "";
+  return cv && cv.value_raw != null ? `${t("cv_value")}: ${cv.value_raw}` : "";
 }
 function changePill(change) {
   if (change == null) return "";
@@ -235,7 +434,7 @@ if (tg) tg.BackButton.onClick(() => { if (backAction) backAction(); });
 
 function loadAbout() {
   showScreen("about");
-  setHeaderTitle("О проекте");
+  setHeaderTitle(t("about"));
   backAction = loadHome;
   el("#theme-toggle").checked = isLightTheme();
 }
@@ -245,11 +444,11 @@ el("#discord-copy-btn").onclick = async () => {
   const hint = el("#discord-copy-hint");
   try {
     await navigator.clipboard.writeText("docklock");
-    hint.textContent = "Скопировано!";
+    hint.textContent = t("discord_copied");
   } catch (e) {
     hint.textContent = "docklock";
   }
-  setTimeout(() => { hint.textContent = "docklock · нажмите, чтобы скопировать"; }, 1500);
+  setTimeout(() => { hint.textContent = t("discord_copy_hint"); }, 1500);
 };
 
 function applyTheme(theme) {
@@ -285,14 +484,14 @@ function itemCard(item, onOpen, onRemove) {
       <img src="${item.image}" loading="lazy" alt="">
     </div>
     <div class="item-name">${escapeHtml(item.name)}</div>
-    ${item.chroma ? '<div class="item-chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Хрома</div>' : ""}
+    ${item.chroma ? `<div class="item-chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> ${t("chroma_label")}</div>` : ""}
     <div class="price-line"><div class="item-price num">${fmtPrice(mainPrice)}</div></div>
     <div class="change-row">
       ${item.prev_price != null ? `<div class="item-prev num">${fmtPrice(item.prev_price)}</div>` : ""}
       ${changePill(change)}
     </div>
-    ${hasDeal ? `<div class="item-deal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg> в обычном дороже: ${fmtPrice(item.price)}</div>` : ""}
-    ${isLegacyOnly ? `<div class="item-deal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg> только в Legacy-каталоге</div>` : ""}
+    ${hasDeal ? `<div class="item-deal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg> ${t("item_deal_pricier", { price: fmtPrice(item.price) })}</div>` : ""}
+    ${isLegacyOnly ? `<div class="item-deal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg> ${t("item_legacy_only_short")}</div>` : ""}
     ${valuesLine ? `<div class="item-values"><span class="dot"></span>${escapeHtml(valuesLine)}</div>` : ""}
   `;
   card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
@@ -300,7 +499,7 @@ function itemCard(item, onOpen, onRemove) {
   if (onRemove) {
     const removeBtn = document.createElement("button");
     removeBtn.className = "fav-remove";
-    removeBtn.setAttribute("aria-label", "Убрать из избранного");
+    removeBtn.setAttribute("aria-label", t("remove_from_favorites"));
     removeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>';
     removeBtn.onclick = (e) => { e.stopPropagation(); onRemove(item); };
     card.appendChild(removeBtn);
@@ -310,7 +509,7 @@ function itemCard(item, onOpen, onRemove) {
 
 async function loadHome() {
   showScreen("home");
-  setHeaderTitle("MM2 Каталог");
+  setHeaderTitle(t("home_title"));
   backAction = null;
 
   el("#open-inventory-btn").onclick = loadInventory;
@@ -351,13 +550,13 @@ async function loadHome() {
   const catToggle = el("#categories-toggle");
   if (data.categories.length > CATEGORIES_COLLAPSED_COUNT) {
     catToggle.style.display = "block";
-    catToggle.textContent = categoriesExpanded ? "Свернуть" : "Показать все";
+    catToggle.textContent = t(categoriesExpanded ? "categories_collapse" : "categories_show_all");
     catToggle.onclick = () => {
       categoriesExpanded = !categoriesExpanded;
       catWrap.querySelectorAll(".cat-btn").forEach((btn, i) => {
         btn.classList.toggle("cat-hidden", i >= CATEGORIES_COLLAPSED_COUNT && !categoriesExpanded);
       });
-      catToggle.textContent = categoriesExpanded ? "Свернуть" : "Показать все";
+      catToggle.textContent = t(categoriesExpanded ? "categories_collapse" : "categories_show_all");
     };
   } else {
     catToggle.style.display = "none";
@@ -366,7 +565,7 @@ async function loadHome() {
   const moversWrap = el("#movers");
   moversWrap.innerHTML = "";
   if (!data.movers.length) {
-    moversWrap.innerHTML = '<div class="empty">Пока нет заметных изменений цен — они появятся, как только накопится история.</div>';
+    moversWrap.innerHTML = `<div class="empty">${t("no_movers")}</div>`;
   } else {
     for (const item of data.movers) {
       moversWrap.appendChild(itemCard(item, () => loadItem(item.id, loadHome)));
@@ -406,9 +605,9 @@ function renderCategoryGrid(key) {
   filtered.sort(SORTERS[categorySort] || SORTERS.price_desc);
 
   if (!filtered.length) {
-    let msg = "Нет предметов с активными лотами в этой категории.";
-    if (query) msg = `Ничего не найдено по запросу «${escapeHtml(categorySearch)}».`;
-    else if (categoryChangeFilter !== "all") msg = `Нет предметов, которые ${categoryChangeFilter === "up" ? "выросли" : "упали"} на ${categoryThreshold}% и больше за выбранный период.`;
+    let msg = t("no_items_in_category");
+    if (query) msg = t("no_search_results", { q: escapeHtml(categorySearch) });
+    else if (categoryChangeFilter !== "all") msg = t("no_filtered_movers", { dir: t(categoryChangeFilter === "up" ? "dir_up" : "dir_down"), threshold: categoryThreshold });
     grid.innerHTML = `<div class="empty">${msg}</div>`;
     return;
   }
@@ -456,7 +655,7 @@ async function loadCategory(key) {
   });
 
   const grid = el("#category-grid");
-  grid.innerHTML = '<div class="loading">Загрузка…</div>';
+  grid.innerHTML = `<div class="loading">${t("loading")}</div>`;
 
   const res = await fetch(`/api/category/${key}?window=${currentWindow}`);
   const data = await res.json();
@@ -480,11 +679,11 @@ function renderHistBadge(item) {
   if (price >= item.hist_max * (1 - EPS)) {
     badge.style.display = "flex";
     badge.className = "hist-badge high";
-    badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg> Дороже, чем когда-либо за всё время наблюдений';
+    badge.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg> ${t("hist_badge_high")}`;
   } else if (price <= item.hist_min * (1 + EPS)) {
     badge.style.display = "flex";
     badge.className = "hist-badge low";
-    badge.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6 6l4 -4l8 8" /><path d="M21 10l0 7l-7 0" /></svg> Дешевле, чем когда-либо за всё время наблюдений';
+    badge.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6 6l4 -4l8 8" /><path d="M21 10l0 7l-7 0" /></svg> ${t("hist_badge_low")}`;
   } else {
     badge.style.display = "none";
   }
@@ -505,9 +704,8 @@ function renderSaleCount(item) {
     return;
   }
   box.style.display = "flex";
-  el("#item-sale-count-text").textContent = n === 0
-    ? "Сейчас нет лотов в продаже"
-    : `Сейчас в продаже: ${n} ${pluralRu(n, "лот", "лота", "лотов")}`;
+  const word = currentLang === "en" ? t(n === 1 ? "lot_one" : "lot_many") : pluralRu(n, t("lot_one"), t("lot_few"), t("lot_many"));
+  el("#item-sale-count-text").textContent = n === 0 ? t("sale_count_none") : t("sale_count_some", { n, word });
 }
 
 function isLightTheme() { return document.documentElement.getAttribute("data-theme") === "light"; }
@@ -518,7 +716,7 @@ function renderPriceChart(candles) {
   const chartEl = el("#chart");
   chartEl.innerHTML = "";
   if (!candles || !candles.length || !window.LightweightCharts) {
-    chartEl.innerHTML = '<div class="empty">Пока недостаточно истории для графика — она копится каждые несколько минут.</div>';
+    chartEl.innerHTML = `<div class="empty">${t("chart_loading")}</div>`;
     return;
   }
   priceChart = LightweightCharts.createChart(chartEl, {
@@ -529,7 +727,7 @@ function renderPriceChart(candles) {
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" }, horzLine: { color: "rgba(79,140,255,0.35)", labelBackgroundColor: "#1c2942" } },
-    localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: currentCurrency === "RUB" ? 0 : 2 }) + CURRENCY_SYMBOLS[currentCurrency] },
+    localization: { priceFormatter: (p) => p.toLocaleString(currentLang === "en" ? "en-US" : "ru-RU", { maximumFractionDigits: currentCurrency === "RUB" ? 0 : 2 }) + CURRENCY_SYMBOLS[currentCurrency] },
   });
   const series = priceChart.addAreaSeries({
     lineColor: "#4f8cff", topColor: "rgba(79,140,255,0.28)", bottomColor: "rgba(79,140,255,0)",
@@ -549,7 +747,7 @@ function renderMarketIndexChart(data) {
   const godly = (data && data.godly) || [];
   const ancient = (data && data.ancient) || [];
   if ((!godly.length && !ancient.length) || !window.LightweightCharts) {
-    chartEl.innerHTML = '<div class="empty">Пока недостаточно истории для графика — она копится каждые несколько минут.</div>';
+    chartEl.innerHTML = `<div class="empty">${t("chart_loading")}</div>`;
     return;
   }
   marketIndexChart = LightweightCharts.createChart(chartEl, {
@@ -560,7 +758,7 @@ function renderMarketIndexChart(data) {
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" }, horzLine: { color: "rgba(255,136,0,0.3)", labelBackgroundColor: "#2a1d0d" } },
-    localization: { priceFormatter: (p) => p.toLocaleString("ru-RU", { maximumFractionDigits: currentCurrency === "RUB" ? 0 : 2 }) + CURRENCY_SYMBOLS[currentCurrency] },
+    localization: { priceFormatter: (p) => p.toLocaleString(currentLang === "en" ? "en-US" : "ru-RU", { maximumFractionDigits: currentCurrency === "RUB" ? 0 : 2 }) + CURRENCY_SYMBOLS[currentCurrency] },
   });
   if (godly.length) {
     const s = marketIndexChart.addLineSeries({ color: "#ff8800", lineWidth: 2, priceLineVisible: false, lastValueVisible: godly.length > 1 });
@@ -591,7 +789,7 @@ function renderValueChart(history, sourceLabel) {
     timeScale: { timeVisible: true, secondsVisible: false, borderVisible: false, fixLeftEdge: true, fixRightEdge: true },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.2, bottom: 0.12 } },
     crosshair: { vertLine: { color: "rgba(45,212,191,0.35)", labelBackgroundColor: "#1c3532" }, horzLine: { color: "rgba(45,212,191,0.35)", labelBackgroundColor: "#1c3532" } },
-    localization: { priceFormatter: (v) => v.toLocaleString("ru-RU", { maximumFractionDigits: 0 }) },
+    localization: { priceFormatter: (v) => v.toLocaleString(currentLang === "en" ? "en-US" : "ru-RU", { maximumFractionDigits: 0 }) },
   });
   const series = valueChart.addAreaSeries({
     lineColor: "#2dd4bf", topColor: "rgba(45,212,191,0.28)", bottomColor: "rgba(45,212,191,0)",
@@ -624,7 +822,7 @@ function openPicker(onSelect) {
   el("#picker-modal").style.display = "flex";
   const input = el("#picker-search");
   input.value = "";
-  el("#picker-results").innerHTML = '<div class="loading">Загрузка…</div>';
+  el("#picker-results").innerHTML = `<div class="loading">${t("loading")}</div>`;
   loadPickerResults("");
   input.focus();
 }
@@ -651,7 +849,7 @@ async function loadPickerResults(q) {
 function renderPickerResults(items) {
   const wrap = el("#picker-results");
   if (!items.length) {
-    wrap.innerHTML = '<div class="empty">Ничего не найдено.</div>';
+    wrap.innerHTML = `<div class="empty">${t("picker_no_results")}</div>`;
     return;
   }
   wrap.innerHTML = "";
@@ -689,7 +887,7 @@ function renderSlotGrid(containerSel, items, { onAdd, onIncrement, onDecrement, 
     tile.innerHTML = `
       <div class="slot slot-filled">
         <img src="${item.image}" loading="lazy" alt="">
-        <button class="slot-remove" aria-label="Убрать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
+        <button class="slot-remove" aria-label="${t("remove_label")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
       </div>
       <div class="slot-meta">
         <div class="slot-price">${fmtPrice(item.best_price)}</div>
@@ -710,7 +908,7 @@ function renderSlotGrid(containerSel, items, { onAdd, onIncrement, onDecrement, 
 
   const addTile = document.createElement("div");
   addTile.className = "slot-tile";
-  addTile.innerHTML = `<div class="slot slot-add">+</div><div class="slot-meta slot-add-label">Добавить</div>`;
+  addTile.innerHTML = `<div class="slot slot-add">+</div><div class="slot-meta slot-add-label">${t("add_label")}</div>`;
   addTile.querySelector(".slot-add").onclick = onAdd;
   wrap.appendChild(addTile);
 }
@@ -729,10 +927,10 @@ async function setInventoryQuantity(pid, quantity) {
 
 async function loadInventory() {
   showScreen("inventory");
-  setHeaderTitle("Мой инвентарь");
+  setHeaderTitle(t("tool_inventory"));
   backAction = loadHome;
 
-  el("#inventory-list").innerHTML = '<div class="loading">Загрузка…</div>';
+  el("#inventory-list").innerHTML = `<div class="loading">${t("loading")}</div>`;
   const res = await fetch("/api/inventory");
   const data = await res.json();
   inventoryItems = data.items;
@@ -766,10 +964,10 @@ async function toggleFavorite(pid, makeFavorite) {
 
 async function loadFavorites() {
   showScreen("favorites");
-  setHeaderTitle("Избранное");
+  setHeaderTitle(t("tool_favorites"));
   backAction = loadHome;
 
-  el("#favorites-grid").innerHTML = '<div class="loading">Загрузка…</div>';
+  el("#favorites-grid").innerHTML = `<div class="loading">${t("loading")}</div>`;
   const res = await fetch("/api/favorites");
   const data = await res.json();
   favoriteIds = new Set(data.items.map(it => it.id));
@@ -788,11 +986,11 @@ function renderFavoritesGrid(items) {
   }
   const addCard = document.createElement("div");
   addCard.className = "fav-add-card";
-  addCard.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg><span>Добавить</span>';
+  addCard.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg><span>${t("add_label")}</span>`;
   addCard.onclick = () => openPicker(async (item) => { await toggleFavorite(item.id, true); loadFavorites(); });
   grid.appendChild(addCard);
   if (!items.length) {
-    grid.insertAdjacentHTML("afterbegin", '<div class="empty">Пока пусто — добавь предметы, за которыми хочешь следить.</div>');
+    grid.insertAdjacentHTML("afterbegin", `<div class="empty">${t("favorites_empty")}</div>`);
   }
 }
 
@@ -816,7 +1014,7 @@ async function patchNotifSettings(patch) {
 
 async function loadNotifications() {
   showScreen("notifications");
-  setHeaderTitle("Уведомления");
+  setHeaderTitle(t("tool_notifications"));
   backAction = loadHome;
 
   const res = await fetch("/api/notification_settings");
@@ -857,7 +1055,7 @@ function renderNotifSection(kind) {
     row.innerHTML = `
       <img src="${item.image}" loading="lazy" alt="">
       <span>${escapeHtml(item.name)}</span>
-      <button aria-label="Убрать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
+      <button aria-label="${t("remove_label")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
     `;
     row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
     row.querySelector("button").onclick = () => {
@@ -869,7 +1067,7 @@ function renderNotifSection(kind) {
 
   const addRow = document.createElement("div");
   addRow.className = "notif-add-row";
-  addRow.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg> Добавить предмет';
+  addRow.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg> ${t("add_item_label")}`;
   addRow.onclick = () => openPicker((item) => {
     const current = notifSettings[`${kind}_items`] || [];
     if (!current.includes(item.id)) patchNotifSettings({ [`${kind}_items`]: [...current, item.id] });
@@ -885,7 +1083,7 @@ const trade = { a: [], b: [] };
 
 function loadTrade() {
   showScreen("trade");
-  setHeaderTitle("Калькулятор трейда");
+  setHeaderTitle(t("tool_trade"));
   backAction = loadHome;
   renderTrade();
 }
@@ -944,24 +1142,23 @@ function renderTrade() {
   const useValue = a.valueCount === trade.a.length && b.valueCount === trade.b.length && trade.a.length && trade.b.length;
   const sumA = useValue ? a.valueSum : a.priceSum;
   const sumB = useValue ? b.valueSum : b.priceSum;
-  const basisLabel = useValue ? "Community Value" : "цене каталога";
+  const basisLabel = t(useValue ? "trade_basis_cv" : "trade_basis_catalog");
   const diff = sumA - sumB;
   const bigger = Math.max(sumA, sumB) || 1;
   const diffPercent = Math.abs(diff) / bigger * 100;
 
   let verdictText;
   if (diffPercent < 5) {
-    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20l10 0" /><path d="M6 6l6 -1l6 1" /><path d="M12 3l0 17" /><path d="M9 12l-3 -6l-3 6a3 3 0 0 0 6 0" /><path d="M21 12l-3 -6l-3 6a3 3 0 0 0 6 0" /></svg> Обмен примерно честный по ${basisLabel} (разница ${diffPercent.toFixed(0)}%)`;
+    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20l10 0" /><path d="M6 6l6 -1l6 1" /><path d="M12 3l0 17" /><path d="M9 12l-3 -6l-3 6a3 3 0 0 0 6 0" /><path d="M21 12l-3 -6l-3 6a3 3 0 0 0 6 0" /></svg> ${t("trade_fair", { basis: basisLabel, pct: diffPercent.toFixed(0) })}`;
   } else if (diff > 0) {
-    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg> Ваша сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен невыгоден вам`;
+    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg> ${t("trade_you_pricier", { basis: basisLabel, pct: diffPercent.toFixed(0) })}`;
   } else {
-    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6 6l4 -4l8 8" /><path d="M21 10l0 7l-7 0" /></svg> Их сторона дороже по ${basisLabel} на ${diffPercent.toFixed(0)}% — обмен выгоден вам`;
+    verdictText = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6 6l4 -4l8 8" /><path d="M21 10l0 7l-7 0" /></svg> ${t("trade_they_pricier", { basis: basisLabel, pct: diffPercent.toFixed(0) })}`;
   }
   const note = !useValue && (a.valueCount > 0 || b.valueCount > 0)
-    ? '<div class="trade-verdict-note">Не у всех предметов есть Community Value — сравниваем по цене каталога.</div>'
+    ? `<div class="trade-verdict-note">${t("trade_note_mixed")}</div>`
     : "";
-  const verdictTip = "Сравниваем сумму Community Value обеих сторон (а если она есть не у всех предметов — сумму цен по каталогу). Разница до 5% считается честным обменом.";
-  verdictEl.innerHTML = `<div class="trade-verdict-text">${verdictText} <button class="help-icon" data-tip="${escapeHtml(verdictTip)}">?</button></div>${note}`;
+  verdictEl.innerHTML = `<div class="trade-verdict-text">${verdictText} <button class="help-icon" data-tip="${escapeHtml(t("trade_verdict_tip"))}">?</button></div>${note}`;
 }
 
 // ---------- Калькулятор комиссий DreamPets (пополнение/вывод) ----------
@@ -1005,8 +1202,8 @@ function renderFeesBuyResult() {
   const total = calcTopupTotal(price, method);
   const feeAmount = total - price;
   resultEl.innerHTML = `
-    <div class="fees-result-main">К оплате: <b>${fmtPrice(total)}</b></div>
-    <div class="fees-result-sub">Из них комиссия за пополнение: ${fmtPrice(feeAmount)} (${method.commission_rate}%)</div>
+    <div class="fees-result-main">${t("fees_result_topay", { total: fmtPrice(total) })}</div>
+    <div class="fees-result-sub">${t("fees_result_topup_sub", { fee: fmtPrice(feeAmount), rate: method.commission_rate })}</div>
   `;
 }
 
@@ -1019,14 +1216,14 @@ function renderFeesSellResult() {
   const net = Math.max(0, calcWithdrawalNet(price, method));
   const feeAmount = price - net;
   resultEl.innerHTML = `
-    <div class="fees-result-main">Получите на карту: <b>${fmtPrice(net)}</b></div>
-    <div class="fees-result-sub">Комиссия за вывод: ${fmtPrice(feeAmount)} (${method.commission_rate}%${method.fixed_commission ? ` + ${method.fixed_commission}₽` : ""})</div>
+    <div class="fees-result-main">${t("fees_result_sell_main", { net: fmtPrice(net) })}</div>
+    <div class="fees-result-sub">${t("fees_result_sell_sub", { fee: fmtPrice(feeAmount), rate: method.commission_rate, fixed: method.fixed_commission ? ` + ${method.fixed_commission}₽` : "" })}</div>
   `;
 }
 
 async function loadFees() {
   showScreen("fees");
-  setHeaderTitle("Комиссии DP");
+  setHeaderTitle(t("tool_fees"));
   backAction = loadHome;
 
   if (!dreampetsFees) {
@@ -1071,7 +1268,7 @@ async function loadItem(id, backFn) {
 
   const res = await fetch(`/api/item/${id}?window=${currentWindow}`);
   if (!res.ok) {
-    setHeaderTitle("Не найдено");
+    setHeaderTitle(t("not_found"));
     return;
   }
   const item = await res.json();
@@ -1092,7 +1289,7 @@ async function loadItem(id, backFn) {
   el("#item-sub").innerHTML = `
     <span class="chip ${meta.cls}">${meta.label}</span>
     <span class="chip">${escapeHtml(item.category || "")}</span>
-    ${item.chroma ? '<span class="chip chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> Хрома</span>' : ""}
+    ${item.chroma ? `<span class="chip chroma"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17c0 -5.523 -4.477 -10 -10 -10c-5.523 0 -10 4.477 -10 10" /><path d="M18 17a6 6 0 1 0 -12 0" /><path d="M14 17a2 2 0 1 0 -4 0" /></svg> ${t("chroma_label")}</span>` : ""}
   `;
   const mainPrice = item.best_price != null ? item.best_price : item.price;
   el("#item-price").textContent = fmtPrice(mainPrice);
@@ -1128,10 +1325,10 @@ async function loadItem(id, backFn) {
   // "дороже/дешевле" не с чем, просто уточняем, где именно есть в наличии.
   if (hasLegacy && legacyCheaper && hasCurrent) {
     dealNote.style.display = "flex";
-    el("#deal-note-text").innerHTML = `<b>В обычном каталоге дороже</b> — ${fmtPrice(item.price)} там же`;
+    el("#deal-note-text").innerHTML = t("deal_note_pricier_html", { price: fmtPrice(item.price) });
   } else if (hasLegacy && !hasCurrent) {
     dealNote.style.display = "flex";
-    el("#deal-note-text").innerHTML = `<b>Сейчас есть только в Legacy-каталоге</b> — в текущем распродано`;
+    el("#deal-note-text").innerHTML = t("deal_note_legacy_only_html");
   } else {
     dealNote.style.display = "none";
   }
@@ -1140,10 +1337,10 @@ async function loadItem(id, backFn) {
   // Если предмета сейчас нет в одном из каталогов вообще — кнопки для него нет,
   // а не "Купить за —" в никуда.
   const currentBtn = hasCurrent
-    ? `<a class="buy-btn" href="${item.buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.price)}<span class="tag">Текущий каталог</span></a>`
+    ? `<a class="buy-btn" href="${item.buy_url}" target="_blank" rel="noopener">${t("buy_btn_label", { price: fmtPrice(item.price) })}<span class="tag">${t("chart_source_current")}</span></a>`
     : "";
   const legacyBtn = hasLegacy
-    ? `<a class="buy-btn secondary" href="${item.legacy_buy_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.legacy_price)}<span class="tag">Legacy-каталог</span></a>`
+    ? `<a class="buy-btn secondary" href="${item.legacy_buy_url}" target="_blank" rel="noopener">${t("buy_btn_label", { price: fmtPrice(item.legacy_price) })}<span class="tag">${t("chart_source_legacy")}</span></a>`
     : "";
 
   // FunPay сопоставлен по неточному текстовому совпадению названия в
@@ -1151,7 +1348,7 @@ async function loadItem(id, backFn) {
   // третья, второстепенная кнопка, никогда не главная/выделенная, даже если
   // там формально дешевле всего.
   const funpayBtn = item.funpay_price != null
-    ? `<a class="buy-btn secondary" href="${item.funpay_url}" target="_blank" rel="noopener">Купить за ${fmtPrice(item.funpay_price)}<span class="tag">FunPay</span></a>`
+    ? `<a class="buy-btn secondary" href="${item.funpay_url}" target="_blank" rel="noopener">${t("buy_btn_label", { price: fmtPrice(item.funpay_price) })}<span class="tag">${t("funpay_tag")}</span></a>`
     : "";
 
   buyGroup.innerHTML = (legacyCheaper ? (legacyBtn.replace('secondary', '') + currentBtn.replace('buy-btn', 'buy-btn secondary')) : (currentBtn + legacyBtn)) + funpayBtn;
@@ -1166,13 +1363,13 @@ async function loadItem(id, backFn) {
       <div class="cv-panel">
         <div class="cv-head">
           <a class="src" href="${v.url}" target="_blank" rel="noopener"><span class="dot"></span>Community value · ${escapeHtml(v.label)}</a>
-          <span class="tag">не цена покупки</span>
+          <span class="tag">${t("not_a_buy_price")}</span>
         </div>
         <div class="cv-stats">
-          <div class="cv-stat"><div class="k">Value</div><div class="v num">${escapeHtml(String(v.value_raw ?? "—"))}</div></div>
-          <div class="cv-stat"><div class="k">Demand</div><div class="v num">${escapeHtml(String(v.demand ?? "—"))}</div></div>
-          <div class="cv-stat"><div class="k">Rarity</div><div class="v num">${escapeHtml(String(v.rarity ?? "—"))}</div></div>
-          <div class="cv-stat"><div class="k">Stability</div><div class="v">${escapeHtml(String(v.stability ?? "—"))}</div></div>
+          <div class="cv-stat"><div class="k">${t("cv_value")}</div><div class="v num">${escapeHtml(String(v.value_raw ?? "—"))}</div></div>
+          <div class="cv-stat"><div class="k">${t("cv_demand")}</div><div class="v num">${escapeHtml(String(v.demand ?? "—"))}</div></div>
+          <div class="cv-stat"><div class="k">${t("cv_rarity")}</div><div class="v num">${escapeHtml(String(v.rarity ?? "—"))}</div></div>
+          <div class="cv-stat"><div class="k">${t("cv_stability")}</div><div class="v">${escapeHtml(String(v.stability ?? "—"))}</div></div>
         </div>
       </div>
     `).join("");
@@ -1184,8 +1381,8 @@ async function loadItem(id, backFn) {
   // Уточняем, из какого каталога история цены на графике — она берётся из
   // того же источника, что и крупная цена/% над ним (см. cheaper_source),
   // а не всегда из "текущего", чтобы цифры и линия на графике не расходились.
-  const chartSourceLabel = legacyCheaper ? "Legacy" : "Текущий";
-  const bucketLabel = CHART_BUCKET_LABELS[item.window] || "";
+  const chartSourceLabel = legacyCheaper ? t("chart_source_legacy") : t("chart_source_current");
+  const bucketLabel = CHART_BUCKET_KEYS[item.window] ? t(CHART_BUCKET_KEYS[item.window]) : "";
   el("#chart-bucket-hint").textContent = bucketLabel ? `${bucketLabel} · ${chartSourceLabel}` : chartSourceLabel;
   renderPriceChart(item.candles);
 
@@ -1232,4 +1429,5 @@ document.addEventListener("click", (e) => {
   if (openHelpPopover && !e.target.closest(".help-popover")) closeHelpPopover();
 });
 
+applyStaticI18n();
 loadHome();
