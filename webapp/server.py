@@ -26,7 +26,7 @@
   WEBAPP_URL          — публичный https-адрес этого сервиса (обязательно для
                         кнопки "Открыть каталог" — Telegram Web App требует
                         настоящий https-домен, localhost не подходит)
-  CHECK_INTERVAL_SEC  — интервал фоновой проверки цен, сек (по умолчанию 300)
+  CHECK_INTERVAL_SEC  — интервал фоновой проверки цен, сек (по умолчанию 60)
   PORT                — порт HTTP-сервера (по умолчанию 8000)
   DROP_ALERT_THRESHOLD_PERCENT, AVG_PRICE_WINDOW_DAYS — см. webapp/alerts.py
 
@@ -70,7 +70,7 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 STATIC_DIR = BASE_DIR / "static"
-CHECK_INTERVAL_SEC = int(os.environ.get("CHECK_INTERVAL_SEC", "300"))
+CHECK_INTERVAL_SEC = int(os.environ.get("CHECK_INTERVAL_SEC", "60"))
 PORT = int(os.environ.get("PORT", "8000"))
 
 CATEGORIES = [
