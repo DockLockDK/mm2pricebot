@@ -94,9 +94,19 @@
 
   .grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
   .item-card{
+    position:relative;
     background:var(--card); border:1px solid var(--line); clip-path:var(--clip-panel); padding:12px; cursor:pointer;
     display:flex; flex-direction:column; gap:8px;
   }
+  .item-card .fav-remove{ position:absolute; top:6px; right:6px; width:22px; height:22px;
+    background:rgba(0,0,0,0.7); border:none; color:#fff; cursor:pointer; padding:0; z-index:1;
+    display:flex; align-items:center; justify-content:center; }
+  .item-card .fav-remove svg{ width:12px; height:12px; }
+  .fav-add-card{ background:var(--card); border:1px dashed var(--line); clip-path:var(--clip-panel); cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:var(--hint);
+    min-height:150px; }
+  .fav-add-card svg{ width:26px; height:26px; }
+  .fav-add-card span{ font-size:11px; text-transform:uppercase; letter-spacing:.02em; }
   .item-card .thumb{
     width:100%; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;
     overflow:hidden; background:var(--card-raised);
@@ -133,7 +143,13 @@
   .game-update:empty{ display:none; }
 
   .hero-wrap{ display:flex; justify-content:center; margin-bottom:16px; }
+  .hero-frame{ position:relative; display:inline-block; }
   #item-image{ width:176px; height:176px; object-fit:contain; display:block; background:var(--card); clip-path:var(--clip-panel); }
+  .fav-btn{ position:absolute; top:6px; right:6px; width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+    background:rgba(5,5,5,0.7); border:1px solid var(--line); clip-path:var(--clip-panel-sm); color:var(--hint); cursor:pointer; padding:0; }
+  .fav-btn svg{ width:16px; height:16px; }
+  .fav-btn.active{ color:var(--godly); }
+  .fav-btn.active svg{ fill:var(--godly); }
   #item-name{ font-size:19px; font-weight:700; text-align:center; margin-bottom:8px; letter-spacing:0.01em; }
   #item-sub{ display:flex; justify-content:center; gap:6px; margin-bottom:18px; flex-wrap:wrap; }
   .chip{ font-size:11px; font-weight:700; padding:4px 10px; background:rgba(255,255,255,0.04); color:var(--hint);
@@ -410,7 +426,7 @@
     .cat-btn:hover, .item-card:hover, .tool-btn:hover, .news-card:hover, .picker-row:hover{
       border-color:var(--accent); transform:translateY(-1px); box-shadow:var(--glow-accent);
     }
-    .slot-add:hover{ border-color:var(--accent); color:var(--accent); }
+    .slot-add:hover, .fav-add-card:hover{ border-color:var(--accent); color:var(--accent); }
     .win-chip:not(.active):hover, .filter-chip:not(.active):hover{ border-color:var(--accent); color:var(--text); }
     .buy-btn:hover{ filter:brightness(1.1); }
     .inv-stepper-btn:hover, .slot-stepper-btn:hover{ background:rgba(255,255,255,0.1); border-color:var(--accent); }

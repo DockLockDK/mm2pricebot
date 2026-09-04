@@ -15,3 +15,4 @@ price_history.db-wal
 price_history.db-shm
 inventory.json
 alerted_undervalue.json
+favorites.json

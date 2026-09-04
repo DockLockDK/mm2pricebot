@@ -157,7 +157,7 @@ function loadAbout() {
 }
 el("#about-btn").onclick = loadAbout;
 
-function itemCard(item, onOpen) {
+function itemCard(item, onOpen, onRemove) {
   const card = document.createElement("div");
   card.className = "item-card";
   const change = item.change_percent;
@@ -186,6 +186,14 @@ function itemCard(item, onOpen) {
   `;
   card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
   card.onclick = onOpen;
+  if (onRemove) {
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "fav-remove";
+    removeBtn.setAttribute("aria-label", "Убрать из избранного");
+    removeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>';
+    removeBtn.onclick = (e) => { e.stopPropagation(); onRemove(item); };
+    card.appendChild(removeBtn);
+  }
   return card;
 }
 
@@ -195,6 +203,7 @@ async function loadHome() {
   backAction = null;
 
   el("#open-inventory-btn").onclick = loadInventory;
+  el("#open-favorites-btn").onclick = loadFavorites;
   el("#open-trade-btn").onclick = loadTrade;
   el("#open-fees-btn").onclick = loadFees;
 
@@ -610,6 +619,49 @@ function renderInventoryList(items, total) {
   });
 }
 
+// ---------- Избранное ----------
+// Список предметов, за которыми хочешь следить, без владения ими (в отличие
+// от инвентаря количество не хранится) — просто набор product_id.
+
+let favoriteIds = new Set();
+
+async function toggleFavorite(pid, makeFavorite) {
+  await fetch(`/api/favorites/${pid}`, { method: makeFavorite ? "POST" : "DELETE" });
+  if (makeFavorite) favoriteIds.add(pid); else favoriteIds.delete(pid);
+}
+
+async function loadFavorites() {
+  showScreen("favorites");
+  setHeaderTitle("Избранное");
+  backAction = loadHome;
+
+  el("#favorites-grid").innerHTML = '<div class="loading">Загрузка…</div>';
+  const res = await fetch("/api/favorites");
+  const data = await res.json();
+  favoriteIds = new Set(data.items.map(it => it.id));
+  renderFavoritesGrid(data.items);
+}
+
+function renderFavoritesGrid(items) {
+  const grid = el("#favorites-grid");
+  grid.innerHTML = "";
+  for (const item of items) {
+    grid.appendChild(itemCard(
+      item,
+      () => loadItem(item.id, loadFavorites),
+      async () => { await toggleFavorite(item.id, false); loadFavorites(); },
+    ));
+  }
+  const addCard = document.createElement("div");
+  addCard.className = "fav-add-card";
+  addCard.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg><span>Добавить</span>';
+  addCard.onclick = () => openPicker(async (item) => { await toggleFavorite(item.id, true); loadFavorites(); });
+  grid.appendChild(addCard);
+  if (!items.length) {
+    grid.insertAdjacentHTML("afterbegin", '<div class="empty">Пока пусто — добавь предметы, за которыми хочешь следить.</div>');
+  }
+}
+
 // ---------- Калькулятор трейда ----------
 // Живёт только в памяти вкладки (не сохраняется на сервере) — это быстрая
 // прикидка "честный ли обмен", а не постоянные данные вроде инвентаря.
@@ -813,6 +865,14 @@ async function loadItem(id, backFn) {
   el("#item-image").src = item.image;
   el("#item-image").onerror = function() { this.src = PLACEHOLDER; };
   el("#item-name").textContent = item.name;
+
+  const favBtn = el("#item-fav-btn");
+  favBtn.classList.toggle("active", !!item.is_favorite);
+  favBtn.onclick = async () => {
+    const makeFavorite = !favBtn.classList.contains("active");
+    favBtn.classList.toggle("active", makeFavorite);
+    await toggleFavorite(item.id, makeFavorite);
+  };
   el("#item-sub").innerHTML = `
     <span class="chip ${meta.cls}">${meta.label}</span>
     <span class="chip">${escapeHtml(item.category || "")}</span>

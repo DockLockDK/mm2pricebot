@@ -57,6 +57,7 @@ import mm2_api
 import mm2_price_tracker as tracker
 
 import alerts
+import favorites
 import inventory
 import price_history
 import telegram_bot
@@ -207,6 +208,7 @@ def api_item(pid: str, window: str = price_history.DEFAULT_WINDOW):
             cv["history"] = price_history.build_value_series(name_key, bucket_sec=bucket_sec, window_seconds=chart_window_sec)
     view["window"] = resolved_window
     view["inventory_quantity"] = inventory.load().get(pid, 0)
+    view["is_favorite"] = pid in favorites.load()
 
     stats = mm2_api.fetch_product_stats(pid)
     view["sale_count"] = stats["sale_count"] if stats else None
@@ -289,6 +291,45 @@ def api_inventory():
 def api_inventory_set(pid: str, payload: dict = Body(...)):
     quantity = int(payload.get("quantity", 0))
     inventory.set_quantity(pid, quantity)
+    return {"ok": True}
+
+
+@app.get("/api/favorites")
+def api_favorites():
+    """Избранное — список product_id из favorites.py, дополненный текущей
+    ценой (та же логика, что и /api/inventory, только без количества)."""
+    pids = favorites.load()
+    snapshot = price_history.current_snapshot()
+    items = []
+    for pid in pids:
+        item = snapshot.get(pid)
+        if not item:
+            continue
+        view = price_history.item_view(pid, item, {})
+        items.append({
+            "id": pid,
+            "name": view["name"],
+            "rare": view["rare"],
+            "category": view["category"],
+            "chroma": view["chroma"],
+            "image": view["image"],
+            "best_price": view["best_price"],
+            "price": view["price"],
+            "change_percent": view["change_percent"],
+            "community_values": view["community_values"],
+        })
+    return {"items": items}
+
+
+@app.post("/api/favorites/{pid}")
+def api_favorites_add(pid: str):
+    favorites.add(pid)
+    return {"ok": True}
+
+
+@app.delete("/api/favorites/{pid}")
+def api_favorites_remove(pid: str):
+    favorites.remove(pid)
     return {"ok": True}
 
 

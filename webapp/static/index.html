@@ -32,6 +32,10 @@
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /><path d="M16 5.25l-8 4.5" /></svg>
         <span class="tool-label">Мой инвентарь</span>
       </button>
+      <button class="tool-btn" id="open-favorites-btn">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></svg>
+        <span class="tool-label">Избранное</span>
+      </button>
       <button class="tool-btn" id="open-trade-btn">
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-10" /><path d="M12 7c1.956 0 3.724 .802 5 2.095l-2.956 2.904a3 3 0 0 0 -2.038 -.799a3 3 0 0 0 -2.038 .798l-2.956 -2.903a6.979 6.979 0 0 1 5 -2.095" /></svg>
         <span class="tool-label">Калькулятор трейда</span>
@@ -85,7 +89,14 @@
   </section>
 
   <section id="screen-item" class="screen">
-    <div class="hero-wrap"><img id="item-image" src="" alt="" /></div>
+    <div class="hero-wrap">
+      <div class="hero-frame">
+        <img id="item-image" src="" alt="" />
+        <button id="item-fav-btn" class="fav-btn" aria-label="В избранное">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></svg>
+        </button>
+      </div>
+    </div>
     <div id="item-name"></div>
     <div id="item-sub"></div>
     <div class="price-row">
@@ -137,6 +148,10 @@
       <div class="inv-total num" id="inventory-total">—</div>
     </div>
     <div id="inventory-list" class="slot-grid"></div>
+  </section>
+
+  <section id="screen-favorites" class="screen">
+    <div id="favorites-grid" class="grid"></div>
   </section>
 
   <section id="screen-trade" class="screen">
