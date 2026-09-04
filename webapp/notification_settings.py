@@ -30,6 +30,10 @@ DEFAULTS = {
     # чата (см. alerts._record_and_trim_alert_message), чтобы уведомления не
     # захламляли чат бесконечно.
     "max_alert_messages": 30,
+    # Слать алерты с фото предмета (sendPhoto) или сразу текстом (sendMessage)
+    # — фото иногда не грузится с CDN DreamPets (см. alerts._send_telegram_alert),
+    # кому-то удобнее короткий текст без картинки вовсе.
+    "send_photos": True,
 }
 
 

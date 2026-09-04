@@ -182,15 +182,16 @@ def _record_and_trim_alert_message(message_id):
 
 def _send_telegram_alert(text, keyboard, image_url):
     """Общая отправка для всех видов алертов — с картинкой предмета
-    (sendPhoto, подпись = текст), а если картинки нет или Telegram не смог её
-    загрузить (CDN недоступен/нет фото у предмета), откатываемся на обычное
-    текстовое sendMessage, чтобы алерт в любом случае дошёл. Id успешно
-    отправленного сообщения запоминаем и подрезаем историю алертов в чате
-    (см. _record_and_trim_alert_message)."""
+    (sendPhoto, подпись = текст), а если картинки нет, отключена в настройках
+    (notification_settings.send_photos) или Telegram не смог её загрузить
+    (CDN недоступен/нет фото у предмета), откатываемся на обычное текстовое
+    sendMessage, чтобы алерт в любом случае дошёл. Id успешно отправленного
+    сообщения запоминаем и подрезаем историю алертов в чате (см.
+    _record_and_trim_alert_message)."""
     if not tracker.TELEGRAM_BOT_TOKEN or not tracker.TELEGRAM_CHAT_ID:
         return
 
-    if image_url:
+    if image_url and notification_settings.load()["send_photos"]:
         try:
             resp = requests.post(
                 tracker.TELEGRAM_PHOTO_API_URL,

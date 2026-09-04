@@ -96,6 +96,7 @@ const I18N = {
   notif_note: { ru: "Алерты приходят только по Godly/Ancient и только когда цена сильно отклоняется от своей средней за последние дни — не на каждое небольшое движение.", en: "Alerts fire only for Godly/Ancient, and only when the price deviates sharply from its recent average — not for every small move." },
   max_alerts_label: { ru: "Хранить уведомлений в чате", en: "Keep alerts in chat" },
   max_alerts_hint: { ru: "старые лишние автоматически удаляются", en: "older ones are deleted automatically" },
+  send_photos_label: { ru: "Фото в уведомлениях", en: "Photos in alerts" },
   remove_label: { ru: "Убрать", en: "Remove" },
 
   my_side: { ru: "Моя сторона", en: "My side" },
@@ -225,11 +226,20 @@ function applyStaticI18n() {
   if (langBtn) langBtn.textContent = currentLang.toUpperCase();
 }
 
-const PLACEHOLDER = "data:image/svg+xml;utf8," + encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
-  '<rect width="100" height="100" fill="#2a2d36"/>' +
-  '<text x="50" y="55" font-size="12" fill="#666" text-anchor="middle">no photo</text></svg>'
-);
+// Своя картинка-заглушка на случай, если фото на CDN DreamPets не найдено
+// (нередко бывает у только что добавленных предметов — сам DreamPets ещё не
+// успел выложить фото). Строим на лету (не константой), чтобы подхватывать
+// текущие тему и язык — иначе в светлой теме тёмный квадрат-заглушка не
+// вписывался бы в интерфейс.
+function placeholderSvg() {
+  const bg = isLightTheme() ? "#dedbc9" : "#2a2d36";
+  const fg = isLightTheme() ? "#8a8875" : "#888";
+  return "data:image/svg+xml;utf8," + encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">` +
+    `<rect width="100" height="100" fill="${bg}"/>` +
+    `<text x="50" y="55" font-size="12" fill="${fg}" text-anchor="middle">${t("no_photo")}</text></svg>`
+  );
+}
 
 const TIME_UNITS = [
   [31536000, { ru: ["год", "года", "лет"], en: "year" }],
@@ -560,7 +570,7 @@ function itemCard(item, onOpen, onRemove) {
     ${isLegacyOnly ? `<div class="item-deal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg> ${t("item_legacy_only_short")}</div>` : ""}
     ${valuesLine ? `<div class="item-values"><span class="dot"></span>${escapeHtml(valuesLine)}</div>` : ""}
   `;
-  card.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+  card.querySelector("img").onerror = function() { this.src = placeholderSvg(); };
   card.onclick = onOpen;
   if (onRemove) {
     const removeBtn = document.createElement("button");
@@ -948,7 +958,7 @@ function renderPickerResults(items) {
         <div class="picker-row-meta">${fmtPrice(item.best_price)}${valueText(item) ? " · " + valueText(item) : ""}</div>
       </div>
     `;
-    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    row.querySelector("img").onerror = function() { this.src = placeholderSvg(); };
     row.onclick = () => {
       const cb = pickerCallback;
       closePicker();
@@ -984,7 +994,7 @@ function renderSlotGrid(containerSel, items, { onAdd, onIncrement, onDecrement, 
         </div>
       </div>
     `;
-    tile.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    tile.querySelector("img").onerror = function() { this.src = placeholderSvg(); };
     tile.querySelector(".slot-remove").onclick = () => onRemove(item);
     tile.querySelector('[data-act="minus"]').onclick = () => onDecrement(item);
     tile.querySelector('[data-act="plus"]').onclick = () => onIncrement(item);
@@ -1114,6 +1124,9 @@ function renderNotifSections() {
     const v = Math.max(1, Number(maxMsgInput.value) || 30);
     patchNotifSettings({ max_alert_messages: v });
   };
+  const sendPhotosInput = el("#notif-send-photos");
+  sendPhotosInput.checked = notifSettings.send_photos;
+  sendPhotosInput.onchange = () => patchNotifSettings({ send_photos: sendPhotosInput.checked });
   renderNotifSection("drop");
   renderNotifSection("rise");
 }
@@ -1148,7 +1161,7 @@ function renderNotifSection(kind) {
       <span>${escapeHtml(item.name)}</span>
       <button aria-label="${t("remove_label")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
     `;
-    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    row.querySelector("img").onerror = function() { this.src = placeholderSvg(); };
     row.querySelector("button").onclick = () => {
       const newItems = (notifSettings[`${kind}_items`] || []).filter(id => id !== item.id);
       patchNotifSettings({ [`${kind}_items`]: newItems });
@@ -1367,7 +1380,7 @@ async function loadItem(id, backFn) {
 
   setHeaderTitle(item.name, meta.cls, CATEGORY_ICONS[(item.rare || "").toLowerCase()]);
   el("#item-image").src = item.image;
-  el("#item-image").onerror = function() { this.src = PLACEHOLDER; };
+  el("#item-image").onerror = function() { this.src = placeholderSvg(); };
   el("#item-name").textContent = item.name;
 
   const favBtn = el("#item-fav-btn");
