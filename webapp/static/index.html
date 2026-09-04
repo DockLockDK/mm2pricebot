@@ -44,6 +44,10 @@
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" /></svg>
         <span class="tool-label">Комиссии DP</span>
       </button>
+      <button class="tool-btn" id="open-notifications-btn">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+        <span class="tool-label">Уведомления</span>
+      </button>
     </div>
 
     <h2 class="section-title"><span>Категории</span></h2>
@@ -152,6 +156,34 @@
 
   <section id="screen-favorites" class="screen">
     <div id="favorites-grid" class="grid"></div>
+  </section>
+
+  <section id="screen-notifications" class="screen">
+    <div class="notif-section">
+      <div class="notif-section-head">
+        <span>Падение цены</span>
+        <label class="switch"><input type="checkbox" id="notif-drop-enabled"><span class="switch-track"></span></label>
+      </div>
+      <div class="notif-scope" id="notif-drop-scope">
+        <button class="scope-chip" data-scope="all">Все предметы</button>
+        <button class="scope-chip" data-scope="selected">Только выбранные</button>
+      </div>
+      <div class="notif-items" id="notif-drop-items"></div>
+    </div>
+
+    <div class="notif-section">
+      <div class="notif-section-head">
+        <span>Рост цены</span>
+        <label class="switch"><input type="checkbox" id="notif-rise-enabled"><span class="switch-track"></span></label>
+      </div>
+      <div class="notif-scope" id="notif-rise-scope">
+        <button class="scope-chip" data-scope="all">Все предметы</button>
+        <button class="scope-chip" data-scope="selected">Только выбранные</button>
+      </div>
+      <div class="notif-items" id="notif-rise-items"></div>
+    </div>
+
+    <div class="fees-note">Алерты приходят только по Godly/Ancient и только когда цена сильно отклоняется от своей средней за последние дни — не на каждое небольшое движение.</div>
   </section>
 
   <section id="screen-trade" class="screen">

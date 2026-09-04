@@ -369,6 +369,32 @@
   .contact-row:not(:last-child){ border-bottom:1px solid var(--line); }
   .contact-row .hint{ font-weight:400; }
 
+  /* ---------- Настройки уведомлений ---------- */
+  .notif-section{ background:var(--card); border:1px solid var(--line); clip-path:var(--clip-panel); padding:14px 16px; margin-bottom:14px; }
+  .notif-section-head{ display:flex; justify-content:space-between; align-items:center; font-size:14px; font-weight:700; margin-bottom:12px; }
+  .switch{ position:relative; display:inline-block; width:40px; height:24px; flex:none; cursor:pointer; }
+  .switch input{ opacity:0; width:0; height:0; }
+  .switch-track{ position:absolute; inset:0; background:var(--line); clip-path:var(--clip-panel-sm); transition:background .15s; }
+  .switch-track::before{ content:""; position:absolute; width:16px; height:16px; left:4px; top:4px; background:var(--hint);
+    transition:transform .15s, background .15s; }
+  .switch input:checked + .switch-track{ background:rgba(176,38,255,0.25); }
+  .switch input:checked + .switch-track::before{ transform:translateX(16px); background:var(--accent); box-shadow:var(--glow-accent); }
+  .notif-scope{ display:flex; gap:8px; margin-bottom:10px; }
+  .scope-chip{ flex:1; background:var(--card-raised); border:1px solid var(--line); clip-path:var(--clip-panel-sm);
+    color:var(--hint); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; padding:8px 6px; cursor:pointer; }
+  .scope-chip.active{ color:var(--accent-text); background:var(--accent); border-color:transparent; box-shadow:var(--glow-accent); }
+  .notif-items{ display:flex; flex-direction:column; gap:6px; }
+  .notif-item-row{ display:flex; align-items:center; gap:8px; background:var(--card-raised); border:1px solid var(--line);
+    clip-path:var(--clip-panel-sm); padding:6px 8px; font-size:12px; font-weight:600; }
+  .notif-item-row img{ width:24px; height:24px; object-fit:contain; flex:none; background:var(--card); }
+  .notif-item-row span{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .notif-item-row button{ background:none; border:none; color:var(--hint); cursor:pointer; padding:2px; flex:none; }
+  .notif-item-row button svg{ width:14px; height:14px; display:block; }
+  .notif-add-row{ display:flex; align-items:center; justify-content:center; gap:6px; border:1px dashed var(--line);
+    clip-path:var(--clip-panel-sm); padding:9px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.02em;
+    color:var(--hint); cursor:pointer; }
+  .notif-add-row svg{ width:13px; height:13px; }
+
   /* ---------- Пикер предмета (модалка поиска) ---------- */
   .picker-modal{ position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; display:flex;
     align-items:flex-end; justify-content:center; }
@@ -412,6 +438,7 @@
     #screen-trade{ max-width:900px; margin:0 auto; }
     #screen-fees{ max-width:520px; margin:0 auto; }
     #screen-about{ max-width:620px; margin:0 auto; }
+    #screen-notifications{ max-width:620px; margin:0 auto; }
 
     .picker-modal{ align-items:center; }
     .picker-sheet{ max-height:70vh; }

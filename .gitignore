@@ -16,3 +16,5 @@ price_history.db-shm
 inventory.json
 alerted_undervalue.json
 favorites.json
+notification_settings.json
+alerted_rise.json

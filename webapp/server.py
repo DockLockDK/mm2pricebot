@@ -59,6 +59,7 @@ import mm2_price_tracker as tracker
 import alerts
 import favorites
 import inventory
+import notification_settings
 import price_history
 import telegram_bot
 
@@ -333,6 +334,37 @@ def api_favorites_remove(pid: str):
     return {"ok": True}
 
 
+def _resolve_items(pids, snapshot):
+    """[{id, name, image}, ...] для списка product_id — вспомогательное для
+    отображения выбранных предметов в настройках уведомлений (см. ниже)."""
+    result = []
+    for pid in pids:
+        item = snapshot.get(pid)
+        if not item:
+            continue
+        result.append({"id": pid, "name": item.get("name") or "?", "image": mm2_api.image_url(pid)})
+    return result
+
+
+def _notification_settings_view(settings):
+    snapshot = price_history.current_snapshot()
+    return {
+        **settings,
+        "drop_items_resolved": _resolve_items(settings["drop_items"], snapshot),
+        "rise_items_resolved": _resolve_items(settings["rise_items"], snapshot),
+    }
+
+
+@app.get("/api/notification_settings")
+def api_notification_settings_get():
+    return _notification_settings_view(notification_settings.load())
+
+
+@app.post("/api/notification_settings")
+def api_notification_settings_set(payload: dict = Body(...)):
+    return _notification_settings_view(notification_settings.update(payload))
+
+
 # ---------- Статика мини-приложения ----------
 
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
@@ -435,6 +467,18 @@ def run_price_check_once():
                 log.info("Отправлено алертов о падении цены: %d", len(drop_alerts))
         except Exception:
             log.exception("Ошибка при формировании алертов о падении цены")
+
+        try:
+            rise_state = alerts.load_alerted_rise_state()
+            rise_alerts = alerts.build_rise_alerts(new_snapshot, old_snapshot, rise_state)
+            for alert in rise_alerts:
+                alerts.send_rise_alert(alert)
+                rise_state[alert["pid"]] = alert["price"]
+            if rise_alerts:
+                alerts.save_alerted_rise_state(rise_state)
+                log.info("Отправлено алертов о росте цены: %d", len(rise_alerts))
+        except Exception:
+            log.exception("Ошибка при формировании алертов о росте цены")
 
         try:
             underval_state = alerts.load_alerted_undervalue_state()

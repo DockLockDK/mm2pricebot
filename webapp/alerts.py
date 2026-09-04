@@ -2,12 +2,16 @@
 """
 Алерты (push в Telegram) — только Godly/Ancient (по просьбе пользователя
 Unique исключён из уведомлений, хотя в мини-приложении остаётся как обычно).
-Два независимых вида:
+Три независимых вида (свои пороги, состояния дедупа и настройки вкл/выкл —
+см. webapp/notification_settings.py):
   1. Сильное падение цены относительно своей же истории (build_drop_alerts) —
      порог и окно среднего: DROP_ALERT_THRESHOLD_PERCENT/AVG_PRICE_WINDOW_DAYS.
-  2. Цена заметно ниже Community Value с mm2values.com (build_undervalue_alerts)
-     — порог: UNDERVALUE_ALERT_THRESHOLD_PERCENT. Предмет может попасть под оба
-     условия одновременно или только под одно — состояния дедупа раздельные.
+  2. Сильный рост цены — зеркально падению (build_rise_alerts) — порог:
+     RISE_ALERT_THRESHOLD_PERCENT.
+  3. Цена заметно ниже Community Value с mm2values.com (build_undervalue_alerts)
+     — порог: UNDERVALUE_ALERT_THRESHOLD_PERCENT. Предмет может попасть под
+     несколько условий одновременно или только под одно — состояния дедупа
+     раздельные.
 """
 
 import json
@@ -23,6 +27,7 @@ if str(_REPO_DIR) not in sys.path:
 import requests
 
 import mm2_price_tracker as tracker
+import notification_settings
 import price_history
 
 log = logging.getLogger(__name__)
@@ -47,6 +52,10 @@ ALERTED_STATE_FILE = str(_REPO_DIR / "alerted_drops.json")
 # файл и состояние, потому что это независимое условие (предмет может упасть
 # в цене и одновременно оказаться ниже Value, или только одно из двух).
 ALERTED_UNDERVALUE_STATE_FILE = str(_REPO_DIR / "alerted_undervalue.json")
+# И для алертов о сильном РОСТЕ цены (см. build_rise_alerts) — тоже отдельное
+# состояние: предмет может упасть и вырасти в разные циклы, дедуп должен быть
+# независимым для каждого направления.
+ALERTED_RISE_STATE_FILE = str(_REPO_DIR / "alerted_rise.json")
 
 
 def _load_json_state(path):
@@ -84,16 +93,32 @@ def save_alerted_undervalue_state(state):
     _save_json_state(ALERTED_UNDERVALUE_STATE_FILE, state)
 
 
+def load_alerted_rise_state():
+    return _load_json_state(ALERTED_RISE_STATE_FILE)
+
+
+def save_alerted_rise_state(state):
+    _save_json_state(ALERTED_RISE_STATE_FILE, state)
+
+
 def build_drop_alerts(new_snapshot, old_snapshot, alerted_state):
     """Ищет предметы Godly/Ancient, у которых текущая цена упала минимум на
     DROP_ALERT_THRESHOLD_PERCENT % ниже средней за AVG_PRICE_WINDOW_DAYS дней.
     Пропускает предмет, если мы уже слали алерт именно по этой цене (иначе
     бот шлёт одно и то же уведомление на каждом цикле, пока цена стоит на
     месте) — алерт повторится только когда цена изменится (упадёт ещё ниже
-    или сначала отрастёт обратно и упадёт заново)."""
+    или сначала отрастёт обратно и упадёт заново). Учитывает настройки
+    пользователя (webapp/notification_settings.py) — можно выключить алерты о
+    падении целиком или ограничить конкретными предметами."""
+    settings = notification_settings.load()
+    if not settings["drop_enabled"]:
+        return []
+
     found = []
     for pid, item in new_snapshot.items():
         if (item.get("rare") or "").lower() not in ALERT_RARITIES:
+            continue
+        if not notification_settings.allows(settings, "drop", pid):
             continue
 
         price = item.get("price")
@@ -198,6 +223,78 @@ def send_drop_alert(alert):
         text += f"Дешевле всего сейчас: <b>{best_price:.2f}₽</b> в Legacy-каталоге\n"
     text += f"Community value: {value_text}"
 
+    keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
+    _send_telegram_alert(text, keyboard, view.get("image"))
+
+
+# На сколько % текущая цена должна быть ВЫШЕ средней за AVG_PRICE_WINDOW_DAYS
+# дней, чтобы это считалось "сильно подорожало" — зеркально DROP_ALERT_THRESHOLD_PERCENT,
+# только в обратную сторону.
+RISE_ALERT_THRESHOLD_PERCENT = float(os.environ.get("RISE_ALERT_THRESHOLD_PERCENT", "35"))
+
+
+def build_rise_alerts(new_snapshot, old_snapshot, alerted_state):
+    """Зеркально build_drop_alerts, только ищет сильный РОСТ цены относительно
+    средней за AVG_PRICE_WINDOW_DAYS дней. Тот же дедуп-приём и та же проверка
+    настроек (можно выключить алерты о росте целиком или ограничить конкретными
+    предметами, см. webapp/notification_settings.py)."""
+    settings = notification_settings.load()
+    if not settings["rise_enabled"]:
+        return []
+
+    found = []
+    for pid, item in new_snapshot.items():
+        if (item.get("rare") or "").lower() not in ALERT_RARITIES:
+            continue
+        if not notification_settings.allows(settings, "rise", pid):
+            continue
+
+        price = item.get("price")
+        if price is None:
+            continue
+
+        if alerted_state.get(pid) == price:
+            continue
+
+        avg_price, samples = price_history.price_history_avg(pid, days=AVG_PRICE_WINDOW_DAYS)
+        if avg_price is None or avg_price <= 0 or samples < ALERT_MIN_HISTORY_SAMPLES:
+            continue
+
+        rise_percent = (price - avg_price) / avg_price * 100
+        if rise_percent < RISE_ALERT_THRESHOLD_PERCENT:
+            continue
+
+        found.append({
+            "pid": pid,
+            "price": price,
+            "view": price_history.item_view(pid, item, old_snapshot),
+            "avg_price": avg_price,
+            "rise_percent": rise_percent,
+        })
+
+    found.sort(key=lambda a: -a["rise_percent"])  # сильнее всего подорожавшие — первыми
+    return found
+
+
+def send_rise_alert(alert):
+    """Шлёт одно уведомление о сильном росте цены — зеркально send_drop_alert."""
+    view = alert["view"]
+    avg_price = alert["avg_price"]
+    best_price = view["best_price"]
+    buy_url = view["buy_url"]
+
+    community_values = view.get("community_values") or []
+    if community_values:
+        value_text = " · ".join(f"{cv['label']}: {cv['value_raw']}" for cv in community_values)
+    else:
+        value_text = "нет данных"
+
+    text = (
+        f"📈 <b>{view['name']}</b> ({view['rare']}) сильно подорожало!\n\n"
+        f"Средняя цена (за {AVG_PRICE_WINDOW_DAYS} дн.): {avg_price:.2f}₽\n"
+        f"Сейчас в текущем каталоге: <b>{alert['price']:.2f}₽</b> ({alert['rise_percent']:+.1f}%)\n"
+        f"Community value: {value_text}"
+    )
     keyboard = {"inline_keyboard": [[{"text": f"🛒 Купить за {best_price:.2f}₽", "url": buy_url}]]}
     _send_telegram_alert(text, keyboard, view.get("image"))
 

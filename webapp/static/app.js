@@ -206,6 +206,7 @@ async function loadHome() {
   el("#open-favorites-btn").onclick = loadFavorites;
   el("#open-trade-btn").onclick = loadTrade;
   el("#open-fees-btn").onclick = loadFees;
+  el("#open-notifications-btn").onclick = loadNotifications;
 
   renderWindowRow("#home-win-row", () => loadHome());
 
@@ -660,6 +661,87 @@ function renderFavoritesGrid(items) {
   if (!items.length) {
     grid.insertAdjacentHTML("afterbegin", '<div class="empty">Пока пусто — добавь предметы, за которыми хочешь следить.</div>');
   }
+}
+
+// ---------- Настройки уведомлений ----------
+// Падение/рост цены — два независимых переключателя вкл/выкл и область
+// действия (все Godly/Ancient или только выбранные вручную предметы),
+// хранятся на бэкенде в notification_settings.json (см. webapp/alerts.py —
+// там же и учитываются при формировании реальных push-алертов).
+
+let notifSettings = null;
+
+async function patchNotifSettings(patch) {
+  const res = await fetch("/api/notification_settings", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(patch),
+  });
+  notifSettings = await res.json();
+  renderNotifSections();
+}
+
+async function loadNotifications() {
+  showScreen("notifications");
+  setHeaderTitle("Уведомления");
+  backAction = loadHome;
+
+  const res = await fetch("/api/notification_settings");
+  notifSettings = await res.json();
+  renderNotifSections();
+}
+
+function renderNotifSections() {
+  renderNotifSection("drop");
+  renderNotifSection("rise");
+}
+
+function renderNotifSection(kind) {
+  const enabled = notifSettings[`${kind}_enabled`];
+  const scope = notifSettings[`${kind}_scope`];
+  const itemsResolved = notifSettings[`${kind}_items_resolved`] || [];
+
+  const enabledInput = el(`#notif-${kind}-enabled`);
+  enabledInput.checked = enabled;
+  enabledInput.onchange = () => patchNotifSettings({ [`${kind}_enabled`]: enabledInput.checked });
+
+  const scopeBox = el(`#notif-${kind}-scope`);
+  scopeBox.style.opacity = enabled ? "1" : ".4";
+  scopeBox.style.pointerEvents = enabled ? "auto" : "none";
+  scopeBox.querySelectorAll(".scope-chip").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.scope === scope);
+    btn.onclick = () => patchNotifSettings({ [`${kind}_scope`]: btn.dataset.scope });
+  });
+
+  const itemsBox = el(`#notif-${kind}-items`);
+  itemsBox.innerHTML = "";
+  itemsBox.style.display = (enabled && scope === "selected") ? "flex" : "none";
+  if (!(enabled && scope === "selected")) return;
+
+  for (const item of itemsResolved) {
+    const row = document.createElement("div");
+    row.className = "notif-item-row";
+    row.innerHTML = `
+      <img src="${item.image}" loading="lazy" alt="">
+      <span>${escapeHtml(item.name)}</span>
+      <button aria-label="Убрать"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg></button>
+    `;
+    row.querySelector("img").onerror = function() { this.src = PLACEHOLDER; };
+    row.querySelector("button").onclick = () => {
+      const newItems = (notifSettings[`${kind}_items`] || []).filter(id => id !== item.id);
+      patchNotifSettings({ [`${kind}_items`]: newItems });
+    };
+    itemsBox.appendChild(row);
+  }
+
+  const addRow = document.createElement("div");
+  addRow.className = "notif-add-row";
+  addRow.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg> Добавить предмет';
+  addRow.onclick = () => openPicker((item) => {
+    const current = notifSettings[`${kind}_items`] || [];
+    if (!current.includes(item.id)) patchNotifSettings({ [`${kind}_items`]: [...current, item.id] });
+  });
+  itemsBox.appendChild(addRow);
 }
 
 // ---------- Калькулятор трейда ----------
