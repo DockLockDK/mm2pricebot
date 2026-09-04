@@ -10,7 +10,7 @@
     --card-raised: #141414;
     --text: #e3ded0;
     --hint: #6b6b60;
-    --accent: #00ed3f;
+    --accent: #b026ff;
     --accent-text: #050505;
     --up: #00ed3f;
     --down: #ff3b30;
@@ -21,8 +21,8 @@
     --unique: #d6489a;
     --line: #232320;
 
-    --glow-accent: 0 0 8px rgba(0,237,63,0.35), 0 0 18px rgba(0,237,63,0.18);
-    --text-glow-accent: 0 0 6px rgba(0,237,63,0.6), 0 0 14px rgba(0,237,63,0.3);
+    --glow-accent: 0 0 8px rgba(176,38,255,0.35), 0 0 18px rgba(176,38,255,0.18);
+    --text-glow-accent: 0 0 6px rgba(176,38,255,0.6), 0 0 14px rgba(176,38,255,0.3);
 
     --notch: 10px;
     --notch-sm: 6px;
@@ -132,16 +132,6 @@
   .game-update b{ color:var(--text); font-weight:700; }
   .game-update:empty{ display:none; }
 
-  .mm2-news{ display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
-  .mm2-news:empty{ display:none; margin:0; }
-  .news-card{ display:flex; flex-direction:column; gap:3px; background:var(--card); border:1px solid var(--line);
-    clip-path:var(--clip-panel-sm); padding:11px 14px; text-decoration:none; }
-  .news-src{ display:flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.04em; }
-  .news-src svg{ width:12px; height:12px; }
-  .news-title{ font-size:13.5px; font-weight:700; color:var(--text); }
-  .news-body{ font-size:12px; color:var(--hint); line-height:1.4;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-
   .hero-wrap{ display:flex; justify-content:center; margin-bottom:16px; }
   #item-image{ width:176px; height:176px; object-fit:contain; display:block; background:var(--card); clip-path:var(--clip-panel); }
   #item-name{ font-size:19px; font-weight:700; text-align:center; margin-bottom:8px; letter-spacing:0.01em; }
@@ -186,7 +176,10 @@
     align-items:center; justify-content:center; flex:none; }
   .deal-note .icon svg{ width:15px; height:15px; color:var(--deal); }
   .deal-note b{ color:var(--deal); }
-  .funpay-note{ font-size:11px; color:var(--hint); text-align:center; line-height:1.4; margin:0 0 14px; }
+  .funpay-note{ display:flex; align-items:flex-start; gap:10px; background:rgba(255,59,48,0.08); border:1px solid rgba(255,59,48,0.3);
+    clip-path:var(--clip-panel-sm); padding:12px 14px; margin:0 0 14px; font-size:11.5px; color:#ff8a80; line-height:1.5; }
+  .funpay-note svg{ width:18px; height:18px; flex:none; color:var(--down); margin-top:1px; }
+  .funpay-note b{ color:var(--down); }
 
   .community-values{ display:none; flex-direction:column; gap:12px; margin:0 0 20px; }
   .cv-panel{ background:var(--card); border:1px solid rgba(34,211,238,0.2); clip-path:var(--clip-panel); padding:14px 16px; }
@@ -364,7 +357,7 @@
        можно центрировать и её содержимое в те же 1100px без видимого шва. */
     header{ max-width:1100px; margin:0 auto; padding-left:32px; padding-right:32px; box-sizing:border-box; }
 
-    .game-update, .mm2-news, .tool-row, .cat-row,
+    .game-update, .tool-row, .cat-row,
     .search-row, .sort-select, .filter-row, .win-row{
       max-width:720px; margin-left:auto; margin-right:auto;
     }

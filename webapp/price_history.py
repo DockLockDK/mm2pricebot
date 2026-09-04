@@ -46,14 +46,11 @@ _OLD_VALUE_LOG_FILE = str(_REPO_DIR / "value_history.jsonl")
 # (сейчас − окно), и сравниваем текущую цену с ней. Работает одинаково для
 # движений на главном экране, сетки категории и карточки предмета.
 WINDOW_OPTIONS = [
-    ("1m", 60, "1 мин"),
     ("5m", 300, "5 мин"),
     ("1h", 3600, "1 час"),
-    ("3h", 3 * 3600, "3 часа"),
     ("1d", 24 * 3600, "Сутки"),
     ("1w", 7 * 24 * 3600, "Неделя"),
     ("1mo", 30 * 24 * 3600, "Месяц"),
-    ("1q", 91 * 24 * 3600, "Квартал"),
     ("1y", 365 * 24 * 3600, "Год"),
 ]
 WINDOW_SECONDS = {key: sec for key, sec, _ in WINDOW_OPTIONS}
@@ -72,26 +69,20 @@ DEFAULT_WINDOW = "5m"
 CHART_MIN_WINDOW_SECONDS = 24 * 3600  # график никогда не показывает меньше суток
 
 CHART_WINDOW_SECONDS = {
-    "1m": CHART_MIN_WINDOW_SECONDS,
     "5m": CHART_MIN_WINDOW_SECONDS,
     "1h": CHART_MIN_WINDOW_SECONDS,
-    "3h": CHART_MIN_WINDOW_SECONDS,
     "1d": CHART_MIN_WINDOW_SECONDS,
     "1w": 7 * 24 * 3600,
     "1mo": 30 * 24 * 3600,
-    "1q": 91 * 24 * 3600,
     "1y": 365 * 24 * 3600,
 }
 
 CHART_BUCKET_SECONDS = {
-    "1m": 3600,
     "5m": 3600,
     "1h": 3600,
-    "3h": 3600,
     "1d": 3600,
     "1w": 4 * 3600,
     "1mo": 24 * 3600,
-    "1q": 24 * 3600,
     "1y": 7 * 24 * 3600,
 }
 
@@ -111,7 +102,6 @@ def resolve_window(window):
 _legacy_index = {}
 _mm2values_index = {}
 _roblox_game_info = {}
-_mm2_news = {}
 _funpay_index = {}
 _dreampets_fees = {"topup_methods": [], "withdrawal_methods": []}
 
@@ -233,25 +223,6 @@ def update_roblox_game_info(info):
 
 def roblox_game_info():
     return _roblox_game_info or None
-
-
-def update_mm2_news(colbe, mmoexp):
-    """Обновляет живой снапшот 'что нового в MM2' — сторонние источники
-    (см. mm2_api.fetch_colbe_latest_video/fetch_mmoexp_latest), т.к. сам
-    Nikilis/официальный Discord недоступны без браузера или платного API.
-    Каждый источник обновляется независимо — сбой одного не должен стирать
-    последний известный результат другого."""
-    global _mm2_news
-    updated = dict(_mm2_news)
-    if colbe:
-        updated["colbe"] = colbe
-    if mmoexp:
-        updated["mmoexp"] = mmoexp
-    _mm2_news = updated
-
-
-def mm2_news():
-    return _mm2_news or None
 
 
 def append_price_points(snapshot):

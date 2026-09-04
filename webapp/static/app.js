@@ -56,41 +56,6 @@ function escapeHtml(s) {
   return (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-function truncate(s, n) {
-  s = s || "";
-  return s.length > n ? s.slice(0, n).trim() + "…" : s;
-}
-
-// Новости о самой игре MM2 (не о ценах) — сторонние источники (см. mm2_api.py:
-// Nikilis/официальный Discord недоступны без браузера или платного API),
-// поэтому подписываем каждую карточку именем источника, а не выдаём за
-// официальные патчноуты.
-function renderMm2News(news) {
-  const box = el("#mm2-news");
-  if (!news || (!news.colbe && !news.mmoexp)) {
-    box.innerHTML = "";
-    return;
-  }
-  let html = "";
-  if (news.colbe && news.colbe.url) {
-    const ago = timeAgoRu(news.colbe.published);
-    html += `
-      <a class="news-card" href="${news.colbe.url}" target="_blank" rel="noopener">
-        <span class="news-src"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4v16a1 1 0 0 0 1.524 .852l13 -8a1 1 0 0 0 0 -1.704l-13 -8a1 1 0 0 0 -1.524 .852z" /></svg> Colbe · YouTube${ago ? " · " + ago : ""}</span>
-        <span class="news-title">${escapeHtml(news.colbe.title)}</span>
-        <span class="news-body">${escapeHtml(truncate(news.colbe.description, 200))}</span>
-      </a>`;
-  }
-  if (news.mmoexp && news.mmoexp.url) {
-    html += `
-      <a class="news-card" href="${news.mmoexp.url}" target="_blank" rel="noopener">
-        <span class="news-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" /><path d="M8 8l4 0" /><path d="M8 12l4 0" /><path d="M8 16l4 0" /></svg> MMOexp.com${news.mmoexp.published ? " · " + news.mmoexp.published : ""}</span>
-        <span class="news-title">${escapeHtml(news.mmoexp.title)}</span>
-        <span class="news-body">${escapeHtml(truncate(news.mmoexp.summary, 200))}</span>
-      </a>`;
-  }
-  box.innerHTML = html;
-}
 
 const RARE_META = {
   godly: { label: "Godly", cls: "rare-godly", tint: "rgba(242,201,76,0.16)" },
@@ -114,19 +79,19 @@ const ARROW_DOWN = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" st
 // карточки предмета: сколько выбрали, столько и используется в /api/... до
 // следующей смены. Список синхронизирован с WINDOW_OPTIONS в webapp/server.py.
 const WINDOW_OPTIONS = [
-  ["1m", "1 мин"], ["5m", "5 мин"], ["1h", "1 час"], ["3h", "3 часа"],
-  ["1d", "Сутки"], ["1w", "Неделя"], ["1mo", "Месяц"], ["1q", "Квартал"], ["1y", "Год"],
+  ["5m", "5 мин"], ["1h", "1 час"],
+  ["1d", "Сутки"], ["1w", "Неделя"], ["1mo", "Месяц"], ["1y", "Год"],
 ];
 let currentWindow = "5m";
 // График всегда показывает минимум сутки истории, даже если для "было/стало"
 // выбран более короткий период (см. CHART_WINDOW_SECONDS на бэкенде) — иначе
-// график почти всегда был бы пустым при выборе "1 мин"/"5 мин"/"1 час"/"3 часа".
+// график почти всегда был бы пустым при выборе "5 мин"/"1 час".
 const CHART_BUCKET_LABELS = {
-  "1m": "часовые свечи · сутки", "5m": "часовые свечи · сутки",
-  "1h": "часовые свечи · сутки", "3h": "часовые свечи · сутки",
-  "1d": "часовые свечи · сутки", "1w": "4-часовые свечи · неделя",
-  "1mo": "дневные свечи · месяц", "1q": "дневные свечи · квартал",
-  "1y": "недельные свечи · год",
+  "5m": "почасовые точки · сутки",
+  "1h": "почасовые точки · сутки",
+  "1d": "почасовые точки · сутки", "1w": "4-часовые точки · неделя",
+  "1mo": "дневные точки · месяц",
+  "1y": "недельные точки · год",
 };
 
 function renderWindowRow(containerSel, onChange) {
@@ -235,7 +200,6 @@ async function loadHome() {
   renderMarketIndexChart(await marketRes.json());
 
   renderGameUpdate(data.game_update);
-  renderMm2News(data.news);
 
   const catWrap = el("#categories");
   catWrap.innerHTML = "";
@@ -907,7 +871,7 @@ async function loadItem(id, backFn) {
     : "";
 
   buyGroup.innerHTML = (legacyCheaper ? (legacyBtn.replace('secondary', '') + currentBtn.replace('buy-btn', 'buy-btn secondary')) : (currentBtn + legacyBtn)) + funpayBtn;
-  el("#funpay-note").style.display = item.funpay_price != null ? "block" : "none";
+  el("#funpay-note").style.display = item.funpay_price != null ? "flex" : "none";
 
   // Community value (mm2values.com) — справочно, не цена покупки.
   const cvWrap = el("#community-values");
