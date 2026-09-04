@@ -451,4 +451,27 @@ def fetch_dreampets_withdrawal_methods():
         return []
 
 
+# ---------------------------------------------------------------------------
+# Курс рубля к доллару/евро — только чтобы в мини-приложении можно было
+# переключить отображение цен в другую валюту (сам DreamPets всегда в
+# рублях, это чисто визуальный пересчёт, ни на что не влияет). open.er-api.com —
+# бесплатный, без ключа, курсы обновляются у них примерно раз в сутки.
+EXCHANGE_RATE_URL = "https://open.er-api.com/v6/latest/RUB"
+
+
+def fetch_exchange_rates():
+    """{'USD': сколько долларов в 1 рубле, 'EUR': ...} или None при сбое."""
+    try:
+        resp = requests.get(EXCHANGE_RATE_URL, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+        rates = resp.json().get("rates") or {}
+        usd, eur = rates.get("USD"), rates.get("EUR")
+        if usd is None or eur is None:
+            return None
+        return {"USD": float(usd), "EUR": float(eur)}
+    except (requests.RequestException, ValueError, TypeError) as e:
+        print(f"[!] Ошибка запроса курса валют: {e}")
+        return None
+
+
 

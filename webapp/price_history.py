@@ -104,6 +104,11 @@ _mm2values_index = {}
 _roblox_game_info = {}
 _funpay_index = {}
 _dreampets_fees = {"topup_methods": [], "withdrawal_methods": []}
+_exchange_rates = {}
+_exchange_rates_fetched_at = 0
+# Курс скачет не так быстро, а источник обновляет его у себя примерно раз в
+# сутки — нет смысла дёргать его на каждом (пятиминутном) цикле проверки цен.
+EXCHANGE_RATES_REFRESH_SEC = 6 * 3600
 
 
 def update_legacy(legacy_index):
@@ -223,6 +228,24 @@ def update_roblox_game_info(info):
 
 def roblox_game_info():
     return _roblox_game_info or None
+
+
+def maybe_update_exchange_rates():
+    """Обновляет курс валют не чаще EXCHANGE_RATES_REFRESH_SEC — дёргать на
+    каждом цикле проверки цен, сама функция решает, пора ли реально сходить
+    в сеть (тот же приём, что и pricedb.maybe_compact)."""
+    global _exchange_rates, _exchange_rates_fetched_at
+    now = time.time()
+    if _exchange_rates and now - _exchange_rates_fetched_at < EXCHANGE_RATES_REFRESH_SEC:
+        return
+    rates = mm2_api.fetch_exchange_rates()
+    if rates:
+        _exchange_rates = rates
+        _exchange_rates_fetched_at = now
+
+
+def exchange_rates():
+    return _exchange_rates or None
 
 
 def append_price_points(snapshot):

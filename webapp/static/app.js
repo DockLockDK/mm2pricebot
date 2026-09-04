@@ -174,7 +174,29 @@ function setHeaderTitle(text, cls, iconHtml) {
   h1.innerHTML = (iconHtml || "") + escapeHtml(text);
   h1.className = cls || "";
 }
-function fmtPrice(p) { return p != null ? p.toFixed(2) + "₽" : "—"; }
+// Переключатель отображаемой валюты — чисто визуальный пересчёт по курсу ЦБ
+// (см. /api/exchange_rates), сам DreamPets всегда в рублях. Выбор хранится в
+// localStorage; при смене валюты проще перезагрузить страницу (loadHome()
+// всегда вызывается при старте), чем городить пересчёт уже отрисованных
+// экранов на лету.
+const CURRENCY_ORDER = ["RUB", "USD", "EUR"];
+const CURRENCY_SYMBOLS = { RUB: "₽", USD: "$", EUR: "€" };
+let currentCurrency = localStorage.getItem("currency") || "RUB";
+let exchangeRates = {};
+
+function fmtPrice(p) {
+  if (p == null) return "—";
+  const rate = currentCurrency !== "RUB" ? exchangeRates[currentCurrency] : null;
+  const value = rate ? p * rate : p;
+  return value.toFixed(2) + CURRENCY_SYMBOLS[currentCurrency];
+}
+
+el("#currency-btn").textContent = CURRENCY_SYMBOLS[currentCurrency];
+el("#currency-btn").onclick = () => {
+  const next = CURRENCY_ORDER[(CURRENCY_ORDER.indexOf(currentCurrency) + 1) % CURRENCY_ORDER.length];
+  localStorage.setItem("currency", next);
+  location.reload();
+};
 
 // Value без Demand/Rarity/Stability и без %-пилюль — в пикере/инвентаре/
 // трейде нужна только сама цифра ценности, а не полная сводка как на
@@ -270,6 +292,7 @@ async function loadHome() {
   const [res, marketRes] = await Promise.all([
     fetch(`/api/menu?window=${currentWindow}`),
     fetch(`/api/market_index?window=${currentWindow}`),
+    currentCurrency !== "RUB" ? fetch("/api/exchange_rates").then(r => r.json()).then(r => { exchangeRates = r; }) : null,
   ]);
   const data = await res.json();
   renderMarketIndexChart(await marketRes.json());

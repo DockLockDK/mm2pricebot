@@ -105,6 +105,13 @@ def api_windows():
     }
 
 
+@app.get("/api/exchange_rates")
+def api_exchange_rates():
+    """Курс рубля к доллару/евро — только для переключателя валюты
+    отображения в мини-приложении (см. mm2_api.fetch_exchange_rates)."""
+    return price_history.exchange_rates() or {}
+
+
 @app.get("/api/menu")
 def api_menu(window: str = price_history.DEFAULT_WINDOW):
     window_sec = price_history.resolve_window(window)
@@ -444,6 +451,11 @@ def run_price_check_once():
             log.warning("Не удалось получить данные о MM2 из Roblox Games API.")
     except Exception:
         log.exception("Ошибка при обновлении данных Roblox Games API")
+
+    try:
+        price_history.maybe_update_exchange_rates()
+    except Exception:
+        log.exception("Ошибка при обновлении курса валют")
 
     try:
         funpay_listings = mm2_api.fetch_funpay_listings()
