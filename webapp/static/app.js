@@ -151,6 +151,7 @@ const I18N = {
   time_ago: { ru: "{n} {word} назад", en: "{n} {word} ago" },
   game_update_prefix: { ru: "Последнее обновление MM2 было:", en: "The last MM2 update was:" },
 
+  win_1m: { ru: "1 мин", en: "1 min" },
   win_5m: { ru: "5 мин", en: "5 min" },
   win_1h: { ru: "1 час", en: "1 hour" },
   win_1d: { ru: "Сутки", en: "1 day" },
@@ -390,13 +391,14 @@ const ARROW_DOWN = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" st
 // Период сравнения "было -> стало" — общий для главного экрана, категории и
 // карточки предмета: сколько выбрали, столько и используется в /api/... до
 // следующей смены. Список синхронизирован с WINDOW_OPTIONS в webapp/server.py.
-const WINDOW_KEYS = ["5m", "1h", "1d", "1w", "1mo", "1y"];
+const WINDOW_KEYS = ["1m", "5m", "1h", "1d", "1w", "1mo", "1y"];
 let currentWindow = "5m";
 let categoriesExpanded = false;
 // График всегда показывает минимум сутки истории, даже если для "было/стало"
 // выбран более короткий период (см. CHART_WINDOW_SECONDS на бэкенде) — иначе
 // график почти всегда был бы пустым при выборе "5 мин"/"1 час".
 const CHART_BUCKET_KEYS = {
+  "1m": "bucket_hourly_day",
   "5m": "bucket_hourly_day",
   "1h": "bucket_hourly_day",
   "1d": "bucket_hourly_day", "1w": "bucket_4h_week",

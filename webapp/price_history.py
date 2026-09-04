@@ -46,6 +46,7 @@ _OLD_VALUE_LOG_FILE = str(_REPO_DIR / "value_history.jsonl")
 # (сейчас − окно), и сравниваем текущую цену с ней. Работает одинаково для
 # движений на главном экране, сетки категории и карточки предмета.
 WINDOW_OPTIONS = [
+    ("1m", 60, "1 мин"),
     ("5m", 300, "5 мин"),
     ("1h", 3600, "1 час"),
     ("1d", 24 * 3600, "Сутки"),
@@ -69,6 +70,7 @@ DEFAULT_WINDOW = "5m"
 CHART_MIN_WINDOW_SECONDS = 24 * 3600  # график никогда не показывает меньше суток
 
 CHART_WINDOW_SECONDS = {
+    "1m": CHART_MIN_WINDOW_SECONDS,
     "5m": CHART_MIN_WINDOW_SECONDS,
     "1h": CHART_MIN_WINDOW_SECONDS,
     "1d": CHART_MIN_WINDOW_SECONDS,
@@ -78,6 +80,7 @@ CHART_WINDOW_SECONDS = {
 }
 
 CHART_BUCKET_SECONDS = {
+    "1m": 600,
     "5m": 600,
     "1h": 600,
     "1d": 600,
