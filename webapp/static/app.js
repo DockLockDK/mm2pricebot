@@ -52,6 +52,49 @@ function renderGameUpdate(gameUpdate) {
   box.innerHTML = `<span class="dot"></span>MM2 в Roblox обновлялась: <b>${ago}</b>`;
 }
 
+// Следующее сезонное событие MM2 (Хэллоуин/Рождество/Пасха) — Nikilis никогда
+// заранее не анонсирует даты через API, поэтому это НЕофициальная оценка по
+// многолетнему опыту сообщества (примерные месяц/число, когда обычно
+// стартует ивент), а не подтверждённый патчноут. Дата Пасхи — по алгоритму
+// Гаусса (западная/григорианская Пасха), остальные два события — фиксированные
+// день/месяц.
+const SEASONAL_EVENTS_FIXED = [
+  { name: "Хэллоуин", month: 10, day: 20 },
+  { name: "Рождество", month: 12, day: 1 },
+];
+
+function easterSunday(year) {
+  const a = year % 19, b = Math.floor(year / 100), c = year % 100;
+  const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+
+function nextSeasonalEvent(now) {
+  now = now || new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const candidates = [];
+  for (const y of [now.getFullYear(), now.getFullYear() + 1]) {
+    candidates.push({ name: "Пасха", date: easterSunday(y) });
+    for (const ev of SEASONAL_EVENTS_FIXED) candidates.push({ name: ev.name, date: new Date(y, ev.month - 1, ev.day) });
+  }
+  const future = candidates.filter(c => c.date >= today);
+  future.sort((a, b) => a.date - b.date);
+  return future[0];
+}
+
+function renderNextEvent() {
+  const box = el("#next-event-info");
+  const ev = nextSeasonalEvent();
+  if (!ev) { box.innerHTML = ""; return; }
+  const dateStr = ev.date.toLocaleDateString("ru-RU", { day: "numeric", month: "long" });
+  box.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2l0 -2" /></svg><div>Возможно скоро: <b>${ev.name}</b> — ориентировочно ${dateStr} <span class="hint">(неофициально, по опыту прошлых лет)</span></div>`;
+}
+
 function escapeHtml(s) {
   return (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
@@ -232,6 +275,7 @@ async function loadHome() {
   renderMarketIndexChart(await marketRes.json());
 
   renderGameUpdate(data.game_update);
+  renderNextEvent();
 
   const catWrap = el("#categories");
   catWrap.innerHTML = "";

@@ -169,6 +169,9 @@
   .game-update .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); flex:none; box-shadow:var(--glow-accent); }
   .game-update b{ color:var(--text); font-weight:700; }
   .game-update:empty{ display:none; }
+  .next-event{ align-items:flex-start; }
+  .next-event svg{ width:14px; height:14px; flex:none; color:var(--deal); margin-top:1px; }
+  .next-event .hint{ color:var(--hint); font-weight:400; }
 
   .hero-wrap{ display:flex; justify-content:center; margin-bottom:16px; }
   .hero-frame{ position:relative; display:inline-block; }
