@@ -105,7 +105,7 @@ def api_windows():
     }
 
 
-SUPPORT_STAR_AMOUNTS = {50, 100, 300}
+SUPPORT_STAR_AMOUNTS = {20, 50, 100, 300}
 
 
 @app.post("/api/support/invoice")

@@ -62,6 +62,10 @@
         <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
         <span class="tool-label" data-i18n="tool_notifications">Уведомления</span>
       </button>
+      <button class="tool-btn" id="open-support-btn">
+        <svg class="tool-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+        <span class="tool-label" data-i18n="tool_support">Поддержать</span>
+      </button>
     </div>
 
     <h2 class="section-title"><span data-i18n="categories_title">Категории</span></h2>
@@ -80,11 +84,12 @@
     <h2 class="section-title"><span data-i18n="big_movers_title">Сильно изменились в цене</span></h2>
     <div id="home-win-row" class="win-row"></div>
     <div id="movers" class="grid"></div>
+  </section>
 
-    <h2 class="section-title"><span data-i18n="support_title">Поддержать проект</span></h2>
+  <section id="screen-support" class="screen">
     <div class="support-block">
-      <div class="support-note" data-i18n="support_note">Полностью добровольно, через звёзды Telegram — без банковских карт и личных данных.</div>
       <div class="support-amounts" id="support-amounts">
+        <button class="support-amount-btn" data-stars="20">20 ⭐</button>
         <button class="support-amount-btn" data-stars="50">50 ⭐</button>
         <button class="support-amount-btn" data-stars="100">100 ⭐</button>
         <button class="support-amount-btn" data-stars="300">300 ⭐</button>
@@ -212,6 +217,8 @@
       <div class="notif-scope" id="notif-drop-scope">
         <button class="scope-chip" data-scope="all" data-i18n="scope_all">Все предметы</button>
         <button class="scope-chip" data-scope="selected" data-i18n="scope_selected">Только выбранные</button>
+        <button class="scope-chip" data-scope="favorites" data-i18n="scope_favorites">Избранное</button>
+        <button class="scope-chip" data-scope="inventory" data-i18n="scope_inventory">Инвентарь</button>
       </div>
       <div class="notif-items" id="notif-drop-items"></div>
     </div>
@@ -224,6 +231,8 @@
       <div class="notif-scope" id="notif-rise-scope">
         <button class="scope-chip" data-scope="all" data-i18n="scope_all">Все предметы</button>
         <button class="scope-chip" data-scope="selected" data-i18n="scope_selected">Только выбранные</button>
+        <button class="scope-chip" data-scope="favorites" data-i18n="scope_favorites">Избранное</button>
+        <button class="scope-chip" data-scope="inventory" data-i18n="scope_inventory">Инвентарь</button>
       </div>
       <div class="notif-items" id="notif-rise-items"></div>
     </div>

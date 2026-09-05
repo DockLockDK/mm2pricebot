@@ -90,15 +90,21 @@
   header{
     /* В полноэкранном режиме (requestFullscreen) сверху больше нет "шторки"
        Telegram — контент может упереться в вырез/чёлку, поэтому добавляем
-       safe-area отступ поверх обычного паддинга. Справа — то же самое, но из-за
-       плавающей кнопки Telegram "свернуть/ещё" (contentSafeAreaInset.right),
-       которая иначе перекрывает наши кнопки языка/темы/валюты/about. */
+       safe-area отступ поверх обычного паддинга. */
     padding:max(18px, var(--tg-content-safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px), env(safe-area-inset-top, 0px))
-            max(18px, var(--tg-content-safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px))
+            18px
             14px
             max(18px, var(--tg-content-safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px));
     position:sticky; top:0; background:var(--bg); z-index:10;
     display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--line);
+  }
+  /* Плавающая кнопка Telegram "свернуть/ещё" в полноэкранном режиме сидит
+     поверх контента справа сверху — часть клиентов не отдают в
+     contentSafeAreaInset её реальный размер, поэтому резервируем место под
+     неё фиксированной шириной (см. класс tg-fullscreen в app.js), а не только
+     через safe-area переменную. */
+  html.tg-fullscreen header{
+    padding-right:max(18px, 72px, var(--tg-content-safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px));
   }
   header h1{ font-size:17px; font-weight:700; margin:0; flex:1; letter-spacing:0.01em; text-transform:uppercase;
     display:flex; align-items:center; gap:6px; }
@@ -230,9 +236,8 @@
 
   .support-block{ display:flex; flex-direction:column; gap:10px; background:var(--card); border:1px solid var(--line);
     clip-path:var(--clip-panel-sm); padding:14px; margin-bottom:14px; }
-  .support-note{ font-size:12px; color:var(--hint); line-height:1.5; }
-  .support-amounts{ display:flex; gap:8px; }
-  .support-amount-btn{ flex:1; background:rgba(155,124,245,0.1); border:1px solid var(--accent); color:var(--accent);
+  .support-amounts{ display:flex; flex-wrap:wrap; gap:8px; }
+  .support-amount-btn{ flex:1 1 calc(50% - 4px); background:rgba(155,124,245,0.1); border:1px solid var(--accent); color:var(--accent);
     font-family:inherit; font-weight:700; font-size:14px; padding:10px 0; cursor:pointer; clip-path:var(--clip-panel-sm); }
   .support-amount-btn:active{ filter:brightness(1.15); }
   .support-hint{ font-size:11px; color:var(--hint); text-align:center; min-height:1em; }
@@ -494,8 +499,8 @@
     transition:transform .15s, background .15s; }
   .switch input:checked + .switch-track{ background:rgba(176,38,255,0.25); }
   .switch input:checked + .switch-track::before{ transform:translateX(16px); background:var(--accent); box-shadow:var(--glow-accent); }
-  .notif-scope{ display:flex; gap:8px; margin-bottom:10px; }
-  .scope-chip{ flex:1; background:var(--card-raised); border:1px solid var(--line); clip-path:var(--clip-panel-sm);
+  .notif-scope{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .scope-chip{ flex:1 1 calc(50% - 4px); background:var(--card-raised); border:1px solid var(--line); clip-path:var(--clip-panel-sm);
     color:var(--hint); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.02em; padding:8px 6px; cursor:pointer; }
   .scope-chip.active{ color:var(--accent-text); background:var(--accent); border-color:transparent; box-shadow:var(--glow-accent); }
   .notif-items{ display:flex; flex-direction:column; gap:6px; }

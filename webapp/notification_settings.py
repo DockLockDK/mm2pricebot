@@ -13,6 +13,9 @@ import logging
 import os
 from pathlib import Path
 
+import favorites
+import inventory
+
 log = logging.getLogger(__name__)
 
 _REPO_DIR = Path(__file__).resolve().parent.parent
@@ -71,9 +74,17 @@ def update(patch):
 
 def allows(settings, kind, pid):
     """Разрешает ли текущая настройка алерт вида kind ('drop'/'rise') для
-    предмета pid — учитывает и вкл/выкл, и область действия (все/выбранные)."""
+    предмета pid — учитывает и вкл/выкл, и область действия: все / вручную
+    выбранные / текущее избранное / текущий инвентарь (два последних
+    считаются каждый раз заново по актуальным favorites.json/inventory.json,
+    а не по снимку на момент выбора scope)."""
     if not settings.get(f"{kind}_enabled", True):
         return False
-    if settings.get(f"{kind}_scope") == "selected":
+    scope = settings.get(f"{kind}_scope")
+    if scope == "selected":
         return pid in (settings.get(f"{kind}_items") or [])
+    if scope == "favorites":
+        return pid in favorites.load()
+    if scope == "inventory":
+        return pid in inventory.load()
     return True

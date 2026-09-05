@@ -4,8 +4,16 @@ if (tg) {
   tg.expand();
   // Полноэкранный режим (Bot API 8.0+) — убирает верхнюю "шторку" Telegram
   // с заголовком бота. На старых клиентах метода просто нет — тихо пропускаем.
+  // В этом режиме Telegram рисует свою плавающую кнопку "свернуть/ещё" поверх
+  // контента справа сверху — независимо от того, отдаёт ли конкретный клиент
+  // реальный contentSafeAreaInset (у части клиентов он остаётся нулевым, хотя
+  // кнопка всё равно есть), поэтому резервируем под неё место в CSS через
+  // класс, а не только через safe-area переменные (см. style.css header).
   if (typeof tg.requestFullscreen === "function") {
-    try { tg.requestFullscreen(); } catch (e) {}
+    try {
+      tg.requestFullscreen();
+      document.documentElement.classList.add("tg-fullscreen");
+    } catch (e) {}
   }
   if (typeof tg.disableVerticalSwipes === "function") {
     try { tg.disableVerticalSwipes(); } catch (e) {}
@@ -93,6 +101,8 @@ const I18N = {
   price_rise_title: { ru: "Рост цены", en: "Price rise" },
   scope_all: { ru: "Все предметы", en: "All items" },
   scope_selected: { ru: "Только выбранные", en: "Only selected" },
+  scope_favorites: { ru: "Избранное", en: "Favorites" },
+  scope_inventory: { ru: "Инвентарь", en: "Inventory" },
   notif_note: { ru: "Алерты приходят только по Godly/Ancient и только когда цена сильно отклоняется от своей средней за последние дни — не на каждое небольшое движение.", en: "Alerts fire only for Godly/Ancient, and only when the price deviates sharply from its recent average — not for every small move." },
   max_alerts_label: { ru: "Хранить уведомлений в чате", en: "Keep alerts in chat" },
   max_alerts_hint: { ru: "старые лишние автоматически удаляются", en: "older ones are deleted automatically" },
@@ -198,8 +208,7 @@ const I18N = {
   greeting_evening: { ru: "Добрый вечер", en: "Good evening" },
   greeting_night: { ru: "Доброй ночи", en: "Good night" },
 
-  support_title: { ru: "Поддержать проект", en: "Support the project" },
-  support_note: { ru: "Полностью добровольно, через звёзды Telegram — без банковских карт и личных данных.", en: "Fully optional, via Telegram Stars — no bank cards or personal data involved." },
+  tool_support: { ru: "Поддержать", en: "Support" },
   support_outside_telegram: { ru: "Открой в Telegram, чтобы задонатить", en: "Open in Telegram to donate" },
   support_error: { ru: "Не получилось создать донат — попробуй позже", en: "Couldn't start the donation — try again later" },
   support_thanks: { ru: "Спасибо за поддержку! 🎉", en: "Thanks for the support! 🎉" },
@@ -298,6 +307,14 @@ function wireSupportButtons() {
       }
     };
   });
+}
+
+function loadSupport() {
+  showScreen("support");
+  setHeaderTitle(t("tool_support"));
+  backAction = loadHome;
+  el("#support-hint").textContent = "";
+  wireSupportButtons();
 }
 
 function renderStatsInfo(trackingSince) {
@@ -593,8 +610,8 @@ async function loadHome() {
   el("#open-trade-btn").onclick = loadTrade;
   el("#open-fees-btn").onclick = loadFees;
   el("#open-notifications-btn").onclick = loadNotifications;
+  el("#open-support-btn").onclick = loadSupport;
   renderGreeting();
-  wireSupportButtons();
 
   renderWindowRow("#home-win-row", () => loadHome());
 
