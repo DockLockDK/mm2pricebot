@@ -98,6 +98,11 @@
     position:sticky; top:0; background:var(--bg); z-index:10;
     display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--line);
   }
+  /* На главном экране бренд-заголовок не нужен (он и так есть в шапке
+     браузера/about) — прячем его и центрируем оставшиеся кнопки
+     (язык/тема/валюта/about) в шапке, а не жмём их к правому краю. */
+  header.home-header{ justify-content:center; }
+  header.home-header #header-title{ display:none; }
   /* Плавающая кнопка Telegram "свернуть/ещё" в полноэкранном режиме сидит
      поверх контента справа сверху — часть клиентов не отдают в
      contentSafeAreaInset её реальный размер, поэтому резервируем место под
@@ -235,8 +240,11 @@
   .greeting-info:empty{ display:none; }
 
   .support-hero{ display:flex; flex-direction:column; align-items:center; gap:14px; padding:28px 0 6px; }
-  .pixel-heart{ color:var(--accent); filter:drop-shadow(0 0 16px var(--accent)); image-rendering:pixelated; }
-  .support-thanks-title{ font-size:22px; font-weight:800; color:var(--text); text-transform:uppercase; letter-spacing:0.04em; }
+  .pixel-heart{ color:var(--accent); image-rendering:pixelated; animation:pixel-heart-flicker 3.2s ease-in-out infinite; }
+  @keyframes pixel-heart-flicker{
+    0%, 100%{ opacity:1; filter:drop-shadow(0 0 18px var(--accent)); }
+    50%{ opacity:0.6; filter:drop-shadow(0 0 6px var(--accent)); }
+  }
   .support-block{ display:flex; flex-direction:column; gap:10px; background:var(--card); border:1px solid var(--line);
     clip-path:var(--clip-panel-sm); padding:14px; margin-bottom:14px; }
   .support-amounts{ display:flex; flex-wrap:wrap; gap:8px; }
