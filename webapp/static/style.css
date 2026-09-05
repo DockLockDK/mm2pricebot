@@ -100,15 +100,19 @@
   }
   /* На главном экране бренд-заголовок не нужен (он и так есть в шапке
      браузера/about) — прячем его и центрируем оставшиеся кнопки
-     (язык/тема/валюта/about) в шапке, а не жмём их к правому краю. */
+     (язык/тема/валюта/about) в шапке, а не жмём их к правому краю. Правило
+     ниже (резерв под плавающую кнопку Telegram) намеренно не действует на
+     этот экран — иначе сдвигало бы центрирование влево от реального центра
+     экрана, а на этом экране кнопки и так далеко от правого края. */
   header.home-header{ justify-content:center; }
   header.home-header #header-title{ display:none; }
   /* Плавающая кнопка Telegram "свернуть/ещё" в полноэкранном режиме сидит
      поверх контента справа сверху — часть клиентов не отдают в
      contentSafeAreaInset её реальный размер, поэтому резервируем место под
      неё фиксированной шириной (см. класс tg-fullscreen в app.js), а не только
-     через safe-area переменную. */
-  html.tg-fullscreen header{
+     через safe-area переменную. Не на главном экране — там кнопки и так по
+     центру, см. правило выше. */
+  html.tg-fullscreen header:not(.home-header){
     padding-right:max(18px, 72px, var(--tg-content-safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px));
   }
   header h1{ font-size:17px; font-weight:700; margin:0; flex:1; letter-spacing:0.01em; text-transform:uppercase;
