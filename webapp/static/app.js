@@ -108,6 +108,7 @@ const I18N = {
   max_alerts_hint: { ru: "старые лишние автоматически удаляются", en: "older ones are deleted automatically" },
   send_photos_label: { ru: "Фото в уведомлениях", en: "Photos in alerts" },
   remove_label: { ru: "Убрать", en: "Remove" },
+  alert_threshold_label: { ru: "Алерт от", en: "Alert from" },
 
   my_side: { ru: "Моя сторона", en: "My side" },
   their_side: { ru: "Их сторона", en: "Their side" },
@@ -1157,6 +1158,13 @@ function renderNotifSection(kind) {
   const enabledInput = el(`#notif-${kind}-enabled`);
   enabledInput.checked = enabled;
   enabledInput.onchange = () => patchNotifSettings({ [`${kind}_enabled`]: enabledInput.checked });
+
+  const thresholdInput = el(`#notif-${kind}-threshold`);
+  thresholdInput.value = notifSettings[`${kind}_threshold_percent`];
+  thresholdInput.onchange = () => {
+    const v = Math.max(1, Number(thresholdInput.value) || 35);
+    patchNotifSettings({ [`${kind}_threshold_percent`]: v });
+  };
 
   const scopeBox = el(`#notif-${kind}-scope`);
   scopeBox.style.opacity = enabled ? "1" : ".4";

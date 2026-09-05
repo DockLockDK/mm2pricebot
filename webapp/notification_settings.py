@@ -25,9 +25,15 @@ DEFAULTS = {
     "drop_enabled": True,
     "drop_scope": "all",  # "all" | "selected"
     "drop_items": [],
+    # На сколько % цена должна упасть относительно своей средней за
+    # AVG_PRICE_WINDOW_DAYS (см. alerts.py), чтобы это считалось "сильно
+    # подешевело" и стоило уведомления. Раньше был фиксирован через
+    # переменную окружения — теперь настраивается прямо в приложении.
+    "drop_threshold_percent": float(os.environ.get("DROP_ALERT_THRESHOLD_PERCENT", "35")),
     "rise_enabled": True,
     "rise_scope": "all",
     "rise_items": [],
+    "rise_threshold_percent": float(os.environ.get("RISE_ALERT_THRESHOLD_PERCENT", "35")),
     # Сколько последних алертов о цене хранить в чате одновременно — при
     # отправке нового, если их накопилось больше, самые старые удаляются из
     # чата (см. alerts._record_and_trim_alert_message), чтобы уведомления не

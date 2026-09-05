@@ -245,6 +245,10 @@
         <span data-i18n="price_drop_title">Падение цены</span>
         <label class="switch"><input type="checkbox" id="notif-drop-enabled"><span class="switch-track"></span></label>
       </div>
+      <div class="threshold-box" style="display:flex;">
+        <span data-i18n="alert_threshold_label">Алерт от</span>
+        <input type="number" id="notif-drop-threshold" class="threshold-input" min="1" max="500" step="1">%
+      </div>
       <div class="notif-scope" id="notif-drop-scope">
         <button class="scope-chip" data-scope="all" data-i18n="scope_all">Все предметы</button>
         <button class="scope-chip" data-scope="selected" data-i18n="scope_selected">Только выбранные</button>
@@ -258,6 +262,10 @@
       <div class="notif-section-head">
         <span data-i18n="price_rise_title">Рост цены</span>
         <label class="switch"><input type="checkbox" id="notif-rise-enabled"><span class="switch-track"></span></label>
+      </div>
+      <div class="threshold-box" style="display:flex;">
+        <span data-i18n="alert_threshold_label">Алерт от</span>
+        <input type="number" id="notif-rise-threshold" class="threshold-input" min="1" max="500" step="1">%
       </div>
       <div class="notif-scope" id="notif-rise-scope">
         <button class="scope-chip" data-scope="all" data-i18n="scope_all">Все предметы</button>

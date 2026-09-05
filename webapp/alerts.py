@@ -5,9 +5,10 @@ Unique исключён из уведомлений, хотя в мини-при
 Три независимых вида (свои пороги, состояния дедупа и настройки вкл/выкл —
 см. webapp/notification_settings.py):
   1. Сильное падение цены относительно своей же истории (build_drop_alerts) —
-     порог и окно среднего: DROP_ALERT_THRESHOLD_PERCENT/AVG_PRICE_WINDOW_DAYS.
+     порог настраивается в приложении (notification_settings.drop_threshold_percent),
+     окно среднего — AVG_PRICE_WINDOW_DAYS.
   2. Сильный рост цены — зеркально падению (build_rise_alerts) — порог:
-     RISE_ALERT_THRESHOLD_PERCENT.
+     notification_settings.rise_threshold_percent.
   3. Цена заметно ниже Community Value с mm2values.com (build_undervalue_alerts)
      — порог: UNDERVALUE_ALERT_THRESHOLD_PERCENT. Предмет может попасть под
      несколько условий одновременно или только под одно — состояния дедупа
@@ -35,10 +36,11 @@ log = logging.getLogger(__name__)
 # Шлём push ТОЛЬКО по этим редкостям (Unique — по просьбе пользователя исключён
 # из уведомлений, хотя в мини-приложении остаётся как обычно).
 ALERT_RARITIES = {"godly", "ancient"}
-# На сколько % текущая цена должна быть НИЖЕ средней за AVG_PRICE_WINDOW_DAYS,
-# чтобы это считалось "подешевело в разы" и стоило уведомления. Например,
-# Celestial 7000₽ → 4000₽ — это примерно -43%, чуть выше порога по умолчанию.
-DROP_ALERT_THRESHOLD_PERCENT = float(os.environ.get("DROP_ALERT_THRESHOLD_PERCENT", "35"))
+# На сколько % текущая цена должна быть НИЖЕ/ВЫШЕ средней за
+# AVG_PRICE_WINDOW_DAYS, чтобы это считалось "сильно подешевело"/"сильно
+# подорожало" и стоило уведомления — настраивается в приложении
+# (notification_settings.drop_threshold_percent/rise_threshold_percent),
+# значения по умолчанию берутся из переменных окружения при первом запуске.
 AVG_PRICE_WINDOW_DAYS = int(os.environ.get("AVG_PRICE_WINDOW_DAYS", "7"))
 # Не считаем "падением", если по предмету накопилось слишком мало точек истории
 # (например, самый первый запуск) — иначе первая же цена окажется "средней".
@@ -108,16 +110,18 @@ def save_alerted_rise_state(state):
 
 def build_drop_alerts(new_snapshot, old_snapshot, alerted_state):
     """Ищет предметы Godly/Ancient, у которых текущая цена упала минимум на
-    DROP_ALERT_THRESHOLD_PERCENT % ниже средней за AVG_PRICE_WINDOW_DAYS дней.
-    Пропускает предмет, если мы уже слали алерт именно по этой цене (иначе
-    бот шлёт одно и то же уведомление на каждом цикле, пока цена стоит на
-    месте) — алерт повторится только когда цена изменится (упадёт ещё ниже
-    или сначала отрастёт обратно и упадёт заново). Учитывает настройки
-    пользователя (webapp/notification_settings.py) — можно выключить алерты о
-    падении целиком или ограничить конкретными предметами."""
+    настроенный % (notification_settings.drop_threshold_percent) ниже средней
+    за AVG_PRICE_WINDOW_DAYS дней. Пропускает предмет, если мы уже слали
+    алерт именно по этой цене (иначе бот шлёт одно и то же уведомление на
+    каждом цикле, пока цена стоит на месте) — алерт повторится только когда
+    цена изменится (упадёт ещё ниже или сначала отрастёт обратно и упадёт
+    заново). Учитывает настройки пользователя (webapp/notification_settings.py)
+    — можно выключить алерты о падении целиком, ограничить конкретными
+    предметами и задать свой порог %."""
     settings = notification_settings.load()
     if not settings["drop_enabled"]:
         return []
+    threshold = settings["drop_threshold_percent"]
 
     found = []
     for pid, item in new_snapshot.items():
@@ -138,7 +142,7 @@ def build_drop_alerts(new_snapshot, old_snapshot, alerted_state):
             continue
 
         drop_percent = (price - avg_price) / avg_price * 100
-        if drop_percent > -DROP_ALERT_THRESHOLD_PERCENT:
+        if drop_percent > -threshold:
             continue
 
         found.append({
@@ -192,27 +196,34 @@ def _send_telegram_alert(text, keyboard, image_url):
         return
 
     if image_url and notification_settings.load()["send_photos"]:
-        try:
-            resp = requests.post(
-                tracker.TELEGRAM_PHOTO_API_URL,
-                data={
-                    "chat_id": tracker.TELEGRAM_CHAT_ID,
-                    "photo": image_url,
-                    "caption": text,
-                    "parse_mode": "HTML",
-                    "reply_markup": json.dumps(keyboard),
-                },
-                timeout=15,
-            )
-            if resp.status_code == 200:
-                _record_and_trim_alert_message(resp.json().get("result", {}).get("message_id"))
-                return
-            log.warning(
-                "Telegram sendPhoto вернул ошибку, шлю текстом без картинки: %s %s",
-                resp.status_code, resp.text,
-            )
-        except requests.RequestException:
-            log.exception("Не удалось отправить алерт с картинкой в Telegram, шлю текстом")
+        # Telegram сам скачивает фото с CDN DreamPets — если у него в моменте
+        # не получилось (временная сетевая заминка, а не то, что фото
+        # реально не существует), одна короткая повторная попытка спасает
+        # большинство таких случаев и не даёт алерту "случайно" остаться без
+        # картинки только из-за разовой заминки сети.
+        for attempt in range(2):
+            try:
+                resp = requests.post(
+                    tracker.TELEGRAM_PHOTO_API_URL,
+                    data={
+                        "chat_id": tracker.TELEGRAM_CHAT_ID,
+                        "photo": image_url,
+                        "caption": text,
+                        "parse_mode": "HTML",
+                        "reply_markup": json.dumps(keyboard),
+                    },
+                    timeout=15,
+                )
+                if resp.status_code == 200:
+                    _record_and_trim_alert_message(resp.json().get("result", {}).get("message_id"))
+                    return
+                log.warning(
+                    "Telegram sendPhoto вернул ошибку (попытка %d): %s %s",
+                    attempt + 1, resp.status_code, resp.text,
+                )
+            except requests.RequestException:
+                log.exception("Не удалось отправить алерт с картинкой в Telegram (попытка %d)", attempt + 1)
+        log.warning("Фото не отправилось за 2 попытки, шлю алерт текстом без картинки")
 
     try:
         resp = requests.post(
@@ -265,20 +276,15 @@ def send_drop_alert(alert):
     _send_telegram_alert(text, keyboard, view.get("image"))
 
 
-# На сколько % текущая цена должна быть ВЫШЕ средней за AVG_PRICE_WINDOW_DAYS
-# дней, чтобы это считалось "сильно подорожало" — зеркально DROP_ALERT_THRESHOLD_PERCENT,
-# только в обратную сторону.
-RISE_ALERT_THRESHOLD_PERCENT = float(os.environ.get("RISE_ALERT_THRESHOLD_PERCENT", "35"))
-
-
 def build_rise_alerts(new_snapshot, old_snapshot, alerted_state):
     """Зеркально build_drop_alerts, только ищет сильный РОСТ цены относительно
     средней за AVG_PRICE_WINDOW_DAYS дней. Тот же дедуп-приём и та же проверка
-    настроек (можно выключить алерты о росте целиком или ограничить конкретными
-    предметами, см. webapp/notification_settings.py)."""
+    настроек (можно выключить алерты о росте целиком, ограничить конкретными
+    предметами и задать свой порог %, см. webapp/notification_settings.py)."""
     settings = notification_settings.load()
     if not settings["rise_enabled"]:
         return []
+    threshold = settings["rise_threshold_percent"]
 
     found = []
     for pid, item in new_snapshot.items():
@@ -299,7 +305,7 @@ def build_rise_alerts(new_snapshot, old_snapshot, alerted_state):
             continue
 
         rise_percent = (price - avg_price) / avg_price * 100
-        if rise_percent < RISE_ALERT_THRESHOLD_PERCENT:
+        if rise_percent < threshold:
             continue
 
         found.append({
