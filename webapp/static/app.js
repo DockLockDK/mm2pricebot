@@ -212,6 +212,7 @@ const I18N = {
   support_outside_telegram: { ru: "Открой в Telegram, чтобы задонатить", en: "Open in Telegram to donate" },
   support_error: { ru: "Не получилось создать донат — попробуй позже", en: "Couldn't start the donation — try again later" },
   support_thanks: { ru: "Спасибо за поддержку! 🎉", en: "Thanks for the support! 🎉" },
+  support_thanks_title: { ru: "Спасибо!", en: "Thank you!" },
 };
 
 function t(key, vars) {
